@@ -1,0 +1,22 @@
+@import url("https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap");
+@import "tailwindcss";
+
+@theme {
+	--color-accent: #48B21B;
+	--color-light-accent: #A8D1A7;
+	--color-lighter-accent: #CDE5CD;
+	--color-black: #000000;
+	--color-white: #F5F5F5;
+	--color-background: #48B21B0F;
+	--color-dark-gray: #999999;
+	--color-light-gray: #BDBDBD;
+
+	--color-garden-dirt: #9B7653;
+	--color-garden-dirt-hover: #856547;
+
+    --font-sans: "Lexend", sans-serif;
+}
+
+html, body {
+    height: 100%;
+}
