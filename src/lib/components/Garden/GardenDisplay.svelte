@@ -1,24 +1,19 @@
 <script lang="ts">
     import GardenGrid from "$lib/components/Garden/GardenGrid.svelte";
-    import type { CropType, Garden, Tile } from "$lib/models/Garden.model";
+    import type { CropType, Garden } from "$lib/models/Garden.model";
     import GardenPalette from "./GardenPalette.svelte";
-  
-    const tiles: Tile[][] = Array.from({ length: 10 }, () =>
-      Array.from({ length: 15 }, () => ({ crop: null }))
-    );
+
+    interface Props {
+        garden: Garden;
+        onTileUpdate: (x: number, y: number, crop: CropType | null) => void;
+    }
+
+    let { garden, onTileUpdate }: Props = $props();
 
     let width = $state<number | null>(null);
     let height = $state<number | null>(null);
 
-    let garden = $state<Garden>({
-        width: 15,
-        height: 10,
-        scale: 1,
-        tiles: tiles,
-    });
-
-
-    const GRID_GAP = 4;
+    const GRID_GAP = 16;
 
     let px = $derived.by<number>(() => {
         if (height === null || width === null) {
@@ -36,14 +31,6 @@
 
   
     let brush = $state<CropType | null>(null);
-  
-    function onTileUpdate(x: number, y: number, crop: CropType | null) {
-      if (Number.isNaN(x) || Number.isNaN(y)) {
-        return;
-      }
-
-      garden.tiles[y][x] = { crop };
-    }
 </script>
   
 <main class="flex flex-row items-center justify-center h-full">

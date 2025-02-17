@@ -1,28 +1,13 @@
 <script lang="ts">
     import { cropColors } from "$lib/data/crops";
-    import type { CropType, Garden } from "$lib/models/Garden.model";
+    import type { Garden } from "$lib/models/Garden.model";
 
     interface Props {
         garden: Garden;
         px: number; // px size of a tile
-        brush: CropType | null | undefined;
-        onTileUpdate: (x: number, y: number, crop: CropType | null) => void
     }
 
-    let { garden, brush, px, onTileUpdate }: Props = $props();
-
-    let mousedown = $state<boolean>(false);
-    
-    function onMouseMove(e: MouseEvent) {
-        if (mousedown && e.target) {
-            const x = Number((e.target as HTMLElement).dataset.x);
-            const y = Number((e.target as HTMLElement).dataset.y);
-
-            if (brush !== undefined) {
-                onTileUpdate(x, y, brush);
-            }
-        }
-    }
+    let { garden, px }: Props = $props();
 
     function computeBackgroundColor(x: number, y: number) {
         if (garden.tiles[y][x].crop !== null) {
@@ -33,12 +18,8 @@
     }
 </script>
 
-<!-- svelte-ignore a11y_no_static_element_interactions -->
 <section
-    onmousedown={() => mousedown = true}
-    onmouseup={() => mousedown = false}
-    onmousemove={onMouseMove}
-    class="grid gap-1 rounded-xl overflow-hidden"
+    class="grid gap-1 rounded-xl overflow-hidden border-4 bg-black"
     style:grid-template-columns="repeat({garden.width}, {px}px)"
     style:grid-template-rows="repeat({garden.height}, {px}px)"
 >
@@ -48,6 +29,7 @@
                 class="
                     tile
                     w-full h-full flex flex-row justify-center items-center
+                    bg-garden-dirt
                     hover:cursor-pointer
                     transition
                 "
@@ -62,13 +44,3 @@
         {/each}
     {/each}
 </section>
-
-<style>
-    .tile {
-        background-color: var(--color-garden-dirt);
-    }
-
-    .tile:hover {
-        background-color: var(--color-garden-dirt-hover);
-    }
-</style>

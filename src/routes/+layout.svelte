@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount, type Snippet } from "svelte";
 	import { firebaseAuth } from "$lib/firebase";
-	import authStore from "$lib/stores/authStore";
+	import auth from "$lib/state/auth.svelte";
 	import { browser } from "$app/environment";
 	import { goto } from "$app/navigation";
 	import "../app.css";
@@ -13,19 +13,17 @@
 
 	let { children }: Props = $props();
 
-    // TODO: fix
 	const AUTHENTICATED_ROUTES = [
-		"/classes",
-		"/new-class",
+		"/garden",
+		"/new-garden",
 	]
 
 	onMount(() => {
-		const unsubscribe = firebaseAuth.onAuthStateChanged((user) => {
-			authStore.set(user)
+		const unsubscribe = firebaseAuth.onAuthStateChanged(async (user) => {
+			auth.value = user
 
-
-			if (browser && AUTHENTICATED_ROUTES.some(route => window.location.pathname.split("?")[0] === (route)) && !$authStore) {
-				goto("/log-in");
+			if (browser && AUTHENTICATED_ROUTES.some(route => window.location.pathname.split("?")[0] === (route)) && !auth.value) {
+				await goto("/log-in");
 			}
 		});
 	

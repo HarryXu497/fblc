@@ -1,17 +1,9 @@
 <script lang="ts">
-    import GardenGrid from "$lib/components/Garden/GardenGrid.svelte";
-    import type { CropType, Garden, Tile } from "$lib/models/Garden.model";
-
-    const tiles: Tile[][] = Array.from({ length: 6 }, () =>
-        Array.from({ length: 10 }, () => ({ crop: null }))
-    );
-
-    const garden: Garden = {
-        width: 10,
-        height: 6,
-        scale: 1,
-        tiles: tiles,
-    };
+    import { goto } from "$app/navigation";
+    import FallbackIcon from "$lib/components/FallbackIcon.svelte";
+    import { firestore } from "$lib/firebase";
+    import auth from "$lib/state/auth.svelte";
+    import { addDoc, collection } from "firebase/firestore";
 
     let mousedown = $state<boolean>(false);
 
@@ -19,7 +11,10 @@
     let startPoint = $state<Point | null>(null);
     let endPoint = $state<Point | null>(null);
 
-    type Point = { x: number, y: number };
+    type Point = { x: number; y: number };
+
+    let gardenName = $state<string>("");
+    let invalidName = $state<boolean>(false);
 
     function onMouseDown(e: MouseEvent) {
         if (dragComplete) {
@@ -27,13 +22,13 @@
             endPoint = null;
             dragComplete = false;
         }
-        
+
         mousedown = true;
-        
+
         const x = e.pageX;
         const y = e.pageY;
-        
-        startPoint = { x, y }
+
+        startPoint = { x, y };
         e.preventDefault();
     }
 
@@ -43,7 +38,7 @@
         const x = e.pageX;
         const y = e.pageY;
 
-        endPoint = { x, y }
+        endPoint = { x, y };
         dragComplete = true;
     }
 
@@ -68,8 +63,8 @@
         return {
             x: Math.min(startPoint.x, endPoint.x),
             y: Math.min(startPoint.y, endPoint.y),
-        }
-    })
+        };
+    });
 
     const drawPoint2 = $derived.by<Point | null>(() => {
         if (!startPoint || !endPoint) {
@@ -79,52 +74,162 @@
         return {
             x: Math.max(startPoint.x, endPoint.x),
             y: Math.max(startPoint.y, endPoint.y),
+        };
+    });
+
+    const height = $derived.by(() => {
+        if (!drawPoint1 || !drawPoint2) {
+            return null;
         }
+
+        return Math.floor((drawPoint2.y - drawPoint1.y) / TILE_SIZE);
+    });
+
+    const width = $derived.by(() => {
+        if (!drawPoint1 || !drawPoint2) {
+            return null;
+        }
+
+        return Math.floor((drawPoint2.x - drawPoint1.x) / TILE_SIZE);
+    });
+
+    $effect(() => {
+        if (width === null || height === null) {
+            return;
+        }
+
+        if (dragComplete && (width === 0 || height === 0)) {
+            startPoint = null;
+            endPoint = null;
+            dragComplete = false;
+        }
+    });
+
+    async function onClick() {
+        const userId = auth.value?.uid;
+
+        if (!userId) {
+            return;
+        }
+
+        if (gardenName.trim().length === 0) {
+            invalidName = true;
+            return;
+        }
+
+        const collectionRef = collection(
+            firestore,
+            "gardens",
+            userId,
+            "gardens",
+        );
+
+        if (!width || width <= 0 || !height || height <= 0) {
+            return;
+        }
+
+        const res = await addDoc(collectionRef, {
+            width,
+            height,
+            name: gardenName.trim()
+        });
+
+        await goto(`/gardens/${res.id}`);
+    }
+
+    $effect(() => {
+        dragComplete;
+
+        gardenName = "";
     })
 </script>
 
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 <main
-    class="h-full w-full flex flex-row justify-center items-center select-none"
+    class="w-full flex flex-col justify-center items-center select-none gap-4"
     onmousedown={onMouseDown}
     onmouseup={onMouseUp}
     onmousemove={onMouseMove}
 >
+    {#if dragComplete && drawPoint1 && drawPoint2}
+        <input
+            class="text-4xl/6 font-bold p-2 text-center focus:outline-accent"
+            type="text"
+            placeholder="your garden"
+            style:outline={invalidName ? "2px solid red" : ""}
+            oninput={() => invalidName = false}
+            onmousedown={(e) => e.stopPropagation()}
+            onmouseup={(e) => e.stopPropagation()}
+            onmousemove={(e) => e.stopPropagation()}
+            bind:value={gardenName}
+        />
+    {/if}
     {#if drawPoint1 && drawPoint2}
-        {@const HEIGHT = Math.floor((drawPoint2.y - drawPoint1.y) / TILE_SIZE)}
-        {@const WIDTH = Math.floor((drawPoint2.x - drawPoint1.x) / TILE_SIZE)}
         <div
             class="grid container transition absolute gap-1 rounded-xl overflow-hidden w-fit"
+            class:centered={dragComplete}
             style:left="{drawPoint1.x}px"
             style:top="{drawPoint1.y}px"
-            style:grid-template-columns="repeat({WIDTH}, {TILE_SIZE}px)"
-            style:grid-template-rows="repeat({HEIGHT}, {TILE_SIZE}px)"
+            style:grid-template-columns="repeat({width}, {TILE_SIZE}px)"
+            style:grid-template-rows="repeat({height}, {TILE_SIZE}px)"
         >
-            {#each { length: HEIGHT}, y}
-                {#each { length: WIDTH}, x}
+            {#each { length: height! }}
+                {#each { length: width! }}
                     <div
                         class="
-                            tile
-                            w-full h-full flex flex-row justify-center items-center
-                            hover:cursor-pointer
-                            transition
-                        "
+                tile
+                w-full h-full flex flex-row justify-center items-center
+            "
                         style:width="{TILE_SIZE}px"
                         style:height="{TILE_SIZE}px"
-                    >
-                    </div>
+                    ></div>
                 {/each}
             {/each}
         </div>
     {:else}
         <h1>Drag to create your garden!</h1>
     {/if}
-
+    {#if dragComplete && drawPoint1 && drawPoint2}
+        <button
+            class="proceed text-2xl text-accent hover:cursor-pointer"
+            onmousedown={(e) => e.stopPropagation()}
+            onmouseup={(e) => e.stopPropagation()}
+            onmousemove={(e) => e.stopPropagation()}
+            onclick={onClick}
+        >
+            proceed
+            <FallbackIcon
+                icon="ri:arrow-right-long-line"
+                preload={["ri:arrow-right-long-line"]}
+                class="inline-block mr-1"
+            />
+        </button>
+    {/if}
 </main>
-
 <style>
     .tile {
         background-color: var(--color-garden-dirt);
     }
-</style>
 
+    .centered {
+        position: static;
+        margin-bottom: 0.25rem;
+    }
+
+    main {
+        height: calc(100vh - 6rem);
+    }
+
+    .proceed {
+        background: linear-gradient(currentColor 0 0) bottom left/
+            var(--underline-width, 0%) 0.1em no-repeat;
+        display: inline-block;
+        padding: 0 0.5em 0.2em;
+        text-decoration: none;
+        transition: background-size 0.25s;
+    }
+
+    .proceed:hover {
+        --underline-width: 100%;
+    }
+</style>

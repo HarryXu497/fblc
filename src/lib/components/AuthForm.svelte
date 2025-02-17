@@ -1,7 +1,7 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
   import { base } from "$app/paths";
-  import { logIn, signUp } from "$lib/stores/authStore";
+  import auth from "$lib/state/auth.svelte";
   import type { UserCredential } from "firebase/auth";
 
   type FormType = "log-in" | "sign-up";
@@ -25,13 +25,13 @@
     }
 
     try {
-      await logIn(email, password);
-      goto("/garden");
+      await auth.logIn(email, password);
+      goto("/gardens");
     } catch (e) {
       const code = (e as any).code;
 
       if (code === "auth/email-already-in-use") {
-        await logIn(email, password);
+        await auth.logIn(email, password);
         await goto("/");
         return;
       }
@@ -60,8 +60,8 @@
     let credentials: UserCredential;
 
     try {
-      credentials = await signUp(email, password, firstName, lastName);
-      goto("/garden");
+      credentials = await auth.signUp(email, password, firstName, lastName);
+      goto("/gardens");
     } catch (e) {
       const code = (e as any).code;
 
@@ -93,7 +93,7 @@
     const callback = formType === "log-in" ? onLogIn : onSignUp;
     callback(e);
   }}
-  >
+>
   {#if formType === "sign-up"}
     <div class="name-control flex justify-between gap-[10%] w-full">
       <div class="form-control w-1/2">
@@ -160,7 +160,7 @@
 </form>
 
 <style lang="postcss">
-    @reference "tailwindcss";
+  @reference "tailwindcss";
 
   .auth-form {
     display: flex;
