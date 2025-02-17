@@ -1,9 +1,7 @@
-import crops from "$lib/data/crops";
-
-type CropType = typeof crops[number]
+import type { Crop } from "./Crop.model";
 
 interface Tile {
-    crop: CropType | null;
+    crop: Crop | null;
 }
 
 interface Garden extends GardenPreview {
@@ -18,4 +16,4 @@ interface GardenPreview {
     name: string
 }
 
-export type { Garden, Tile, CropType, GardenPreview };
+export type { Garden, Tile, GardenPreview };

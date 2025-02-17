@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { cropColors } from "$lib/data/crops";
     import type { Garden } from "$lib/models/Garden.model";
+    import crops from "$lib/utils/crops.svelte";
 
     interface Props {
         garden: Garden;
@@ -11,7 +11,7 @@
 
     function computeBackgroundColor(x: number, y: number) {
         if (garden.tiles[y][x].crop !== null) {
-            return cropColors[garden.tiles[y][x].crop];
+            return garden.tiles[y][x].crop.color;
         } else {
             return "";
         }

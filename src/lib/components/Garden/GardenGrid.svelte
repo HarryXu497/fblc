@@ -1,12 +1,12 @@
 <script lang="ts">
-    import { cropColors } from "$lib/data/crops";
-    import type { CropType, Garden } from "$lib/models/Garden.model";
+    import type { Crop } from "$lib/models/Crop.model";
+    import type { Garden } from "$lib/models/Garden.model";
 
     interface Props {
         garden: Garden;
         px: number; // px size of a tile
-        brush: CropType | null | undefined;
-        onTileUpdate: (x: number, y: number, crop: CropType | null) => void
+        brush: Crop | null;
+        onTileUpdate: (x: number, y: number, crop: Crop | null) => void
     }
 
     let { garden, brush, px, onTileUpdate }: Props = $props();
@@ -26,7 +26,7 @@
 
     function computeBackgroundColor(x: number, y: number) {
         if (garden.tiles[y][x].crop !== null) {
-            return cropColors[garden.tiles[y][x].crop];
+            return garden.tiles[y][x].crop.color;
         } else {
             return "";
         }

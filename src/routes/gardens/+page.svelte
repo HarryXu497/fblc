@@ -17,7 +17,7 @@
         <main
             class="w-full h-[calc(100%_-_6rem)] flex flex-row items-center justify-center"
         >
-            <p class="text-4xl">no gardens ... yet</p>
+            <p class="text-4xl">no gardens yet</p>
         </main>
     {:else}
         <main class="flex flex-col items-center gap-8">

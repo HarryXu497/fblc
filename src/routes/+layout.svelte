@@ -14,8 +14,12 @@
 	let { children }: Props = $props();
 
 	const AUTHENTICATED_ROUTES = [
-		"/garden",
+		"/gardens",
 		"/new-garden",
+	]
+
+    const STARTS_WITH_ROUTES = [
+		"/gardens",
 	]
 
 	onMount(() => {
@@ -23,6 +27,10 @@
 			auth.value = user
 
 			if (browser && AUTHENTICATED_ROUTES.some(route => window.location.pathname.split("?")[0] === (route)) && !auth.value) {
+				await goto("/log-in");
+			}
+
+			if (browser && STARTS_WITH_ROUTES.some(route => window.location.pathname.split("?")[0].startsWith(route)) && !auth.value) {
 				await goto("/log-in");
 			}
 		});

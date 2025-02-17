@@ -1,7 +1,8 @@
 import { firestore } from "$lib/firebase";
-import type { CropType, Garden, GardenPreview, Tile } from "$lib/models/Garden.model";
+import type { Garden, Tile } from "$lib/models/Garden.model";
 import auth from "$lib/state/auth.svelte";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+import crops from "./crops.svelte";
 
 async function getGarden(gardenId: string): Promise<Garden | null> {
     const userId = auth.value?.uid;
@@ -30,9 +31,9 @@ async function getGarden(gardenId: string): Promise<Garden | null> {
     for (const tileDoc of tileDocs.docs) {
         const [x, y] = tileDoc.id.split(",").map(n => Number(n));
 
-        const crop = tileDoc.get("crop") as CropType;
+        const crop = tileDoc.get("name") as string;
 
-        tiles[y][x] = { crop }
+        tiles[y][x] = { crop: crops.fromName(crop) };
     }
   
     return {

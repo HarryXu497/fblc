@@ -1,22 +1,25 @@
 <script lang="ts">
     import GardenDisplay from "$lib/components/Garden/GardenDisplay.svelte";
     import type { PageProps } from './$types';
-    import type { CropType, Garden } from "$lib/models/Garden.model";
+    import type { Garden } from "$lib/models/Garden.model";
     import { getGarden } from "$lib/utils/garden.svelte";
-    import { collection, doc, setDoc } from "firebase/firestore";
+    import { collection, deleteDoc, doc, setDoc } from "firebase/firestore";
     import { firestore } from "$lib/firebase";
     import auth from "$lib/state/auth.svelte";
+    import type { Crop } from "$lib/models/Crop.model";
 
     let { data }: PageProps = $props();
 
     let garden = $state<Garden | null>(null);
+
+    $inspect(garden)
 
     $effect(() => {
         getGarden(data.gardenId)
             .then(g => garden = g);
     })
 
-    async function onTileUpdate(x: number, y: number, crop: CropType | null) {
+    async function onTileUpdate(x: number, y: number, crop: Crop | null) {
         const userId = auth.value?.uid;
 
         if (!garden || !userId) {
@@ -33,7 +36,11 @@
 
         const tileDocRef = doc(tilesCollectionRef, `${x},${y}`);
 
-        await setDoc(tileDocRef, { crop })
+        if (crop !== null) {
+            await setDoc(tileDocRef, { ...crop })
+        } else {
+            await deleteDoc(tileDocRef);
+        }
     }
 </script>
 

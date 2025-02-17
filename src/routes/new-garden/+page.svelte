@@ -131,6 +131,7 @@
         const res = await addDoc(collectionRef, {
             width,
             height,
+            scale: 1,
             name: gardenName.trim()
         });
 
