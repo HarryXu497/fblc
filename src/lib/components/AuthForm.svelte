@@ -17,7 +17,7 @@
   let email: string = $state("");
   let password: string = $state("");
   let error: string = $state("");
-
+  
   async function onLogIn(e: SubmitEvent) {
     if (!email || !password) {
       error = "Invalid email or password";
@@ -97,48 +97,48 @@
   {#if formType === "sign-up"}
     <div class="name-control flex justify-between gap-[10%] w-full">
       <div class="form-control w-1/2">
-        <label for="first-name" class="font-bold">First Name</label>
+        <label for="first-name" class="font-bold">first name</label>
         <input
           bind:value={firstName}
           required
           type="text"
           name="first-name"
           id="first-name"
-          placeholder="First Name"
+          placeholder="first name"
         />
       </div>
       <div class="form-control w-1/2">
-        <label for="last-name">Last Name</label>
+        <label for="last-name">last name</label>
         <input
           bind:value={lastName}
           required
           type="text"
           name="last-name"
           id="last-name"
-          placeholder="Last Name"
+          placeholder="last name"
         />
       </div>
     </div>
   {/if}
   <div class="form-control">
-    <label for="email">Email</label>
+    <label for="email">email</label>
     <input
       required
       type="email"
       name="email"
       id="email"
-      placeholder="Email"
+      placeholder="email"
       bind:value={email}
     />
   </div>
   <div class="form-control">
-    <label for="password">Password</label>
+    <label for="password">password</label>
     <input
       required
       type="password"
       name="password"
       id="password"
-      placeholder="Password"
+      placeholder="password"
       bind:value={password}
     />
   </div>
@@ -147,15 +147,15 @@
   {/if}
   {#if formType === "sign-up"}
     <p>
-      Already have an account? <a
+      already have an account? <a
         class="font-bold hover:underline text-accent"
-        href="{base}/log-in">Log in</a
+        href="{base}/log-in">log in</a
       >
     </p>
   {/if}
   <button
     class="w-full bg-accent rounded-lg py-2 mt-2 text-white hover:-translate-y-1 transition-transform"
-    type="submit">{formType === "log-in" ? "Log In" : "Sign Up"}</button
+    type="submit">{formType === "log-in" ? "log in" : "sign up"}</button
   >
 </form>
 

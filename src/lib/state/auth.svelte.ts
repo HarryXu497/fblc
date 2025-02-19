@@ -7,9 +7,6 @@ import {
   updateProfile,
   type User,
 } from "firebase/auth";
-import { writable } from "svelte/store";
-
-const authStore = writable<User | null>(null);
 
 function createAuthState() {
     let userState = $state<User | null>(null);

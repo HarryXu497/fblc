@@ -4,12 +4,12 @@
 </script>
 
 <svelte:head>
-	<title>Sign Up | Spine Align</title>
+	<title>Sign Up | FarmersMarket</title>
 </svelte:head>
 <main class="w-screen size flex flex-col items-center justify-center">
 	<div class="w-fit">
-		<h1 class="text-3xl mb-4">
-			Sign <span class="text-accent">Up</span>
+		<h1 class="text-4xl mb-4 text-center">
+			sign <span class="text-accent">up</span>
 		</h1>
 		<AuthForm formType={"sign-up"}/>
 	</div>

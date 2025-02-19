@@ -218,7 +218,7 @@
     }
 
     main {
-        height: calc(100vh - 6rem);
+        height: calc(100vh - 5rem);
     }
 
     .proceed {
