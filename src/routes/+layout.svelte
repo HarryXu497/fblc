@@ -16,6 +16,8 @@
 	const AUTHENTICATED_ROUTES = [
 		"/gardens",
 		"/new-garden",
+		"/sell",
+		"/marketplace",
 	]
 
     const STARTS_WITH_ROUTES = [

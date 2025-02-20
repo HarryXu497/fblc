@@ -5,7 +5,7 @@
     import FallbackIcon from "./FallbackIcon.svelte";
 </script>
 
-<nav class="w-full flex flex-row h-20 justify-between px-8 items-center">
+<nav class="w-full flex flex-row h-20 justify-between px-8 items-center relative">
   <!-- Logo -->
   <h1 class="text-2xl text-black">
     <a class="flex items-center w-full h-full" href="{base}/">
@@ -14,7 +14,11 @@
     </a>
   </h1>
   {#if auth.value !== null}
-    <p class="text-black">Welcome, {auth.value.displayName}!</p>
+    <div class="absolute inset-0 flex flex-row items-center justify-center -z-10">
+        <p class="text-black text-xl">
+            Welcome, <span class="text-accent">{auth.value.displayName}!</span>
+        </p>
+    </div>
   {/if}
   <div class="flex justify-between gap-4 text-md">
     {#if auth.value === null}
@@ -36,6 +40,12 @@
         href="{base}/gardens"
       >
         view gardens
+      </a>
+      <a
+        class="rounded-xl bg-accent hover:-translate-y-1 transition-transform text-white px-3 py-2 drop-shadow-xl"
+        href="{base}/sell"
+      >
+        sell crops
       </a>
       <button
         class="rounded-xl text-black hover:-translate-y-1 transition-transform"

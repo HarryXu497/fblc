@@ -9,7 +9,6 @@
     }
 
     let { garden }: Props = $props();
-
 </script>
 
 <a href="{base}/gardens/{garden.id}" class="transition rounded overflow-hidden hover:cursor-pointer shadow-lg hover:shadow-xl hover:-translate-y-1">

@@ -1,4 +1,4 @@
-import { firebaseAuth } from "$lib/firebase";
+import { firebaseAuth, firestore } from "$lib/firebase";
 import {
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
@@ -7,6 +7,7 @@ import {
   updateProfile,
   type User,
 } from "firebase/auth";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 
 function createAuthState() {
     let userState = $state<User | null>(null);
@@ -31,6 +32,9 @@ function createAuthState() {
               );
 
               await updateProfile(res.user, { displayName: firstName + " " + lastName });
+              await addDoc(collection(firestore, "users"), {
+                displayName: firstName + " " + lastName,
+              })
 
               return res;
         },
