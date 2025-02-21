@@ -12,8 +12,6 @@
 
     let garden = $state<Garden | null>(null);
 
-    $inspect(garden)
-
     $effect(() => {
         getGarden(data.gardenId)
             .then(g => garden = g);

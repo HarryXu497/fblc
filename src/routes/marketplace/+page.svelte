@@ -4,8 +4,7 @@
     import type { CropListing } from "$lib/models/CropListing.model";
     import auth from "$lib/state/auth.svelte";
     import { collection, onSnapshot } from "firebase/firestore";
-    import { onMount } from "svelte";
-
+  
     let cropListings = $state<CropListing[] | null>(null);
 
     $effect(() => {

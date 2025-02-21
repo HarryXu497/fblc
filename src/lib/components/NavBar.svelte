@@ -8,7 +8,7 @@
 <nav class="w-full flex flex-row h-20 justify-between px-8 items-center relative">
   <!-- Logo -->
   <h1 class="text-2xl text-black">
-    <a class="flex items-center w-full h-full" href="{base}/">
+    <a class="flex items-center w-full h-full font-bold" href="{base}/">
       <FallbackIcon icon="ri:sparkling-fill" preload={["ri:sparkling-fill"]} class="inline-block mr-1" />
       farmers<span class="text-accent">market</span>
     </a>
@@ -16,7 +16,7 @@
   {#if auth.value !== null}
     <div class="absolute inset-0 flex flex-row items-center justify-center -z-10">
         <p class="text-black text-xl">
-            Welcome, <span class="text-accent">{auth.value.displayName}!</span>
+            welcome, <span class="text-accent">{auth.value.displayName}!</span>
         </p>
     </div>
   {/if}

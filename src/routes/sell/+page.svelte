@@ -3,7 +3,7 @@
     import { firestore } from "$lib/firebase";
     import type { Crop } from "$lib/models/Crop.model";
     import auth from "$lib/state/auth.svelte";
-    import crops from "$lib/utils/crops.svelte";
+    import crops from "$lib/state/crops.svelte";
     import { addDoc, collection } from "firebase/firestore";
     import { geohashForLocation } from "geofire-common";
   
@@ -55,7 +55,7 @@
             quantity: quantity,
             uid: auth.value.uid,
         });
-        goto("/marketplace")
+        await goto("/marketplace")
     }
 
     // TODO: visual validation

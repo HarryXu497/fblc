@@ -8,7 +8,7 @@
 
 <main>
 	<section class="grid grid-cols-12 grid-rows-12 h-screen fixed-height">
-		<h1 class="text-[72px] col-start-2 row-start-3 col-end-6 row-end-4">farmers<span class="text-accent">market</span></h1>
+		<h1 class="text-[72px] col-start-2 row-start-3 col-end-6 row-end-4 font-bold">farmers<span class="text-accent">market</span></h1>
 		<div class="text-[24px] leading-8 col-start-2 row-start-5 col-end-6 row-end-7 flex flex-col gap-6">
 			<p>99 percent of computer science students suffer from back pain.</p>
 			<p class="text-accent">We can fix that.</p>

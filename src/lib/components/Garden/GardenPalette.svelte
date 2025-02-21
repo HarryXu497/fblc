@@ -1,5 +1,5 @@
 <script lang="ts">
-    import crops from '$lib/utils/crops.svelte';
+    import crops from '$lib/state/crops.svelte';
     import type { Crop } from '$lib/models/Crop.model';
     
 
@@ -26,7 +26,7 @@
     </button>
 {/snippet}
 
-<section class="bg-[#BBBBBBAA] w-full h-full rounded-xl p-4">
+<section class="bg-[#BBBBBBAA] w-full h-full rounded-sm p-4">
     {#if crops.value}
         {#each crops.value as crop}
             {@render brushButton(crop)}

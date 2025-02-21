@@ -1,6 +1,6 @@
 <script lang="ts">
     import type { Garden } from "$lib/models/Garden.model";
-    import crops from "$lib/utils/crops.svelte";
+    import crops from "$lib/state/crops.svelte";
 
     interface Props {
         garden: Garden;

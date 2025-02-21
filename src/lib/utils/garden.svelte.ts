@@ -2,7 +2,7 @@ import { firestore } from "$lib/firebase";
 import type { Garden, Tile } from "$lib/models/Garden.model";
 import auth from "$lib/state/auth.svelte";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
-import crops from "./crops.svelte";
+import crops from "$lib/state/crops.svelte";
 
 async function getGarden(gardenId: string): Promise<Garden | null> {
     const userId = auth.value?.uid;

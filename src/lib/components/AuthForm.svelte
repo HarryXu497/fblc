@@ -61,7 +61,7 @@
 
     try {
       credentials = await auth.signUp(email, password, firstName, lastName);
-      goto("/gardens");
+      await goto("/gardens");
     } catch (e) {
       const code = (e as any).code;
 
