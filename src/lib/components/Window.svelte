@@ -1,36 +1,22 @@
 <script lang="ts">
     import type { Snippet } from "svelte";
-    import FallbackIcon from "./FallbackIcon.svelte";
 
 	interface Props {
-		programText?: string;
+		top?: Snippet;
+		bottom?: Snippet;
 		children?: Snippet;
 	}
 
 	let {
-		programText = "garden.exe",
+		top,
+        bottom,
 		children
 	}: Props = $props();
 </script>
 
-<!-- <section class="rounded-xl overflow-hidden relative drop-shadow-md bg-lighter-accent w-full h-full">
-	<div class="z-50 drop h-8 w-full absolute top-0 left-0 right-0 flex flex-row bg-white justify-between px-4 items-center">
-		<p class="text-black">{programText}</p>
-		<div class="flex flex-row gap-4">
-			<FallbackIcon font-size="20px" class="text-black" icon="mdi:minimize" />
-			<FallbackIcon font-size="20px" class="text-black" icon="mdi:window-restore" />
-			<FallbackIcon font-size="20px" class="text-black" icon="mdi:close" />
-		</div>
-	</div>
-	{@render children?.()}
-	<div class="z-50 drop h-8 w-full absolute bottom-0 left-0 right-0 flex flex-row bg-white justify-center px-4 items-center gap-4">
-
-	</div>
-</section> -->
-
 <section class="relative drop-shadow-2xl w-full h-full window rounded-lg overflow-hidden">
-	<div class="top z-50 drop h-10 w-full absolute top-0 left-0 right-0 flex flex-row justify-between px-4 items-center">
-		<p class="text-black">{programText}</p>
+	<div class="top z-50 drop h-10 w-full absolute top-0 left-0 right-0 flex flex-row justify-between px-2 items-center">
+		{@render top?.()}
 	</div>
     <div class="w-2.5 z-40 absolute top-0 bottom-0 left-0 side side-left">
         
@@ -38,9 +24,9 @@
     <div class="w-2.5 z-40 absolute top-0 bottom-0 right-0 side side-right">
 
     </div>
-	{@render children?.()}
-	<div class="bottom z-50 drop h-9.5 w-full absolute bottom-0 left-0 right-0 flex flex-row bg-white justify-center px-4 items-center gap-4">
-
+    {@render children?.()}
+	<div class="bottom z-50 drop h-9.5 w-full absolute bottom-0 left-0 right-0 flex flex-row justify-between px-2 items-center">
+        {@render bottom?.()}
 	</div>
 </section>
 

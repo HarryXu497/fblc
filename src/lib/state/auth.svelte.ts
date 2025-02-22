@@ -32,8 +32,9 @@ function createAuthState() {
               );
 
               await updateProfile(res.user, { displayName: firstName + " " + lastName });
-              await addDoc(collection(firestore, "users"), {
+              await setDoc(doc(firestore, "users", res.user.uid), {
                 displayName: firstName + " " + lastName,
+                email: email,
               })
 
               return res;

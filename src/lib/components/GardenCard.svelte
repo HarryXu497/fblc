@@ -12,7 +12,10 @@
 </script>
 
 <a href="{base}/gardens/{garden.id}" class="transition rounded overflow-hidden hover:cursor-pointer shadow-lg hover:shadow-xl hover:-translate-y-1">
-    <Window programText="{garden.name.replaceAll(" ", "_")}.exe">
+    <Window>
+        {#snippet top()}
+            <p class="text-white">{garden.name.toLocaleLowerCase()}</p>
+        {/snippet}
         <div class="w-full aspect-square flex flex-row items-center justify-center">
             <GardenGridPreview {garden} px={20}/>
         </div>

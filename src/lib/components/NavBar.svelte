@@ -15,7 +15,7 @@
   </h1>
   {#if auth.value !== null}
     <div class="absolute inset-0 flex flex-row items-center justify-center -z-10">
-        <p class="text-black text-xl">
+        <p class="text-black text-xl lowercase">
             welcome, <span class="text-accent">{auth.value.displayName}!</span>
         </p>
     </div>
@@ -43,9 +43,9 @@
       </a>
       <a
         class="rounded-xl bg-accent hover:-translate-y-1 transition-transform text-white px-3 py-2 drop-shadow-xl"
-        href="{base}/sell"
+        href="{base}/buy"
       >
-        sell crops
+        buy crops
       </a>
       <button
         class="rounded-xl text-black hover:-translate-y-1 transition-transform"

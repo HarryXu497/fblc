@@ -1,6 +1,7 @@
 <script lang="ts">
     import crops from '$lib/state/crops.svelte';
     import type { Crop } from '$lib/models/Crop.model';
+    import Window from '../Window.svelte';
     
 
     interface Props {
@@ -15,18 +16,20 @@
         <div
             style:background-color={crop ? crop.color : "var(--color-garden-dirt)"}
             style:border-color={brush === crop ? "var(--color-accent)" : ""}
-            class="aspect-square border-4 rounded-4xl w-6"
+            class="aspect-square border-4 rounded-4xl w-6 "
         >
             
         </div>
         <p
+            class="text-white"
             style:color={brush === crop ? "var(--color-accent)" : ""}
             style:font-weight={brush === crop ? "bold" : ""}
         >{crop ? crop.name : "reset"}</p>
     </button>
 {/snippet}
 
-<section class="bg-[#BBBBBBAA] w-full h-full rounded-sm p-4">
+<Window>
+<section class=" w-full h-full rounded-sm p-4 mt-10 ml-2.5">
     {#if crops.value}
         {#each crops.value as crop}
             {@render brushButton(crop)}
@@ -34,3 +37,4 @@
         {@render brushButton(null)}
     {/if}
 </section>
+</Window>

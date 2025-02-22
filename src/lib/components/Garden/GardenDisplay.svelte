@@ -54,10 +54,13 @@
     }
 </script>
   
-<main class="flex flex-row items-center justify-center h-full gap-8 mx-8 my-4">
-    <div class="flex justify-center items-center h-full flex-row grow gap-4 overflow-hidden">
-        <Window programText="{garden.name.replaceAll(" ", "_")}.exe">
-            <div class="flex justify-center items-center w-full h-full relative p-24" bind:clientHeight={height} bind:clientWidth={width}>
+<main class="flex flex-row items-center justify-center h-full gap-8 mx-12 mt-4">
+    <div class="flex flex-row justify-center items-center h-full grow gap-4 overflow-hidden" bind:clientHeight={height}>
+        <Window>
+            {#snippet top()}
+                <p class="text-white">{garden.name.toLocaleLowerCase()}</p>
+            {/snippet}
+            <div class="flex flex-row justify-center grow items-center w-full h-full relative " bind:clientWidth={width}>
                 <div
                     class="absolute top-16.5 h-2 bg-accent rounded flex flex-row justify-center items-center"
                     style:width="{calculateWidth()}px"
