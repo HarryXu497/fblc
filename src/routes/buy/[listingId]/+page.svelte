@@ -53,7 +53,7 @@
             </div>
             <div class="flex flex-row justify-between items-center">
                 <h2 class="text-2xl lowercase">listed by <span class="text-accent">{user.displayName || "Unknown"}</span></h2>
-                <a href="mailto:{user.email}" class="rounded-xl bg-accent hover:-translate-y-0.5 shadow hover:cursor-pointer transition-transform text-white px-5 py-1">contact</a>
+                <a href="mailto:{user.email}" class="rounded-xl text-xl bg-accent hover:-translate-y-0.5 shadow hover:cursor-pointer transition-transform text-white px-5 py-1">contact</a>
             </div>
         </div>
         <Carousel imageURLs={listing.imageURLs}/>

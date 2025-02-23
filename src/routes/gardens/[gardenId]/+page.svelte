@@ -42,7 +42,6 @@
     }
 </script>
 
-
 {#if garden}
     <GardenDisplay {garden} {onTileUpdate}/>
 {:else}

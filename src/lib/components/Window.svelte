@@ -14,7 +14,7 @@
 	}: Props = $props();
 </script>
 
-<section class="relative drop-shadow-2xl w-full h-full window rounded-lg overflow-hidden">
+<section class="relative drop-shadow-2xl w-full h-full window rounded-lg overflow-hidden flex flex-col">
 	<div class="top z-50 drop h-10 w-full absolute top-0 left-0 right-0 flex flex-row justify-between px-2 items-center">
 		{@render top?.()}
 	</div>
@@ -24,7 +24,7 @@
     <div class="w-2.5 z-40 absolute top-0 bottom-0 right-0 side side-right">
 
     </div>
-    {@render children?.()}
+    <div class="mt-12 grow mb-10">{@render children?.()}</div>
 	<div class="bottom z-50 drop h-9.5 w-full absolute bottom-0 left-0 right-0 flex flex-row justify-between px-2 items-center">
         {@render bottom?.()}
 	</div>

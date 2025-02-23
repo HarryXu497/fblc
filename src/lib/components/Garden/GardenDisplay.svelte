@@ -3,7 +3,7 @@
     import type { Crop } from "$lib/models/Crop.model";
     import type { Garden } from "$lib/models/Garden.model";
     import Window from "../Window.svelte";
-    import GardenPalette from "./GardenPalette.svelte";
+    import GardenSidebar from "$lib/components/Garden/GardenSidebar.svelte";
 
     interface Props {
         garden: Garden;
@@ -15,7 +15,7 @@
     let width = $state<number | null>(null);
     let height = $state<number | null>(null);
 
-    const PADDING = 96;
+    const PADDING = 128;
     const GRID_GAP = 4;
 
     let px = $derived.by<number>(() => {
@@ -34,51 +34,21 @@
 
   
     let brush = $state<Crop | null>(null);
-
-    function calculateWidth() {
-        if (!width) {
-            return 0;
-        }
-
-        const widthGaps = garden.width === 0 ? 0 : garden.width - 1;
-        return garden.width * px + widthGaps * GRID_GAP;
-    }
-
-    function calculateHeight() {
-        if (!height) {
-            return 0;
-        }
-
-        const heightGaps = garden.height === 0 ? 0 : garden.height - 1;
-        return garden.height * px + heightGaps * GRID_GAP;
-    }
 </script>
   
-<main class="flex flex-row items-center justify-center h-full gap-8 mx-12 mt-4">
+<main class="flex flex-row items-center justify-center h-full gap-8 mx-12">
     <div class="flex flex-row justify-center items-center h-full grow gap-4 overflow-hidden" bind:clientHeight={height}>
         <Window>
             {#snippet top()}
                 <p class="text-white">{garden.name.toLocaleLowerCase()}</p>
             {/snippet}
-            <div class="flex flex-row justify-center grow items-center w-full h-full relative " bind:clientWidth={width}>
-                <div
-                    class="absolute top-16.5 h-2 bg-accent rounded flex flex-row justify-center items-center"
-                    style:width="{calculateWidth()}px"
-                >
-                    <p class="text-2xl bg-accent py-0.5 px-4 rounded">{garden.scale * garden.width}m</p>
-                </div>
-                <div
-                    class="absolute left-12 w-2 bg-accent rounded flex flex-col justify-center items-center"
-                    style:height="{calculateHeight()}px"
-                >
-                    <p class="text-2xl bg-accent py-0.5 px-4 rounded">{garden.scale * garden.height}m</p>
-                </div>
+            <div class="flex flex-row justify-center grow items-center w-full h-full relative p-8" bind:clientWidth={width}>
                 <GardenGrid {garden} {onTileUpdate} {brush} {px}/>
             </div>
         </Window>
     </div>
     <div class="h-full max-w-[24rem] min-w-[18rem] grow">
-        <GardenPalette bind:brush={brush}/>
+        <GardenSidebar bind:brush={brush} {garden}/>
     </div>
 </main>
 
