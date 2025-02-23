@@ -57,8 +57,8 @@
         style:width="{gridWidth}px"
         style:height="{gridHeight}px"
     >
+    {#each { length: garden.height }, y}
         {#each { length: garden.width }, x}
-            {#each { length: garden.height }, y}
                 <div
                     class="
                         tile

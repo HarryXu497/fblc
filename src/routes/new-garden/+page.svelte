@@ -1,6 +1,7 @@
 <script lang="ts">
     import { goto } from "$app/navigation";
     import FallbackIcon from "$lib/components/FallbackIcon.svelte";
+    import Metadata from "$lib/components/Metadata.svelte";
     import { firestore } from "$lib/firebase";
     import auth from "$lib/state/auth.svelte";
     import { addDoc, collection } from "firebase/firestore";
@@ -145,6 +146,10 @@
     })
 </script>
 
+<Metadata
+    title="add garden | farmer's market"
+/>
+
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 <main
     class="w-full flex flex-col justify-center items-center select-none gap-4"
@@ -207,6 +212,7 @@
         </button>
     {/if}
 </main>
+
 <style>
     .tile {
         background-color: var(--color-garden-dirt);

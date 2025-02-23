@@ -18,11 +18,13 @@
 		"/new-garden",
 		"/sell",
 		"/buy",
+        "/chats",
 	]
 
     const STARTS_WITH_ROUTES = [
 		"/gardens",
-        "/buy"
+        "/buy",
+        "/chats",
 	]
 
 	onMount(() => {

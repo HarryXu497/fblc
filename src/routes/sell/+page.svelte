@@ -1,5 +1,6 @@
 <script lang="ts">
     import { goto } from "$app/navigation";
+    import Metadata from "$lib/components/Metadata.svelte";
     import { firestore, storage } from "$lib/firebase";
     import type { Crop } from "$lib/models/Crop.model";
     import type { CropListing } from "$lib/models/CropListing.model";
@@ -67,6 +68,10 @@
     // TODO: visual validation
 </script>
   
+<Metadata
+    title="sell crops | farmer's market"
+/>
+
 <main class="w-screen size flex flex-col items-center justify-center">
 	<div class="w-fit">
 		<h1 class="text-4xl mb-4 text-center">

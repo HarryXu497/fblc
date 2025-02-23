@@ -14,6 +14,10 @@ async function getGarden(gardenId: string): Promise<Garden | null> {
     const docRef = doc(firestore, "gardens", userId, "gardens", gardenId);
 
     const gardenDoc = await getDoc(docRef);
+    
+    if (!gardenDoc.exists()) {
+        throw Error("garden does not exist");
+    }
 
     const width = gardenDoc.get("width") as number;
     const height = gardenDoc.get("height") as number;

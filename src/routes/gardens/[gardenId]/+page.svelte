@@ -7,6 +7,8 @@
     import { firestore } from "$lib/firebase";
     import auth from "$lib/state/auth.svelte";
     import type { Crop } from "$lib/models/Crop.model";
+    import { goto } from "$app/navigation";
+    import Metadata from "$lib/components/Metadata.svelte";
 
     let { data }: PageProps = $props();
 
@@ -14,7 +16,8 @@
 
     $effect(() => {
         getGarden(data.gardenId)
-            .then(g => garden = g);
+            .then(g => garden = g)
+            .catch(e => goto("/gardens"))
     })
 
     async function onTileUpdate(x: number, y: number, crop: Crop | null) {
@@ -41,6 +44,10 @@
         }
     }
 </script>
+
+<Metadata
+    title="{garden ? garden.name.toLocaleLowerCase() : 'garden'} | farmer's market"
+/>
 
 {#if garden}
     <GardenDisplay {garden} {onTileUpdate}/>

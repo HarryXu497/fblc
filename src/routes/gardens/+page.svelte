@@ -2,6 +2,7 @@
     import { base } from "$app/paths";
     import FallbackIcon from "$lib/components/FallbackIcon.svelte";
     import GardenCard from "$lib/components/GardenCard.svelte";
+    import Metadata from "$lib/components/Metadata.svelte";
     import type { Garden } from "$lib/models/Garden.model";
     import { getGardens } from "$lib/utils/garden.svelte";
 
@@ -11,6 +12,10 @@
         getGardens().then((g) => (gardens = g));
     });
 </script>
+
+<Metadata
+    title="your gardens | farmer's market"
+/>
 
 {#if gardens}
     {#if gardens.length === 0}

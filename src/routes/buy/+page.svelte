@@ -2,16 +2,34 @@
     import { base } from "$app/paths";
     import CropCard from "$lib/components/CropListing/CropCard.svelte";
     import FallbackIcon from "$lib/components/FallbackIcon.svelte";
+    import Metadata from "$lib/components/Metadata.svelte";
     import SearchBar, { type SearchValues } from "$lib/components/SearchBar.svelte";
     import { firestore } from "$lib/firebase";
     import type { CropListing } from "$lib/models/CropListing.model";
     import auth from "$lib/state/auth.svelte";
     import { getCropListings } from "$lib/utils/cropListing.svelte";
     import getUserLocation from "$lib/utils/userLocation.svelte";
-    import { collection, endAt, getDocs, onSnapshot, orderBy, query, startAt } from "firebase/firestore";
+    import type { GeocodeResult } from "@googlemaps/google-maps-services-js";
+    import { collection, endAt, getDocs, orderBy, query, startAt } from "firebase/firestore";
     import { distanceBetween, geohashQueryBounds } from "geofire-common";
   
     let cropListings = $state<CropListing[] | null>(null);
+    let cropLocations = $derived.by<Promise<GeocodeResult>[] | null>(() => {
+        const locations: Promise<GeocodeResult>[] = [];
+
+        if (cropListings === null) {
+            return null;
+        }
+
+        for (const listing of cropListings) {
+            const promise = fetch(`/geocode?lat=${listing.lat}&lng=${listing.lng}`)
+                .then(res => res.json() as unknown as GeocodeResult);
+
+            locations.push(promise);
+        }
+
+        return locations
+    });
 
     $effect(() => {
         if (!auth || !auth.value) {
@@ -38,18 +56,14 @@
             .then(l => cropListings = l);
     })
 
-    async function onSearch(value: SearchValues) {
+    async function onSearch(values: SearchValues) {
         const centerPos = await getUserLocation();
-
-        if (!centerPos) {
-            return;
-        }
 
         let listings: CropListing[] | null = [];
         
-        if (value.distance) {
+        if (centerPos && values.distance) {
             const center = [centerPos.coords.latitude, centerPos.coords.longitude] as [number, number];
-            const radiusInM = value.distance * 1000;
+            const radiusInM = values.distance * 1000;
 
             const bounds = geohashQueryBounds(center, radiusInM);
             const promises = [];
@@ -65,15 +79,14 @@
             }
 
             // Collect all the query results together into a single list
-            const snapshots = await Promise.all(promises);
+            const queryResults = await Promise.all(promises);
 
-            for (const snap of snapshots) {
-                for (const doc of snap.docs) {
+            for (const result of queryResults) {
+                for (const doc of result.docs) {
                     const lat = doc.get('lat');
                     const lng = doc.get('lng');
 
-                    // We have to filter out a few false positives due to GeoHash
-                    // accuracy, but most will match
+                    // Filter out false positivies
                     const distanceInKm = distanceBetween([lat, lng], center);
                     const distanceInM = distanceInKm * 1000;
                     if (distanceInM <= radiusInM) {
@@ -95,33 +108,63 @@
         } else {
             listings = await getCropListings();
         }
+
+        if (!listings) {
+            return;
+        }
+
+        listings = listings.filter(listing => {
+            if (values.crop === null) {
+                return true;
+            }
+
+            return listing.name === values.crop.name;
+        })
+
+        listings = listings.filter(listing => {{
+            if (values.query === null) {
+                return true;
+            }
+
+            return listing.name.toLocaleLowerCase().startsWith(values.query.toLocaleLowerCase())
+        }})
+
+        cropListings = listings;
     }
 </script>
 
+<Metadata
+    title="marketplace | farmer's market"
+/>
+
 {#if cropListings}
-    {#if cropListings.length === 0}
-        <main
-            class="w-full h-[calc(100%_-_6rem)] flex flex-row items-center justify-center"
-        >
-            <p class="text-4xl">no listings yet</p>
-        </main>
-    {:else}
-        <main class="flex flex-col items-center gap-8">
-            <h1 class="text-5xl font-bold">
-                crop <span class="text-accent">listings</span>
-            </h1>
-            <div class="w-[clamp(20rem,_80%,_36rem)]">
-                <SearchBar {onSearch}/>
-            </div>
+    <main class="flex flex-col items-center gap-8 h-full">
+        <h1 class="text-5xl font-bold">
+            crop <span class="text-accent">listings</span>
+        </h1>
+        <div class="w-[clamp(20rem,_80%,_36rem)]">
+            <SearchBar {onSearch}/>
+        </div>
+        {#if cropListings.length === 0}
             <section
-                class="grid grid-cols-3 px-8 w-[clamp(20rem,_80%,_96rem)] gap-8 mb-8"
+                class="w-full h-[calc(100%_-_6rem)] flex flex-row items-center justify-center"
             >
-                {#each cropListings as listing}
-                    <CropCard {listing}/>
-                {/each}
+                <p class="text-4xl pb-48">no listings</p>
             </section>
-        </main>
-    {/if}
+        {:else}
+        <section
+            class="grid grid-cols-3 px-8 w-[clamp(20rem,_80%,_96rem)] gap-8 mb-8"
+        >
+            {#each cropListings as listing, i}
+                {#if cropLocations !== null}
+                    <CropCard {listing} location={cropLocations[i]}/>
+                {:else}
+                    <CropCard {listing}/>
+                {/if}
+            {/each}
+        </section>
+        {/if}
+    </main>
 {:else}
     <main
         class="w-full h-[calc(100%_-_6rem)] flex flex-row items-center justify-center"

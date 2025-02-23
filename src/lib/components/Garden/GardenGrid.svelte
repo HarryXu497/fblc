@@ -53,30 +53,30 @@
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <section class="relative h-full flex flex-col justify-center">
     <div
-        class="absolute -top-0 h-2 bg-accent rounded flex flex-row justify-center items-center"
-        style:width="{calculateWidth()}px"
-    >
-        <p class="text-2xl bg-accent py-0.5 px-4 rounded">{garden.scale * garden.width}m</p>
-    </div>
-    <div
-        class="absolute -left-11 w-2 bg-accent rounded flex flex-col justify-center items-center"
-        style:height="{calculateHeight()}px"
-    >
-        <p class="text-2xl bg-accent py-0.5 px-4 rounded">{garden.scale * garden.height}m</p>
-    </div>
-    <div
         onmousedown={() => mousedown = true}
         onmouseup={() => mousedown = false}
         onmousemove={onMouseMove}
-        class="grid gap-1 rounded-xl overflow-hidden relative"
+        class="grid gap-1 rounded-xl relative"
         style:grid-template-columns="repeat({garden.width}, {px}px)"
         style:grid-template-rows="repeat({garden.height}, {px}px)"
         bind:clientWidth={width}
         bind:clientHeight={height}
     >
-        {#each { length: garden.width }, x}
-            {#each { length: garden.height }, y}
-                <div
+    <div
+        class="absolute -top-8 h-2 bg-accent rounded flex flex-row justify-center items-center"
+        style:width="{calculateWidth()}px"
+    >
+        <p class="text-2xl bg-accent py-0.5 px-4 rounded">{garden.scale * garden.width}m</p>
+    </div>
+    <div
+        class="absolute -left-12 w-2 bg-accent rounded flex flex-col justify-center items-center"
+        style:height="{calculateHeight()}px"
+    >
+        <p class="text-2xl bg-accent py-0.5 px-4 rounded">{garden.scale * garden.height}m</p>
+    </div>
+        {#each { length: garden.height }, y}
+            {#each { length: garden.width }, x}
+            <div
                     class="
                         tile
                         w-full h-full flex flex-row justify-center items-center
@@ -86,6 +86,10 @@
                     data-y={y}
                     style:width="{px}px"
                     style:height="{px}px"
+                    style:border-top-left-radius={(x === 0 && y === 0) ? "0.25rem" : ""}
+                    style:border-top-right-radius={(x === garden.width - 1 && y === 0) ? "0.25rem" : ""}
+                    style:border-bottom-left-radius={(x === 0 && y === garden.height - 1) ? "0.25rem" : ""}
+                    style:border-bottom-right-radius={(x === garden.width - 1 && y === garden.height - 1) ? "0.25rem" : ""}
                 >
                     {#if garden.tiles[y][x].crop !== null}
                         <img

@@ -1,10 +1,12 @@
 <script lang="ts">
 	import AuthForm from "$lib/components/AuthForm.svelte";
+    import Metadata from "$lib/components/Metadata.svelte";
 </script>
 
-<svelte:head>
-	<title>Log In | Farmers Market</title>
-</svelte:head>
+<Metadata
+    title="log in | farmer's market"
+/>
+
 <div class="w-screen size flex flex-col items-center justify-center">
 	<div class="w-fit">
 		<h1 class="text-4xl mb-4 text-center">

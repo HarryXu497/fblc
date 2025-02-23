@@ -24,7 +24,7 @@
     <div class="w-2.5 z-40 absolute top-0 bottom-0 right-0 side side-right">
 
     </div>
-    <div class="mt-12 grow mb-10">{@render children?.()}</div>
+    <div class="mt-12 grow mb-10 overflow-scroll">{@render children?.()}</div>
 	<div class="bottom z-50 drop h-9.5 w-full absolute bottom-0 left-0 right-0 flex flex-row justify-between px-2 items-center">
         {@render bottom?.()}
 	</div>

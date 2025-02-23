@@ -23,7 +23,7 @@ async function getCropListing(listingId: string): Promise<CropListing | null> {
         description: listingDoc.get("description") as string,
         price: listingDoc.get("price") as number,
         quantity: listingDoc.get("quantity") as number,
-        uid: auth.value!.uid as string,
+        uid: listingDoc.get("uid") as string,
         imageURLs: listingDoc.get("imageURLs") as string[],
     }
 }
@@ -48,7 +48,7 @@ async function getCropListings(): Promise<CropListing[] | null> {
         description: listingDoc.get("description") as string,
         price: listingDoc.get("price") as number,
         quantity: listingDoc.get("quantity") as number,
-        uid: auth.value!.uid as string,
+        uid: listingDoc.get("uid") as string,
         imageURLs: listingDoc.get("imageURLs") as string[],
     }))
 }

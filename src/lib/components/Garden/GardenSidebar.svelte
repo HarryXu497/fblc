@@ -49,7 +49,7 @@
 {/snippet}
 
 <section class="flex flex-col h-full gap-4">
-    <div class="grow">
+    <div class="grow h-[50%]">
         <Window>
             {#snippet top()}
                 <p class="text-white">crop palette</p>
@@ -64,12 +64,13 @@
             </div>
         </Window>
     </div>
-    <div class="grow">
+    <div class="grow h-[50%]">
         <Window>
             {#snippet top()}
                 <p class="text-white">what you need</p>
             {/snippet}
             <div class="w-full h-full rounded-sm px-4 pt-1 ml-2.5 mr-10 grow">
+                {#if summary.size !== 0}
                 <div class="flex flex-col justify-between h-full mr-6">
                     <div class="flex flex-col gap-0.5">
                         {#each summary.entries().toArray() as [crop, count]}
@@ -85,6 +86,9 @@
                         />
                     </a>
                 </div>
+                {:else}
+                    <p class="flex flex-row justify-center items-center h-full text-white mr-6 pb-1 text-2xl">plan your garden!</p>
+                {/if}
             </div>
         </Window>
     </div>
