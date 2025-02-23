@@ -16,7 +16,7 @@
         {#snippet top()}
             <p class="text-white">{listing.name.toLocaleLowerCase()}</p>
         {/snippet}
-        <div class="w-full aspect-square flex flex-row items-center justify-center relative">
+        <div class="aspect-square flex flex-row items-center justify-center relative ml-2.5 mr-4">
             <img src={listing.imageURLs[0]} alt="" class="absolute inset-0 w-full h-full object-cover">
         </div>
         {#snippet bottom()}

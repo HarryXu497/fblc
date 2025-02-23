@@ -5,6 +5,7 @@
     import type { CropListing } from "$lib/models/CropListing.model";
     import auth from "$lib/state/auth.svelte";
     import crops from "$lib/state/crops.svelte";
+    import getUserLocation from "$lib/utils/userLocation.svelte";
     import { addDoc, collection } from "firebase/firestore";
     import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
     import { geohashForLocation } from "geofire-common";
@@ -17,23 +18,6 @@
     let quantity = $state<number | null>(null);
     let images = $state<FileList | null>(null);
 
-    async function getUserLocation() {
-        if (navigator && navigator.geolocation) {
-            return new Promise<GeolocationPosition | null>((resolve, reject) => {
-                navigator.geolocation.getCurrentPosition(
-                    resolve,
-                    reject,
-                    {
-                        maximumAge: 0,
-                        enableHighAccuracy: true,
-                    }
-                )  
-            })
-        }
-
-        return Promise.resolve(null);
-    }
-  
     async function onSubmit(e: SubmitEvent) {
         e.preventDefault();
 
