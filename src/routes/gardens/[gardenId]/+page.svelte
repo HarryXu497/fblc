@@ -62,12 +62,6 @@
 
         await goto("/gardens")
     }
-
-    async function onEditGarden() {
-        if (!garden || !auth.value) {
-            return;
-        }
-    }
 </script>
 
 <Metadata
@@ -77,7 +71,7 @@
 />
 
 {#if garden}
-    <GardenDisplay {garden} {onTileUpdate} {onDeleteGarden} {onEditGarden}/>
+    <GardenDisplay {garden} {onTileUpdate} {onDeleteGarden}/>
 {:else}
     <main
         class="flex h-[calc(100%_-_6rem)] w-full flex-row items-center justify-center"

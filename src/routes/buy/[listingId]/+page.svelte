@@ -9,6 +9,8 @@
         addDoc,
         and,
         collection,
+        deleteDoc,
+        doc,
         getDocs,
         or,
         query,
@@ -94,6 +96,19 @@
             await goto(`/chats/${res.id}`);
         }
     }
+
+    async function onDeleteListing() {
+        if (!listing || !auth.value) {
+            return;
+        }
+
+        const listingDocRef = doc(firestore, "seeds", listing.id);
+
+        await deleteDoc(listingDocRef);
+
+        await goto("/buy");
+    }
+
 </script>
 
 <Metadata
@@ -124,13 +139,30 @@
                         >{user.displayName || "Unknown"}</span
                     >
                 </h2>
-                {#if auth.value && auth.value.uid !== listing.uid}
-                    <button
-                        onclick={createChat}
-                        class="rounded-xl bg-accent px-5 py-1 text-xl text-white shadow transition-transform hover:-translate-y-0.5 hover:cursor-pointer"
-                    >
-                        chat
-                    </button>
+                {#if auth.value}
+                    {#if auth.value.uid !== listing.uid}
+                        <button
+                            onclick={createChat}
+                            class="rounded-xl bg-accent px-5 py-1 text-xl text-white shadow transition-transform hover:-translate-y-0.5 hover:cursor-pointer"
+                        >
+                            chat
+                        </button>
+                    {:else}
+                        <div class="flex flex-row gap-2 items-center">
+                            <a
+                                class="text-white rounded-sm bg-blue-700 text-xl px-3 py-1 hover:cursor-pointer hover:bg-blue-800"
+                                href="/buy/{listing.id}/edit"
+                            >
+                                edit
+                            </a>
+                            <button
+                                class="text-white rounded-sm bg-red-700 text-xl px-3 py-1 hover:cursor-pointer hover:bg-red-800"
+                                onclick={onDeleteListing}
+                            >
+                                delete
+                            </button>
+                        </div>
+                    {/if}
                 {/if}
             </div>
         </div>

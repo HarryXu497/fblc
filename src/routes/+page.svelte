@@ -3,7 +3,7 @@
     import GardenGridPreview from "$lib/components/Garden/GardenGridPreview.svelte";
     import Window from "$lib/components/Window.svelte";
     import type { Garden } from "$lib/models/Garden.model";
-    //  TODO: fix preview
+
     const garden1: Garden = {
         id: "MStF9SbHCsFR2557mE3j",
         name: "hello world",

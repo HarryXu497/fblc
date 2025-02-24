@@ -9,10 +9,9 @@
         garden: Garden;
         onTileUpdate: (x: number, y: number, crop: Crop | null) => void;
         onDeleteGarden: () => void;
-        onEditGarden: () => void;
     }
 
-    let { garden, onTileUpdate, onDeleteGarden, onEditGarden }: Props = $props();
+    let { garden, onTileUpdate, onDeleteGarden, }: Props = $props();
 
     let width = $state<number | null>(null);
     let height = $state<number | null>(null);
@@ -50,7 +49,7 @@
             {#snippet top()}
                 <div class="flex flex-row w-full justify-between items-center">
                     <p class="text-white text-xl">{garden.name.toLocaleLowerCase()}</p>
-                    <div class="flex flex-row gap-1">
+                    <div class="flex flex-row gap-1 items-center">
                         <a
                             class="text-white rounded-sm bg-blue-700 text-xl px-3 hover:cursor-pointer hover:bg-blue-800"
                             href="/gardens/{garden.id}/edit"
