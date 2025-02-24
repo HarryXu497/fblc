@@ -26,24 +26,6 @@
                 { crop: null },
                 {
                     crop: {
-                        id: "8KCAM0VNslKqIhkhOmQ7",
-                        name: "carrot",
-                        density: 8,
-                        color: "#ffae17",
-                    },
-                },
-                {
-                    crop: {
-                        id: "8KCAM0VNslKqIhkhOmQ7",
-                        name: "carrot",
-                        density: 8,
-                        color: "#ffae17",
-                    },
-                },
-            ],
-            [
-                {
-                    crop: {
                         id: "7y8a9dRxiKIAhMQcjCC4",
                         name: "tomato",
                         density: 5,
@@ -51,6 +33,17 @@
                     },
                 },
                 { crop: null },
+            ],
+            [
+                {
+                    crop: {
+                        id: "8KCAM0VNslKqIhkhOmQ7",
+                        name: "carrot",
+                        density: 8,
+                        color: "#ffae17",
+                    },
+                },
+                { crop: null },
                 { crop: null },
                 { crop: null },
                 {
@@ -72,7 +65,14 @@
                         color: "#ffae17",
                     },
                 },
-                { crop: null },
+                {
+                    crop: {
+                        id: "8KCAM0VNslKqIhkhOmQ7",
+                        name: "carrot",
+                        density: 8,
+                        color: "#ffae17",
+                    },
+                },
                 {
                     crop: {
                         id: "8KCAM0VNslKqIhkhOmQ7",
