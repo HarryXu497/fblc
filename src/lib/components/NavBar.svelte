@@ -11,12 +11,8 @@
 >
     <!-- Logo -->
     <h1 class="text-2xl text-black">
-        <a class="flex h-full w-full items-center font-bold" href="{base}/">
-            <FallbackIcon
-                icon="ri:sparkling-fill"
-                preload={["ri:sparkling-fill"]}
-                class="mr-1 inline-block"
-            />
+        <a class="flex flex-row h-full w-full items-center font-bold" href="{base}/">
+            <img src="/icons/carrot.svg" alt="" class="inline-block mr-1 aspect-square w-10">
             farmers<span class="text-accent">market</span>
         </a>
     </h1>
