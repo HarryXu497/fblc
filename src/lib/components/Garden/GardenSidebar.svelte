@@ -60,9 +60,9 @@
     <div class="h-[50%] grow">
         <Window>
             {#snippet top()}
-                <p class="text-white">crop palette</p>
+                <p class="text-white text-xl">crop palette</p>
             {/snippet}
-            <div class=" ml-2.5 h-full w-full grow rounded-sm px-4 pt-1">
+            <div class=" ml-2.5 h-full grow rounded-sm px-4 pt-1">
                 {#if crops.value}
                     {#each crops.value as crop}
                         {@render brushButton(crop)}
@@ -75,17 +75,17 @@
     <div class="h-[50%] grow">
         <Window>
             {#snippet top()}
-                <p class="text-white">what you need</p>
+                <p class="text-white text-xl">what you need</p>
             {/snippet}
-            <div class="mr-10 ml-2.5 h-full w-full grow rounded-sm px-4 pt-1">
+            <div class="mr-10 ml-2.5 h-full grow rounded-sm px-4 pt-1">
                 {#if summary.size !== 0}
                     <div class="mr-6 flex h-full flex-col justify-between">
                         <div class="flex flex-col gap-0.5">
                             {#each summary.entries().toArray() as [crop, count]}
                                 <p class="text-2xl text-white">
-                                    {count}
+                                    <span class="text-accent">{count}</span>
                                     {crop}
-                                    {pluralize("crops", count)}
+                                    {pluralize("crop", count)}
                                 </p>
                             {/each}
                         </div>

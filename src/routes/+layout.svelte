@@ -24,6 +24,7 @@
     const STARTS_WITH_ROUTES = ["/gardens", "/buy", "/chats"];
 
     onMount(() => {
+        //TODO: effect with page url so it alwasy runs when url changes
         const unsubscribe = firebaseAuth.onAuthStateChanged(async (user) => {
             auth.value = user;
 

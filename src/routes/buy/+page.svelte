@@ -138,15 +138,13 @@
         });
 
         listings = listings.filter((listing) => {
-            {
-                if (values.query === null) {
-                    return true;
-                }
-
-                return listing.name
-                    .toLocaleLowerCase()
-                    .startsWith(values.query.toLocaleLowerCase());
+            if (values.query === null) {
+                return true;
             }
+
+            return listing.name
+                .toLocaleLowerCase()
+                .startsWith(values.query.toLocaleLowerCase()); 
         });
 
         cropListings = listings;

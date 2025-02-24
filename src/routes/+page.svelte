@@ -179,6 +179,9 @@
             ],
         ],
     };
+
+    // TODO: add crops-specific tips
+    // TODO: edit and delete gardens, listings
 </script>
 
 <svelte:head>
@@ -251,7 +254,7 @@
     </section>
 </main>
 
-<style lang="scss">
+<style>
     .fixed-height {
         height: calc(100vh - 5rem);
     }

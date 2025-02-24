@@ -22,7 +22,7 @@
         <div
             class="flex aspect-square w-full flex-row items-center justify-center"
         >
-            <GardenGridPreview {garden} px={20} />
+            <GardenGridPreview {garden}/>
         </div>
     </Window>
 </a>

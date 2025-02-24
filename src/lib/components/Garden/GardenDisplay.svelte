@@ -46,7 +46,10 @@
     >
         <Window>
             {#snippet top()}
-                <p class="text-white">{garden.name.toLocaleLowerCase()}</p>
+                <div class="flex flex-row w-full justify-between items-center">
+                    <p class="text-white text-xl">{garden.name.toLocaleLowerCase()}</p>
+                    <button class="text-white rounded-sm bg-red-600 px-3 hover:cursor-pointer hover:bg-red-700">delete</button>
+                </div>
             {/snippet}
             <div
                 class="relative flex h-full w-full grow flex-row items-center justify-center p-8"
