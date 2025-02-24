@@ -1,33 +1,33 @@
 <script lang="ts">
     import type { Snippet } from "svelte";
 
-	interface Props {
-		top?: Snippet;
-		bottom?: Snippet;
-		children?: Snippet;
-	}
+    interface Props {
+        top?: Snippet;
+        bottom?: Snippet;
+        children?: Snippet;
+    }
 
-	let {
-		top,
-        bottom,
-		children
-	}: Props = $props();
+    let { top, bottom, children }: Props = $props();
 </script>
 
-<section class="relative drop-shadow-2xl w-full h-full window rounded-lg overflow-hidden flex flex-col">
-	<div class="top z-50 drop h-10 w-full absolute top-0 left-0 right-0 flex flex-row justify-between px-2 items-center">
-		{@render top?.()}
-	</div>
-    <div class="w-2.5 z-40 absolute top-0 bottom-0 left-0 side side-left">
-        
+<section
+    class="window relative flex h-full w-full flex-col overflow-hidden rounded-lg drop-shadow-2xl"
+>
+    <div
+        class="top drop absolute top-0 right-0 left-0 z-50 flex h-10 w-full flex-row items-center justify-between px-2"
+    >
+        {@render top?.()}
     </div>
-    <div class="w-2.5 z-40 absolute top-0 bottom-0 right-0 side side-right">
-
-    </div>
-    <div class="mt-12 grow mb-10 overflow-scroll">{@render children?.()}</div>
-	<div class="bottom z-50 drop h-9.5 w-full absolute bottom-0 left-0 right-0 flex flex-row justify-between px-2 items-center">
+    <div class="side side-left absolute top-0 bottom-0 left-0 z-40 w-2.5"></div>
+    <div
+        class="side side-right absolute top-0 right-0 bottom-0 z-40 w-2.5"
+    ></div>
+    <div class="mt-12 mb-10 grow overflow-scroll">{@render children?.()}</div>
+    <div
+        class="bottom drop absolute right-0 bottom-0 left-0 z-50 flex h-9.5 w-full flex-row items-center justify-between px-2"
+    >
         {@render bottom?.()}
-	</div>
+    </div>
 </section>
 
 <style>
@@ -35,7 +35,7 @@
         border: 0.5rem solid black;
         background-color: var(--color-window-dirt);
     }
-    
+
     .top {
         box-sizing: border-box;
         background-color: hsl(26, 54%, 40%);
@@ -58,5 +58,4 @@
     .side-right {
         box-shadow: -8px 0px 0px 0px var(--color-window-dirt-darker);
     }
-    
 </style>

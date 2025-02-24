@@ -1,6 +1,11 @@
 <script lang="ts">
-	import Icon, { iconExists, loadIcon, loadIcons, type IconifyIcon } from '@iconify/svelte';
-	import { onMount, type Snippet } from 'svelte';
+    import Icon, {
+        iconExists,
+        loadIcon,
+        loadIcons,
+        type IconifyIcon,
+    } from "@iconify/svelte";
+    import { onMount, type Snippet } from "svelte";
 
     interface Props {
         icon: string;
@@ -10,25 +15,31 @@
         [key: string]: any;
     }
 
-    let { icon, loaded = false, preload = [], fallback, ...others }: Props = $props()
+    let {
+        icon,
+        loaded = false,
+        preload = [],
+        fallback,
+        ...others
+    }: Props = $props();
 
-	let loadIconTask = $state<Promise<Required<IconifyIcon>> | null>(null);
+    let loadIconTask = $state<Promise<Required<IconifyIcon>> | null>(null);
 
-	onMount(() => {
-		loaded = iconExists(icon);
-		
-		loadIcons(preload)
+    onMount(() => {
+        loaded = iconExists(icon);
 
-		if (!loaded) {
-			loadIconTask = loadIcon(icon)
-		}
-	})
+        loadIcons(preload);
+
+        if (!loaded) {
+            loadIconTask = loadIcon(icon);
+        }
+    });
 </script>
 
 {#await loadIconTask}
-	{@render fallback?.()}
+    {@render fallback?.()}
 {:then}
-	<Icon on:mouseover {icon} {...others} />
+    <Icon on:mouseover {icon} {...others} />
 {:catch}
     {@render fallback?.()}
 {/await}

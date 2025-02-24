@@ -1,52 +1,60 @@
 <script lang="ts">
-	import { onMount, type Snippet } from "svelte";
-	import { firebaseAuth } from "$lib/firebase";
-	import auth from "$lib/state/auth.svelte";
-	import { browser } from "$app/environment";
-	import { goto } from "$app/navigation";
-	import "../app.css";
-  	import NavBar from "$lib/components/NavBar.svelte";
+    import { onMount, type Snippet } from "svelte";
+    import { firebaseAuth } from "$lib/firebase";
+    import auth from "$lib/state/auth.svelte";
+    import { browser } from "$app/environment";
+    import { goto } from "$app/navigation";
+    import "../app.css";
+    import NavBar from "$lib/components/NavBar.svelte";
 
-	interface Props {
-		children?: Snippet;
-	}
+    interface Props {
+        children?: Snippet;
+    }
 
-	let { children }: Props = $props();
+    let { children }: Props = $props();
 
-	const AUTHENTICATED_ROUTES = [
-		"/gardens",
-		"/new-garden",
-		"/sell",
-		"/buy",
-        "/chats",
-	]
-
-    const STARTS_WITH_ROUTES = [
-		"/gardens",
+    const AUTHENTICATED_ROUTES = [
+        "/gardens",
+        "/new-garden",
+        "/sell",
         "/buy",
         "/chats",
-	]
+    ];
 
-	onMount(() => {
-		const unsubscribe = firebaseAuth.onAuthStateChanged(async (user) => {
-			auth.value = user
+    const STARTS_WITH_ROUTES = ["/gardens", "/buy", "/chats"];
 
-			if (browser && AUTHENTICATED_ROUTES.some(route => window.location.pathname.split("?")[0] === (route)) && !auth.value) {
-				await goto("/log-in");
-			}
+    onMount(() => {
+        const unsubscribe = firebaseAuth.onAuthStateChanged(async (user) => {
+            auth.value = user;
 
-			if (browser && STARTS_WITH_ROUTES.some(route => window.location.pathname.split("?")[0].startsWith(route)) && !auth.value) {
-				await goto("/log-in");
-			}
-		});
-	
-		return unsubscribe;
-	})
+            if (
+                browser &&
+                AUTHENTICATED_ROUTES.some(
+                    (route) => window.location.pathname.split("?")[0] === route,
+                ) &&
+                !auth.value
+            ) {
+                await goto("/log-in");
+            }
+
+            if (
+                browser &&
+                STARTS_WITH_ROUTES.some((route) =>
+                    window.location.pathname.split("?")[0].startsWith(route),
+                ) &&
+                !auth.value
+            ) {
+                await goto("/log-in");
+            }
+        });
+
+        return unsubscribe;
+    });
 </script>
 
 <!-- landing page -->
 <header class="w-full">
-    <NavBar/>
+    <NavBar />
 </header>
 
 {@render children?.()}

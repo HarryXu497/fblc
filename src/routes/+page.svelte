@@ -186,32 +186,32 @@
 </svelte:head>
 
 <main>
-    <section class="grid grid-cols-12 grid-rows-12 h-screen fixed-height">
+    <section class="fixed-height grid h-screen grid-cols-12 grid-rows-12">
         <h1
-            class="text-[72px] col-start-2 row-start-3 col-end-6 row-end-4 font-bold"
+            class="col-start-2 col-end-6 row-start-3 row-end-4 text-[72px] font-bold"
         >
             farmers<span class="text-accent">market</span>
         </h1>
         <div
-            class="text-[24px] leading-8 col-start-2 row-start-5 col-end-6 row-end-7 flex flex-col gap-6"
+            class="col-start-2 col-end-6 row-start-5 row-end-7 flex flex-col gap-6 text-[24px] leading-8"
         >
             <p>only 50% of canadians make a effort to buy local</p>
             <a
-                class="proceed text-2xl text-accent flex flex-row gap-4 items-center"
+                class="proceed flex flex-row items-center gap-4 text-2xl text-accent"
                 href="/gardens"
             >
                 <span>lets change that!</span>
                 <FallbackIcon
                     icon="ri:arrow-right-long-line"
                     preload={["ri:arrow-right-long-line"]}
-                    class="inline-block mr-1"
+                    class="mr-1 inline-block"
                 />
             </a>
         </div>
         <div class="col-start-7 col-end-12 row-start-3 row-end-10 pl-16">
             <Window>
                 <div
-                    class="flex flex-row justify-center items-center w-full h-full"
+                    class="flex h-full w-full flex-row items-center justify-center"
                 >
                     <GardenGridPreview
                         garden={garden1}
@@ -221,22 +221,25 @@
             </Window>
         </div>
     </section>
-    <section class="grid grid-cols-12 grid-rows-12 h-screen">
-        <h1 class="text-[52px] font-bold col-start-7 col-end-12 row-start-1 row-end-2">
-            <span class="text-accent">plan</span> and <span class="text-accent">connect</span>
+    <section class="grid h-screen grid-cols-12 grid-rows-12">
+        <h1
+            class="col-start-7 col-end-12 row-start-1 row-end-2 text-[52px] font-bold"
+        >
+            <span class="text-accent">plan</span> and
+            <span class="text-accent">connect</span>
         </h1>
         <div
-            class="text-[24px] mt-6 leading-8 col-start-7 row-start-2 col-end-11 row-end-4 flex flex-col gap-6"
+            class="col-start-7 col-end-11 row-start-2 row-end-4 mt-6 flex flex-col gap-6 text-[24px] leading-8"
         >
             <p>
                 plan your gardens and connect with our large community of
                 <span class="text-accent">gardeners and farmers</span>.
             </p>
         </div>
-        <div class="col-start-2 row-start-1 col-end-7 row-end-8 pr-16 pb-14">
+        <div class="col-start-2 col-end-7 row-start-1 row-end-8 pr-16 pb-14">
             <Window>
                 <div
-                    class="flex flex-row justify-center items-center w-full h-full"
+                    class="flex h-full w-full flex-row items-center justify-center"
                 >
                     <GardenGridPreview
                         garden={garden2}

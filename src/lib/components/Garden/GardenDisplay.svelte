@@ -23,38 +23,46 @@
             return 0;
         }
 
-        const heightGaps = garden.height === 0 ? 0 : garden.height - 1
-        const widthGaps = garden.width === 0 ? 0 : garden.width - 1
+        const heightGaps = garden.height === 0 ? 0 : garden.height - 1;
+        const widthGaps = garden.width === 0 ? 0 : garden.width - 1;
 
-        const heightPx = Math.ceil((height - GRID_GAP * heightGaps - 2 * PADDING) / garden.height);
-        const widthPx = Math.ceil((width - GRID_GAP * widthGaps - 2 * PADDING) / garden.width);
+        const heightPx = Math.ceil(
+            (height - GRID_GAP * heightGaps - 2 * PADDING) / garden.height,
+        );
+        const widthPx = Math.ceil(
+            (width - GRID_GAP * widthGaps - 2 * PADDING) / garden.width,
+        );
 
         return Math.min(widthPx, heightPx);
     });
 
-  
     let brush = $state<Crop | null>(null);
 </script>
-  
-<main class="flex flex-row items-center justify-center h-full gap-8 mx-12">
-    <div class="flex flex-row justify-center items-center h-full grow gap-4 overflow-hidden" bind:clientHeight={height}>
+
+<main class="mx-12 flex h-full flex-row items-center justify-center gap-8">
+    <div
+        class="flex h-full grow flex-row items-center justify-center gap-4 overflow-hidden"
+        bind:clientHeight={height}
+    >
         <Window>
             {#snippet top()}
                 <p class="text-white">{garden.name.toLocaleLowerCase()}</p>
             {/snippet}
-            <div class="flex flex-row justify-center grow items-center w-full h-full relative p-8" bind:clientWidth={width}>
-                <GardenGrid {garden} {onTileUpdate} {brush} {px}/>
+            <div
+                class="relative flex h-full w-full grow flex-row items-center justify-center p-8"
+                bind:clientWidth={width}
+            >
+                <GardenGrid {garden} {onTileUpdate} {brush} {px} />
             </div>
         </Window>
     </div>
     <div class="h-full max-w-[24rem] min-w-[18rem] grow">
-        <GardenSidebar bind:brush={brush} {garden}/>
+        <GardenSidebar bind:brush {garden} />
     </div>
 </main>
 
 <style>
     main {
-      height: calc(100% - 6rem - 1rem);
+        height: calc(100% - 6rem - 1rem);
     }
 </style>
-  

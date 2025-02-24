@@ -3,4 +3,4 @@ interface PublicUser {
     email: string;
 }
 
-export type { PublicUser }
+export type { PublicUser };

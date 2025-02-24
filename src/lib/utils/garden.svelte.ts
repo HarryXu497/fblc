@@ -14,7 +14,7 @@ async function getGarden(gardenId: string): Promise<Garden | null> {
     const docRef = doc(firestore, "gardens", userId, "gardens", gardenId);
 
     const gardenDoc = await getDoc(docRef);
-    
+
     if (!gardenDoc.exists()) {
         throw Error("garden does not exist");
     }
@@ -23,9 +23,9 @@ async function getGarden(gardenId: string): Promise<Garden | null> {
     const height = gardenDoc.get("height") as number;
     const scale = gardenDoc.get("scale") as number;
     const name = gardenDoc.get("name") as string;
-      
+
     const tiles: Tile[][] = Array.from({ length: height }, () =>
-        Array.from({ length: width }, () => ({ crop: null }))
+        Array.from({ length: width }, () => ({ crop: null })),
     );
 
     const tilesCollectionRef = collection(docRef, "tiles");
@@ -33,13 +33,13 @@ async function getGarden(gardenId: string): Promise<Garden | null> {
     const tileDocs = await getDocs(tilesCollectionRef);
 
     for (const tileDoc of tileDocs.docs) {
-        const [x, y] = tileDoc.id.split(",").map(n => Number(n));
+        const [x, y] = tileDoc.id.split(",").map((n) => Number(n));
 
         const crop = tileDoc.get("name") as string;
 
         tiles[y][x] = { crop: crops.fromName(crop) };
     }
-  
+
     return {
         id: gardenId,
         name,
@@ -47,7 +47,7 @@ async function getGarden(gardenId: string): Promise<Garden | null> {
         height,
         scale,
         tiles,
-    }
+    };
 }
 
 async function getGardens(): Promise<Garden[] | null> {
@@ -59,14 +59,13 @@ async function getGardens(): Promise<Garden[] | null> {
 
     const collectionRef = collection(firestore, "gardens", userId, "gardens");
 
-    const gardenDocs = await getDocs(collectionRef)
+    const gardenDocs = await getDocs(collectionRef);
 
     const gardens = await Promise.all(
-        gardenDocs.docs
-            .map(garden => getGarden(garden.id))
-    )
-  
-    return gardens.filter(garden => garden !== null)
+        gardenDocs.docs.map((garden) => getGarden(garden.id)),
+    );
+
+    return gardens.filter((garden) => garden !== null);
 }
 
-export { getGarden, getGardens }
+export { getGarden, getGardens };

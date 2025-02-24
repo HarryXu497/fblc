@@ -15,7 +15,7 @@
     style:align-items={message.senderId === userId ? "self-end" : "self-start"}
 >
     {#if !collapseName}
-        <h3 class="font-bold mt-2 text-accent">{message.senderName}</h3>
+        <h3 class="mt-2 font-bold text-accent">{message.senderName}</h3>
     {/if}
     <p>{message.content}</p>
 </div>

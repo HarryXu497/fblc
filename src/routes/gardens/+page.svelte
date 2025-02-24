@@ -13,14 +13,12 @@
     });
 </script>
 
-<Metadata
-    title="your gardens | farmer's market"
-/>
+<Metadata title="your gardens | farmer's market" />
 
 {#if gardens}
     {#if gardens.length === 0}
         <main
-            class="w-full h-[calc(100%_-_6rem)] flex flex-row items-center justify-center"
+            class="flex h-[calc(100%_-_6rem)] w-full flex-row items-center justify-center"
         >
             <p class="text-4xl">no gardens yet</p>
         </main>
@@ -30,7 +28,7 @@
                 your <span class="text-accent">gardens</span>
             </h1>
             <section
-                class="grid grid-cols-3 px-8 w-[clamp(20rem,_80%,_96rem)] gap-8 mb-8"
+                class="mb-8 grid w-[clamp(20rem,_80%,_96rem)] grid-cols-3 gap-8 px-8"
             >
                 {#each gardens as garden}
                     <GardenCard {garden} />
@@ -40,7 +38,7 @@
     {/if}
 {:else}
     <main
-        class="w-full h-[calc(100%_-_6rem)] flex flex-row items-center justify-center"
+        class="flex h-[calc(100%_-_6rem)] w-full flex-row items-center justify-center"
     >
         <p class="text-4xl">loading gardens...</p>
     </main>
@@ -48,12 +46,12 @@
 
 <a
     class="
-        rounded-xl bg-accent hover:-translate-y-1
-        transition-transform text-xl text-white px-3 py-2 drop-shadow-xl fixed right-12 bottom-12
-        flex flex-row items-center gap-2
+        fixed right-12 bottom-12
+        flex flex-row items-center gap-2 rounded-xl bg-accent px-3 py-2 text-xl
+        text-white drop-shadow-xl transition-transform hover:-translate-y-1
     "
     href="{base}/new-garden"
 >
-    <FallbackIcon class="text-white font-bold" icon="ri:add-line" />
+    <FallbackIcon class="font-bold text-white" icon="ri:add-line" />
     new garden
 </a>

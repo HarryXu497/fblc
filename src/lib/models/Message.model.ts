@@ -14,4 +14,4 @@ interface FirebaseMessage {
     content: string;
 }
 
-export type { IMessage, FirebaseMessage }
+export type { IMessage, FirebaseMessage };

@@ -7,9 +7,8 @@
 
     interface Props {
         listing: CropListing;
-        location?: Promise<GeocodeResult>; 
+        location?: Promise<GeocodeResult>;
     }
-
 
     let { listing, location }: Props = $props();
 </script>
@@ -23,16 +22,26 @@
                     {#await location}
                         from ...
                     {:then value}
-                        from <span class="text-accent">{value.address_components[3].short_name.toLocaleLowerCase()}</span>
+                        from <span class="text-accent"
+                            >{value.address_components[3].short_name.toLocaleLowerCase()}</span
+                        >
                     {/await}
                 {/if}
             </p>
         {/snippet}
-        <div class="aspect-square flex flex-row items-center justify-center relative ml-2.5 mr-4">
-            <img src={listing.imageURLs[0]} alt="" class="absolute inset-0 w-full h-full object-cover">
+        <div
+            class="relative mr-4 ml-2.5 flex aspect-square flex-row items-center justify-center"
+        >
+            <img
+                src={listing.imageURLs[0]}
+                alt=""
+                class="absolute inset-0 h-full w-full object-cover"
+            />
         </div>
         {#snippet bottom()}
-            <p class="text-white">{listing.quantity} for ${listing.price} each</p>
+            <p class="text-white">
+                {listing.quantity} for ${listing.price} each
+            </p>
         {/snippet}
     </Window>
 </a>

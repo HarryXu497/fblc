@@ -14,7 +14,7 @@ async function getPublicUser(userId: string): Promise<PublicUser | null> {
     return {
         displayName: userDoc.get("displayName") as string,
         email: userDoc.get("email") as string,
-    }
+    };
 }
 
-export { getPublicUser }
+export { getPublicUser };

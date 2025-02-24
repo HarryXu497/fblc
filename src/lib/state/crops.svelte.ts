@@ -7,12 +7,12 @@ async function getCrops(): Promise<Crop[]> {
 
     const cropDocs = await getDocs(cropCollectionRef);
 
-    return cropDocs.docs.map(c => ({ 
+    return cropDocs.docs.map((c) => ({
         id: c.id,
         name: c.get("name"),
         density: c.get("density") as number,
         color: c.get("color"),
-    }))
+    }));
 }
 
 function createCropState() {
@@ -22,7 +22,9 @@ function createCropState() {
             return;
         }
 
-        const pairs = cropState.map(c => [c.name, c.color] as [string, string]);
+        const pairs = cropState.map(
+            (c) => [c.name, c.color] as [string, string],
+        );
 
         return new Map(pairs);
     });
@@ -31,13 +33,12 @@ function createCropState() {
             return;
         }
 
-        const pairs = cropState.map(c => [c.name, c] as [string, Crop]);
+        const pairs = cropState.map((c) => [c.name, c] as [string, Crop]);
 
         return new Map(pairs);
-    })
+    });
 
-    getCrops()
-        .then(c => cropState = c);
+    getCrops().then((c) => (cropState = c));
 
     return {
         get value() {
@@ -48,8 +49,8 @@ function createCropState() {
         },
         fromName(name: string) {
             return cropMap?.get(name) || null;
-        }
-    }
+        },
+    };
 }
 
 const crops = createCropState();

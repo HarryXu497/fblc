@@ -11,13 +11,18 @@
     let { garden }: Props = $props();
 </script>
 
-<a href="{base}/gardens/{garden.id}" class="transition rounded overflow-hidden hover:cursor-pointer shadow-lg hover:shadow-xl hover:-translate-y-1">
+<a
+    href="{base}/gardens/{garden.id}"
+    class="overflow-hidden rounded shadow-lg transition hover:-translate-y-1 hover:cursor-pointer hover:shadow-xl"
+>
     <Window>
         {#snippet top()}
             <p class="text-white">{garden.name.toLocaleLowerCase()}</p>
         {/snippet}
-        <div class="w-full aspect-square flex flex-row items-center justify-center">
-            <GardenGridPreview {garden} px={20}/>
+        <div
+            class="flex aspect-square w-full flex-row items-center justify-center"
+        >
+            <GardenGridPreview {garden} px={20} />
         </div>
     </Window>
 </a>

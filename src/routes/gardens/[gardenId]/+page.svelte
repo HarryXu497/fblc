@@ -1,6 +1,6 @@
 <script lang="ts">
     import GardenDisplay from "$lib/components/Garden/GardenDisplay.svelte";
-    import type { PageProps } from './$types';
+    import type { PageProps } from "./$types";
     import type { Garden } from "$lib/models/Garden.model";
     import { getGarden } from "$lib/utils/garden.svelte";
     import { collection, deleteDoc, doc, setDoc } from "firebase/firestore";
@@ -16,9 +16,9 @@
 
     $effect(() => {
         getGarden(data.gardenId)
-            .then(g => garden = g)
-            .catch(e => goto("/gardens"))
-    })
+            .then((g) => (garden = g))
+            .catch((e) => goto("/gardens"));
+    });
 
     async function onTileUpdate(x: number, y: number, crop: Crop | null) {
         const userId = auth.value?.uid;
@@ -33,12 +33,19 @@
 
         garden.tiles[y][x] = { crop };
 
-        const tilesCollectionRef = collection(firestore, "gardens", userId, "gardens", garden.id, "tiles")
+        const tilesCollectionRef = collection(
+            firestore,
+            "gardens",
+            userId,
+            "gardens",
+            garden.id,
+            "tiles",
+        );
 
         const tileDocRef = doc(tilesCollectionRef, `${x},${y}`);
 
         if (crop !== null) {
-            await setDoc(tileDocRef, { ...crop })
+            await setDoc(tileDocRef, { ...crop });
         } else {
             await deleteDoc(tileDocRef);
         }
@@ -46,13 +53,17 @@
 </script>
 
 <Metadata
-    title="{garden ? garden.name.toLocaleLowerCase() : 'garden'} | farmer's market"
+    title="{garden
+        ? garden.name.toLocaleLowerCase()
+        : 'garden'} | farmer's market"
 />
 
 {#if garden}
-    <GardenDisplay {garden} {onTileUpdate}/>
+    <GardenDisplay {garden} {onTileUpdate} />
 {:else}
-    <main class="w-full h-[calc(100%_-_6rem)] flex flex-row items-center justify-center">
+    <main
+        class="flex h-[calc(100%_-_6rem)] w-full flex-row items-center justify-center"
+    >
         <p class="text-4xl">loading garden...</p>
     </main>
 {/if}

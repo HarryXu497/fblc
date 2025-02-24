@@ -25,7 +25,7 @@ async function getCropListing(listingId: string): Promise<CropListing | null> {
         quantity: listingDoc.get("quantity") as number,
         uid: listingDoc.get("uid") as string,
         imageURLs: listingDoc.get("imageURLs") as string[],
-    }
+    };
 }
 
 async function getCropListings(): Promise<CropListing[] | null> {
@@ -39,7 +39,7 @@ async function getCropListings(): Promise<CropListing[] | null> {
 
     const listingDocs = await getDocs(cropListingCollectionRef);
 
-    return listingDocs.docs.map(listingDoc => ({
+    return listingDocs.docs.map((listingDoc) => ({
         id: listingDoc.id,
         geohash: listingDoc.get("geohash") as string,
         lat: listingDoc.get("lat") as number,
@@ -50,7 +50,7 @@ async function getCropListings(): Promise<CropListing[] | null> {
         quantity: listingDoc.get("quantity") as number,
         uid: listingDoc.get("uid") as string,
         imageURLs: listingDoc.get("imageURLs") as string[],
-    }))
+    }));
 }
 
-export { getCropListing, getCropListings }
+export { getCropListing, getCropListings };

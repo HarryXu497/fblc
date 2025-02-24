@@ -5,4 +5,4 @@ interface Crop {
     color: string;
 }
 
-export type { Crop }
+export type { Crop };

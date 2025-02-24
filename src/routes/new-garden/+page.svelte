@@ -133,7 +133,7 @@
             width,
             height,
             scale: 1,
-            name: gardenName.trim()
+            name: gardenName.trim(),
         });
 
         await goto(`/gardens/${res.id}`);
@@ -143,27 +143,25 @@
         dragComplete;
 
         gardenName = "";
-    })
+    });
 </script>
 
-<Metadata
-    title="add garden | farmer's market"
-/>
+<Metadata title="add garden | farmer's market" />
 
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 <main
-    class="w-full flex flex-col justify-center items-center select-none gap-4"
+    class="flex w-full flex-col items-center justify-center gap-4 select-none"
     onmousedown={onMouseDown}
     onmouseup={onMouseUp}
     onmousemove={onMouseMove}
 >
     {#if dragComplete && drawPoint1 && drawPoint2}
         <input
-            class="text-4xl/6 font-bold p-2 text-center focus:outline-accent"
+            class="p-2 text-center text-4xl/6 font-bold focus:outline-accent"
             type="text"
             placeholder="your garden"
             style:outline={invalidName ? "2px solid red" : ""}
-            oninput={() => invalidName = false}
+            oninput={() => (invalidName = false)}
             onmousedown={(e) => e.stopPropagation()}
             onmouseup={(e) => e.stopPropagation()}
             onmousemove={(e) => e.stopPropagation()}
@@ -172,7 +170,7 @@
     {/if}
     {#if drawPoint1 && drawPoint2}
         <div
-            class="grid container transition absolute gap-1 rounded-xl overflow-hidden w-fit"
+            class="absolute container grid w-fit gap-1 overflow-hidden rounded-xl transition"
             class:centered={dragComplete}
             style:left="{drawPoint1.x}px"
             style:top="{drawPoint1.y}px"
@@ -184,7 +182,7 @@
                     <div
                         class="
                 tile
-                w-full h-full flex flex-row justify-center items-center
+                flex h-full w-full flex-row items-center justify-center
             "
                         style:width="{TILE_SIZE}px"
                         style:height="{TILE_SIZE}px"
@@ -207,7 +205,7 @@
             <FallbackIcon
                 icon="ri:arrow-right-long-line"
                 preload={["ri:arrow-right-long-line"]}
-                class="inline-block mr-1"
+                class="mr-1 inline-block"
             />
         </button>
     {/if}
