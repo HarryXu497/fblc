@@ -57,7 +57,13 @@
                     })
                     .filter((message) => message !== null);
             },
-            async (error) => await goto("/chats"),
+            async (error) => {
+                if (auth.value) {
+                    await goto("/chats");
+                } else {
+                    await goto("/log-in");
+                }
+            },
         );
     });
 

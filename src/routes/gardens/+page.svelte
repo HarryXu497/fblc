@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { goto } from "$app/navigation";
     import { base } from "$app/paths";
     import FallbackIcon from "$lib/components/FallbackIcon.svelte";
     import GardenCard from "$lib/components/GardenCard.svelte";
@@ -9,7 +10,15 @@
     let gardens = $state<Garden[] | null>(null);
 
     $effect(() => {
-        getGardens().then((g) => (gardens = g));
+        getGardens()
+            .then((g) => {
+                if (g === null) {
+                    goto("/log-in");
+                } else {
+                    gardens = g;
+                }
+            })
+            .catch((e) => goto("/log-in"));
     });
 </script>
 
