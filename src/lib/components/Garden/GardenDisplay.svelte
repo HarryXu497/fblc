@@ -4,13 +4,15 @@
     import type { Garden } from "$lib/models/Garden.model";
     import Window from "../Window.svelte";
     import GardenSidebar from "$lib/components/Garden/GardenSidebar.svelte";
-
+    
     interface Props {
         garden: Garden;
         onTileUpdate: (x: number, y: number, crop: Crop | null) => void;
+        onDeleteGarden: () => void;
+        onEditGarden: () => void;
     }
 
-    let { garden, onTileUpdate }: Props = $props();
+    let { garden, onTileUpdate, onDeleteGarden, onEditGarden }: Props = $props();
 
     let width = $state<number | null>(null);
     let height = $state<number | null>(null);
@@ -48,7 +50,20 @@
             {#snippet top()}
                 <div class="flex flex-row w-full justify-between items-center">
                     <p class="text-white text-xl">{garden.name.toLocaleLowerCase()}</p>
-                    <button class="text-white rounded-sm bg-red-600 px-3 hover:cursor-pointer hover:bg-red-700">delete</button>
+                    <div class="flex flex-row gap-1">
+                        <a
+                            class="text-white rounded-sm bg-blue-700 text-xl px-3 hover:cursor-pointer hover:bg-blue-800"
+                            href="/gardens/{garden.id}/edit"
+                        >
+                            edit
+                        </a>
+                        <button
+                            class="text-white rounded-sm bg-red-700 text-xl px-3 hover:cursor-pointer hover:bg-red-800"
+                            onclick={onDeleteGarden}
+                        >
+                            delete
+                        </button>
+                    </div>
                 </div>
             {/snippet}
             <div

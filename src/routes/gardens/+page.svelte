@@ -59,7 +59,7 @@
         flex flex-row items-center gap-2 rounded-xl bg-accent px-3 py-2 text-xl
         text-white drop-shadow-xl transition-transform hover:-translate-y-1
     "
-    href="{base}/new-garden"
+    href="{base}/gardens/new"
 >
     <FallbackIcon class="font-bold text-white" icon="ri:add-line" />
     new garden

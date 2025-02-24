@@ -50,6 +50,24 @@
             await deleteDoc(tileDocRef);
         }
     }
+
+    async function onDeleteGarden() {
+        if (!garden || !auth.value) {
+            return;
+        }
+
+        const gardenDocRef = doc(firestore, "gardens", auth.value.uid, "gardens", garden.id);
+
+        await deleteDoc(gardenDocRef);
+
+        await goto("/gardens")
+    }
+
+    async function onEditGarden() {
+        if (!garden || !auth.value) {
+            return;
+        }
+    }
 </script>
 
 <Metadata
@@ -59,7 +77,7 @@
 />
 
 {#if garden}
-    <GardenDisplay {garden} {onTileUpdate} />
+    <GardenDisplay {garden} {onTileUpdate} {onDeleteGarden} {onEditGarden}/>
 {:else}
     <main
         class="flex h-[calc(100%_-_6rem)] w-full flex-row items-center justify-center"

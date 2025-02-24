@@ -15,13 +15,13 @@
 
     const AUTHENTICATED_ROUTES = [
         "/gardens",
-        "/new-garden",
+        "/garden/new",
         "/sell",
         "/buy",
         "/chats",
     ];
 
-    const STARTS_WITH_ROUTES = ["/gardens", "/buy", "/chats"];
+    const STARTS_WITH_ROUTES = ["/gardens", "/buy", "/chats",];
 
     onMount(() => {
         //TODO: effect with page url so it alwasy runs when url changes
