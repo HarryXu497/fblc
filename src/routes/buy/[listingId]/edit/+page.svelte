@@ -7,15 +7,17 @@
     import auth from "$lib/state/auth.svelte";
     import crops from "$lib/state/crops.svelte";
     import getUserLocation from "$lib/utils/userLocation.svelte";
-    import { doc, setDoc } from "firebase/firestore";
-    import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+    import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+    import { deleteObject, getDownloadURL, list, ref, uploadBytes } from "firebase/storage";
     import { geohashForLocation } from "geofire-common";
     import { v4 as uuidv4 } from "uuid";
     import type { PageProps } from "../$types";
     import { getCropListing } from "$lib/utils/cropListing.svelte";
+    import SellForm from "$lib/components/SellForm.svelte";
 
     let { data }: PageProps = $props();
 
+    let listing = $state<CropListing | null>(null);
     let error = $state<string | null>(null);
     let crop = $state<Crop | null>(null);
     let description = $state<string>("");
@@ -25,17 +27,18 @@
 
     $effect(() => {
         getCropListing(data.listingId)
-            .then(listing => {
-                if (auth.value && listing !== null) {
-                    if (listing.uid !== auth.value.uid) {
-                        throw Error(`Crop listing with id '${listing.id}'' does not belong to the user.`);
+            .then(l => {
+                if (auth.value && l !== null) {
+                    if (l.uid !== auth.value.uid) {
+                        throw Error(`Crop listing with id '${l.id}'' does not belong to the user.`);
                     }
 
-                    crop = crops.fromName(listing.name);
-                    description = listing.description;
-                    price = listing.price;
-                    quantity = listing.quantity;
-                    images = null
+                    crop = crops.fromName(l.name);
+                    description = l.description;
+                    price = l.price;
+                    quantity = l.quantity;
+
+                    listing = l
                 }
 
             })
@@ -45,7 +48,14 @@
     async function onSubmit(e: SubmitEvent) {
         e.preventDefault();
 
-        const location = await getUserLocation();
+        let location: GeolocationPosition | null;
+
+        try {
+            location = await getUserLocation();
+        } catch (e) {
+            error = "User cannot be located.";
+            return;
+        }
 
         if (
             !location ||
@@ -84,18 +94,45 @@
         );
 
         const seedDocRef = doc(firestore, "seeds", data.listingId);
-        await setDoc(seedDocRef, {
-            geohash: hash,
-            lat: lat,
-            lng: lng,
-            name: crop.name,
-            description: description,
-            price: price,
-            quantity: quantity,
-            uid: auth.value.uid,
-            imageIDs: imageIDs,
-            imageURLs: downloadURLs.filter((a) => a !== null),
-        } as CropListing);
+
+        if (images.length === 0) {
+            await updateDoc(seedDocRef, {
+                geohash: hash,
+                lat: lat,
+                lng: lng,
+                name: crop.name,
+                description: description,
+                price: price,
+                quantity: quantity,
+                uid: auth.value.uid,
+            });
+        } else {
+            const listingDoc = await getDoc(seedDocRef);
+
+            const oldImageIDs = listingDoc.get("imageIDs") as string[];
+
+            await Promise.all(oldImageIDs.map(async id => {
+                if (!auth.value) {
+                    return null;
+                }
+
+                const oldImageRef = ref(storage, `${auth.value.uid}/${id}`);
+                await deleteObject(oldImageRef);
+            }))
+
+            await setDoc(seedDocRef, {
+                geohash: hash,
+                lat: lat,
+                lng: lng,
+                name: crop.name,
+                description: description,
+                price: price,
+                quantity: quantity,
+                uid: auth.value.uid,
+                imageIDs: imageIDs,
+                imageURLs: downloadURLs.filter((a) => a !== null),
+            });
+        }
 
         await goto(`/buy/${data.listingId}`);
     }
@@ -103,141 +140,21 @@
 
 <Metadata title="edit crops | farmer's market" />
 
-<main class="size flex w-screen flex-col items-center justify-center">
-    <div class="w-fit">
-        <h1 class="mb-4 text-center text-4xl">
-            sell your <span class="text-accent">crops</span>
-        </h1>
-        <form class="auth-form w-full items-center" onsubmit={onSubmit}>
-            <div class="form-control">
-                <label for="crop">crop</label>
-                <select required name="crop" id="crop" bind:value={crop}>
-                    <option value={null}>none</option>
-                    {#if crops.value !== null}
-                        {#each crops.value as crop}
-                            <option value={crop}>{crop.name}</option>
-                        {/each}
-                    {/if}
-                </select>
-            </div>
-            <div class="form-control">
-                <label for="description">description</label>
-                <textarea
-                    required
-                    class="h-48"
-                    name="description"
-                    id="description"
-                    placeholder="description"
-                    bind:value={description}
-                ></textarea>
-            </div>
-            <div class="name-control flex w-full justify-between gap-[10%]">
-                <div class="form-control w-1/2">
-                    <label for="price" class="font-bold">price</label>
-                    <input
-                        bind:value={price}
-                        required
-                        min="0"
-                        step="0.01"
-                        type="number"
-                        name="price"
-                        id="price"
-                        placeholder="price"
-                    />
-                </div>
-                <div class="form-control w-1/2">
-                    <label for="quantity">quantity</label>
-                    <input
-                        bind:value={quantity}
-                        required
-                        min="0"
-                        step="1"
-                        type="number"
-                        name="quantity"
-                        id="quantity"
-                        placeholder="quantity"
-                    />
-                </div>
-            </div>
-            <div class="form-control">
-                <label for="images">images</label>
-                <label
-                    class="image-selector block w-full text-center text-gray-500"
-                    for="images">select your images</label
-                >
-                <input
-                    required
-                    multiple
-                    accept="image/*"
-                    class="hidden"
-                    type="file"
-                    name="images"
-                    id="images"
-                    bind:files={images}
-                />
-            </div>
-            {#if images !== null}
-                <div class="flex flex-col overflow-ellipsis">
-                    {#each images as image}
-                        <span>{image.name}</span>
-                    {/each}
-                </div>
-            {/if}
-            {#if error}
-                <p class="text-[#b64040]">{error}</p>
-            {/if}
-            <button
-                class="mt-2 w-full rounded-lg bg-accent py-2 text-white transition-transform hover:-translate-y-1 hover:cursor-pointer"
-                type="submit"
-            >
-                Submit
-            </button>
-        </form>
-    </div>
-</main>
-
-<style lang="postcss">
-    @reference "tailwindcss";
-
-    .auth-form {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-    }
-
-    label:not(.image-selector) {
-        @apply mb-[2px] block w-full font-bold text-black;
-    }
-
-    .form-control > input,
-    .form-control > select,
-    .form-control > textarea,
-    .form-control > .image-selector {
-        @apply w-full rounded-md p-2 outline-none;
-        background-color: var(--color-light-accent);
-
-        &::placeholder {
-            @apply text-gray-500;
-        }
-    }
-
-    .image-selector {
-        @apply text-gray-500;
-    }
-
-    .form-control > input:focus,
-    .form-control > select:focus,
-    .form-control > textarea:focus,
-    .form-control > .image-selector {
-        @apply shadow-inner;
-    }
-
-    .form-control,
-    .name-control {
-        width: min(60vw, 30rem);
-    }
-
-    .size {
-        height: calc(100vh - 5rem);
-    }
-</style>
+<SellForm
+    {onSubmit}
+    bind:error={error}
+    bind:crop={crop}
+    bind:description={description}
+    bind:price={price}
+    bind:quantity={quantity}
+    bind:images={images}
+    requireImages={false}
+>
+    {#snippet header()}
+        {#if listing}
+            editing <span class="text-accent">{listing.name}</span>
+        {:else}
+            editing <span class="text-accent">...</span>
+        {/if}
+    {/snippet}
+</SellForm>
