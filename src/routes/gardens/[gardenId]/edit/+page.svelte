@@ -4,7 +4,7 @@
     import Metadata from "$lib/components/Metadata.svelte";
     import { firestore } from "$lib/firebase";
     import auth from "$lib/state/auth.svelte";
-    import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
+    import { doc, updateDoc } from "firebase/firestore";
     import type { PageProps } from "../$types";
 
     let { data }: PageProps = $props();

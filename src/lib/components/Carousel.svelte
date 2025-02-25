@@ -14,9 +14,9 @@
     // TODO: switch to tailwind
 </script>
 
-<div class="gallery rounded-sm shadow-xl">
+<div class="gallery flex flex-row justify-center align-center rounded-sm shadow-xl">
     <swiper-container
-        class="carousel rounded-sm border-8 border-black"
+        class="flex flex-row relative w-full bg-white rounded-sm border-8 border-black"
         slides-per-view={1}
         space-between={4}
         speed={300}
@@ -44,23 +44,10 @@
     </swiper-container>
 </div>
 
-<style lang="scss">
+<style>
     .gallery {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-
         --swiper-navigation-sides-offset: 1.5rem;
         --swiper-navigation-color: white;
-    }
-
-    .carousel {
-        display: flex;
-        flex-direction: row;
-        position: relative;
-        width: 100%;
-        background-color: var(--color-light);
     }
 
     .carousel__image,

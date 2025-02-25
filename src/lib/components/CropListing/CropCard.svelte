@@ -30,7 +30,7 @@
             </p>
         {/snippet}
         <div
-            class="relative mr-4 ml-2.5 flex aspect-square flex-row items-center justify-center"
+            class="relative mr-4 ml-2.5 flex aspect-square flex-row items-center justify-center bg-white"
         >
             <img
                 src={listing.imageURLs[0]}

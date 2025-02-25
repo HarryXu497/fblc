@@ -181,7 +181,6 @@
     };
 
     // TODO: add crops-specific tips
-    // TODO: edit and delete gardens, listings
 </script>
 
 <svelte:head>

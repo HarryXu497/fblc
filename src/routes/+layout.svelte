@@ -6,12 +6,15 @@
     import { goto } from "$app/navigation";
     import "../app.css";
     import NavBar from "$lib/components/NavBar.svelte";
+    import { page } from "$app/state";
 
     interface Props {
         children?: Snippet;
     }
 
     let { children }: Props = $props();
+
+    let loaded = $state(false);
 
     const AUTHENTICATED_ROUTES = [
         "/gardens",
@@ -23,30 +26,30 @@
 
     const STARTS_WITH_ROUTES = ["/gardens", "/buy", "/chats",];
 
-    onMount(() => {
-        //TODO: effect with page url so it alwasy runs when url changes
+    $effect(() => {
+        const pathname = page.url.pathname.split("?")[0];
+
+        console.log(auth.value);
+
+        if (!auth.value && loaded) {
+            if (
+                browser &&
+                (
+                    AUTHENTICATED_ROUTES.some((route) => pathname === route) ||
+                    STARTS_WITH_ROUTES.some((route) => pathname.startsWith(route))
+                )
+            ) {
+                console.log("root redirect")
+                goto("/log-in");
+            }
+        }
+    })
+
+    $effect(() => {
         const unsubscribe = firebaseAuth.onAuthStateChanged(async (user) => {
+            console.log("loade")
             auth.value = user;
-
-            if (
-                browser &&
-                AUTHENTICATED_ROUTES.some(
-                    (route) => window.location.pathname.split("?")[0] === route,
-                ) &&
-                !auth.value
-            ) {
-                await goto("/log-in");
-            }
-
-            if (
-                browser &&
-                STARTS_WITH_ROUTES.some((route) =>
-                    window.location.pathname.split("?")[0].startsWith(route),
-                ) &&
-                !auth.value
-            ) {
-                await goto("/log-in");
-            }
+            loaded = true;
         });
 
         return unsubscribe;

@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { goto } from "$app/navigation";
     import { base } from "$app/paths";
     import FallbackIcon from "$lib/components/FallbackIcon.svelte";
     import GardenCard from "$lib/components/GardenCard.svelte";
@@ -11,15 +10,11 @@
 
     $effect(() => {
         getGardens()
-            .then((g) => {
-                if (g === null) {
-                    goto("/log-in");
-                } else {
-                    gardens = g;
-                }
-            })
-            .catch((e) => goto("/log-in"));
+            .then((g) => gardens = g)
+            .catch(console.log);
     });
+
+    // TODO: garden edit prefill name
 </script>
 
 <Metadata title="your gardens | farmer's market" />
