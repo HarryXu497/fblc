@@ -40,7 +40,7 @@
         </div>
         {#snippet bottom()}
             <p class="text-white">
-                {listing.quantity} for ${listing.price} each
+                {listing.quantity} for ${listing.price}
             </p>
         {/snippet}
     </Window>

@@ -15,6 +15,7 @@
     });
 
     // TODO: garden edit prefill name
+    // TODO: new garden
 </script>
 
 <Metadata title="your gardens | farmer's market" />

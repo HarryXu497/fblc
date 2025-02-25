@@ -197,7 +197,7 @@
         <div
             class="col-start-2 col-end-6 row-start-5 row-end-7 flex flex-col gap-6 text-[24px] leading-8"
         >
-            <p>only 50% of canadians make a effort to buy local</p>
+            <p>only 50% of canadians make an effort to buy local</p>
             <a
                 class="proceed flex flex-row items-center gap-4 text-2xl text-accent"
                 href="/gardens"
@@ -235,7 +235,7 @@
         >
             <p>
                 plan your gardens and connect with our large community of
-                <span class="text-accent">gardeners and farmers</span>.
+                <span class="text-accent">gardeners and farmers</span>
             </p>
         </div>
         <div class="col-start-2 col-end-7 row-start-1 row-end-8 pr-16 pb-14">
