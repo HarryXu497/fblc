@@ -7,8 +7,8 @@
     import auth from "$lib/state/auth.svelte";
     import crops from "$lib/state/crops.svelte";
     import getUserLocation from "$lib/utils/userLocation.svelte";
-    import { addDoc, collection } from "firebase/firestore";
-    import { getDownloadURL, list, ref, uploadBytes } from "firebase/storage";
+    import { doc, setDoc } from "firebase/firestore";
+    import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
     import { geohashForLocation } from "geofire-common";
     import { v4 as uuidv4 } from "uuid";
     import type { PageProps } from "../$types";
@@ -26,14 +26,20 @@
     $effect(() => {
         getCropListing(data.listingId)
             .then(listing => {
-                if (listing !== null) {
+                if (auth.value && listing !== null) {
+                    if (listing.uid !== auth.value.uid) {
+                        throw Error(`Crop listing with id '${listing.id}'' does not belong to the user.`);
+                    }
+
                     crop = crops.fromName(listing.name);
                     description = listing.description;
                     price = listing.price;
                     quantity = listing.quantity;
                     images = null
                 }
+
             })
+            .catch(e => goto("/buy"))
     })
 
     async function onSubmit(e: SubmitEvent) {
@@ -63,20 +69,22 @@
             imageFiles.push(image);
         }
 
+        const imageIDs = imageFiles.map(image => uuidv4());
+
         const downloadURLs = await Promise.all(
-            imageFiles.map(async (img) => {
+            imageFiles.map(async (img, i) => {
                 if (!auth.value) {
                     return null;
                 }
 
-                const fileRef = ref(storage, `${auth.value.uid}/${uuidv4()}`);
+                const fileRef = ref(storage, `${auth.value.uid}/${imageIDs[i]}`);
                 const uploadTask = await uploadBytes(fileRef, img);
                 return getDownloadURL(uploadTask.ref);
             }),
         );
 
-        const seedsCollectionRef = collection(firestore, "seeds");
-        await addDoc(seedsCollectionRef, {
+        const seedDocRef = doc(firestore, "seeds", data.listingId);
+        await setDoc(seedDocRef, {
             geohash: hash,
             lat: lat,
             lng: lng,
@@ -85,8 +93,10 @@
             price: price,
             quantity: quantity,
             uid: auth.value.uid,
+            imageIDs: imageIDs,
             imageURLs: downloadURLs.filter((a) => a !== null),
         } as CropListing);
+
         await goto(`/buy/${data.listingId}`);
     }
 </script>
@@ -167,7 +177,7 @@
                 />
             </div>
             {#if images !== null}
-                <div class="flex flex-col">
+                <div class="flex flex-col overflow-ellipsis">
                     {#each images as image}
                         <span>{image.name}</span>
                     {/each}

@@ -46,15 +46,15 @@
             imageFiles.push(image);
         }
 
-        imageFiles.map((f) => f.name).forEach(console.log);
+        const imageIDs = imageFiles.map(image => uuidv4());
 
         const downloadURLs = await Promise.all(
-            imageFiles.map(async (img) => {
+            imageFiles.map(async (img, i) => {
                 if (!auth.value) {
                     return null;
                 }
 
-                const fileRef = ref(storage, `${auth.value.uid}/${uuidv4()}`);
+                const fileRef = ref(storage, `${auth.value.uid}/${imageIDs[i]}`);
                 const uploadTask = await uploadBytes(fileRef, img);
                 return getDownloadURL(uploadTask.ref);
             }),
@@ -70,6 +70,7 @@
             price: price,
             quantity: quantity,
             uid: auth.value.uid,
+            imageIDs: imageIDs,
             imageURLs: downloadURLs.filter((a) => a !== null),
         } as CropListing);
         await goto("/buy");

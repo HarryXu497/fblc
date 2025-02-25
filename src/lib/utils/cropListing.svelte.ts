@@ -14,6 +14,10 @@ async function getCropListing(listingId: string): Promise<CropListing | null> {
 
     const listingDoc = await getDoc(cropListingRef);
 
+    if (!listingDoc.exists()) {
+        throw Error(`Crop listing with id ${listingId} does not exist.`);
+    }
+
     return {
         id: listingDoc.id,
         geohash: listingDoc.get("geohash") as string,
@@ -24,6 +28,7 @@ async function getCropListing(listingId: string): Promise<CropListing | null> {
         price: listingDoc.get("price") as number,
         quantity: listingDoc.get("quantity") as number,
         uid: listingDoc.get("uid") as string,
+        imageIDs: listingDoc.get("imageIDs") as string[],
         imageURLs: listingDoc.get("imageURLs") as string[],
     };
 }
@@ -49,6 +54,7 @@ async function getCropListings(): Promise<CropListing[] | null> {
         price: listingDoc.get("price") as number,
         quantity: listingDoc.get("quantity") as number,
         uid: listingDoc.get("uid") as string,
+        imageIDs: listingDoc.get("imageIDs") as string[],
         imageURLs: listingDoc.get("imageURLs") as string[],
     }));
 }

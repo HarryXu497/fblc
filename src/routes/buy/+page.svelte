@@ -116,6 +116,7 @@
                             price: doc.get("price") as number,
                             quantity: doc.get("quantity") as number,
                             uid: auth.value!.uid as string,
+                            imageIDs: doc.get("imageIDs") as string[],
                             imageURLs: doc.get("imageURLs") as string[],
                         });
                     }

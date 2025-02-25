@@ -8,6 +8,7 @@ interface CropListing {
     price: number;
     quantity: number;
     uid: string;
+    imageIDs: string[]
     imageURLs: string[];
 }
 
