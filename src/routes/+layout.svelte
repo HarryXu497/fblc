@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { onMount, type Snippet } from "svelte";
+    import type { Snippet } from "svelte";
     import { firebaseAuth } from "$lib/firebase";
     import auth from "$lib/state/auth.svelte";
     import { browser } from "$app/environment";
@@ -8,6 +8,9 @@
     import NavBar from "$lib/components/NavBar.svelte";
     import { page } from "$app/state";
 
+    /**
+     * @param children The content passed within the layout
+     */
     interface Props {
         children?: Snippet;
     }
@@ -26,6 +29,7 @@
 
     const STARTS_WITH_ROUTES = ["/gardens", "/buy", "/chats",];
 
+    // Redirects users if they are not logged in
     $effect(() => {
         const pathname = page.url.pathname.split("?")[0];
 
@@ -42,6 +46,8 @@
         }
     })
 
+    // Attaches a listener to the firebase auth state change and
+    // synchronizes the 'auth' state to it 
     $effect(() => {
         const unsubscribe = firebaseAuth.onAuthStateChanged(async (user) => {
             auth.value = user;

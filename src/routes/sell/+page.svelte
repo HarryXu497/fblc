@@ -17,7 +17,7 @@
 
     /**
      * Callback function executed when the form is submitted
-     * @param param0 values from the form inputs
+     * @param sellValues values from the form inputs
      */
     async function onSubmit({ crop, description, price, quantity, images }: SellValues) {
         const location = await getUserLocation();
@@ -31,13 +31,15 @@
             !auth.value ||
             !images?.length
         ) {
-            throw Error("Invalid inputs")
+            throw Error("Invalid inputs");
         }
 
+        // Calculate geohash of user location
         const lat = location.coords.latitude;
         const lng = location.coords.longitude;
         const hash = geohashForLocation([lat, lng]);
 
+        // Generate a unique ID for each image
         const imageFiles: File[] = [];
 
         for (const image of images) {
@@ -46,6 +48,7 @@
 
         const imageIDs = imageFiles.map(image => uuidv4());
 
+        // Upload the files
         const downloadURLs = await Promise.all(
             imageFiles.map(async (img, i) => {
                 if (!auth.value) {

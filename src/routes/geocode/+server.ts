@@ -6,7 +6,7 @@ import reverseGeocode from "$lib/utils/reverseGeocode";
 /**
  * Handles a GET request to /geocode. Uses the Google Maps API to 
  * locate an address from its latitude and longitude
- * @param param0 the request data
+ * @param request the request data
  * @returns a response of the address
  */
 export const GET: RequestHandler = async ({ url }) => {

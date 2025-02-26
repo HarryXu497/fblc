@@ -1,9 +1,14 @@
 <script lang="ts">
+    /**
+     * The home page
+    */
+
     import FallbackIcon from "$lib/components/FallbackIcon.svelte";
     import GardenGridPreview from "$lib/components/Garden/GardenGridPreview.svelte";
     import Window from "$lib/components/Window.svelte";
     import type { Garden } from "$lib/models/Garden.model";
 
+    // The gardens used in the display
     const garden1: Garden = {
         id: "MStF9SbHCsFR2557mE3j",
         name: "hello world",
@@ -85,7 +90,7 @@
             ],
         ],
     };
-
+    
     const garden2: Garden = {
         id: "MStF9SbHCsFR2557mE3j",
         name: "hello world",

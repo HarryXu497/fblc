@@ -54,7 +54,7 @@
 
     /**
      * Callback function executed when the form is submitted
-     * @param param0 values from the form inputs
+     * @param sellValues values from the form inputs
      */
     async function onSubmit({ crop, description, price, quantity, images }: SellValues) {
         let location: GeolocationPosition | null;
