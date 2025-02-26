@@ -29,8 +29,6 @@
     $effect(() => {
         const pathname = page.url.pathname.split("?")[0];
 
-        console.log(auth.value);
-
         if (!auth.value && loaded) {
             if (
                 browser &&
@@ -39,7 +37,6 @@
                     STARTS_WITH_ROUTES.some((route) => pathname.startsWith(route))
                 )
             ) {
-                console.log("root redirect")
                 goto("/log-in");
             }
         }
@@ -47,7 +44,6 @@
 
     $effect(() => {
         const unsubscribe = firebaseAuth.onAuthStateChanged(async (user) => {
-            console.log("loade")
             auth.value = user;
             loaded = true;
         });

@@ -34,6 +34,7 @@
     */
     interface Props {
         onSubmit: (values: SellValues) => Promise<void>;
+        initialValues?: SellValues;
         requireImages?: boolean;
         header?: Snippet;
         buttonContent?: Snippet;
@@ -41,6 +42,7 @@
 
     let {
         onSubmit,
+        initialValues,
         requireImages = true,
         header,
         buttonContent,
@@ -53,6 +55,16 @@
     let price = $state<number | null>(null);
     let quantity = $state<number | null>(null);
     let images = $state<FileList | null>(null);
+
+    $effect(() => {
+        crop ||= (initialValues?.crop || null);
+        description ||= initialValues?.description || "";
+        price ||= (initialValues?.price || null);
+        quantity ||= (initialValues?.quantity || null);
+        images ||= (initialValues?.images || null);
+    })
+
+    // TODO: submitted loading spinner
 
     /**
      * Executes the 'onSubmit' callback with UI error handling

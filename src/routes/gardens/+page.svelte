@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { goto } from "$app/navigation";
     import { base } from "$app/paths";
     import FallbackIcon from "$lib/components/FallbackIcon.svelte";
     import GardenCard from "$lib/components/GardenCard.svelte";
@@ -11,7 +12,7 @@
     $effect(() => {
         getGardens()
             .then((g) => gardens = g)
-            .catch(console.log);
+            .catch(e => goto("/log-in"));
     });
 
     // TODO: garden edit prefill name

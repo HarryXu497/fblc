@@ -1,4 +1,8 @@
 <script lang="ts">
+    /**
+     * A page that displays information about a specific listing
+    */
+
     import Carousel from "$lib/components/Carousel.svelte";
     import type { CropListing } from "$lib/models/CropListing.model";
     import type { PublicUser } from "$lib/models/PublicUser.model";
@@ -30,8 +34,6 @@
     let listing = $state<CropListing | null>(null);
     let location = $state<GeocodeResult | null>(null);
 
-    $inspect(data);
-
     $effect(() => {
         if (!listing) {
             return;
@@ -51,7 +53,9 @@
     });
 
     $effect(() => {
-        getCropListing(data.listingId).then((l) => (listing = l));
+        getCropListing(data.listingId)
+            .then((l) => (listing = l))
+            .catch(e => goto("/buy"));
     });
 
     const intl = new Intl.NumberFormat("en-CA", {
@@ -169,6 +173,12 @@
             </div>
         </div>
         <Carousel imageURLs={listing.imageURLs} />
+        <div class="mt-2">
+            <h2 class="text-accent text-3xl">more information</h2>
+            <p class="text text-lg">
+                {listing.description}
+            </p>
+        </div>
     </main>
 {:else}
     <main
