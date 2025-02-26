@@ -1,10 +1,19 @@
 <script lang="ts">
+    /** 
+     * A component that displays a garden with a side palette and summary
+    */
+
     import GardenGrid from "$lib/components/Garden/GardenGrid.svelte";
     import type { Crop } from "$lib/models/Crop.model";
     import type { Garden } from "$lib/models/Garden.model";
     import Window from "../Window.svelte";
     import GardenSidebar from "$lib/components/Garden/GardenSidebar.svelte";
     
+    /**
+     * @param garden the garden displayed by the component
+     * @param onTileUpdate the callback function executed when a garden tile is updated
+     * @param onDeleteGarden the callback function executed when a garden is deleted
+    */
     interface Props {
         garden: Garden;
         onTileUpdate: (x: number, y: number, crop: Crop | null) => void;
@@ -13,9 +22,11 @@
 
     let { garden, onTileUpdate, onDeleteGarden, }: Props = $props();
 
+    // Dimensions of the window rendering the garden 
     let width = $state<number | null>(null);
     let height = $state<number | null>(null);
 
+    // Calculate the side length of an individual garden tile 
     const PADDING = 128;
     const GRID_GAP = 4;
 
@@ -37,6 +48,7 @@
         return Math.min(widthPx, heightPx);
     });
 
+    // Currently selected crop to plant
     let brush = $state<Crop | null>(null);
 </script>
 

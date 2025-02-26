@@ -1,16 +1,26 @@
 <script lang="ts">
+    /** 
+     * A component that previews a garden, without the interactivity or dimensions of 'GardenDisplay'
+    */
+
     import type { Garden } from "$lib/models/Garden.model";
 
+    /**
+     * @param garden the garden displayed by the component
+     * @param pxTransform a callback function that transform the calculated tile size
+    */
     interface Props {
         garden: Garden;
         pxTransform?: (px: number) => number;
     }
 
-    let { garden, pxTransform }: Props = $props();
+    let { garden, pxTransform, }: Props = $props();
 
+    // Dimensions of the available space
     let width = $state<number | null>(null);
     let height = $state<number | null>(null);
 
+    // Calculate the size of each tile
     const PADDING = 12;
     const GRID_GAP = 4;
 
@@ -36,6 +46,7 @@
         return Math.min(widthPx, heightPx);
     });
 
+    // Calculates the dimensions of the garden grid, including grid gaps
     let gridWidth = $derived.by(() => {
         const widthGaps = garden.width === 0 ? 0 : garden.width - 1;
 

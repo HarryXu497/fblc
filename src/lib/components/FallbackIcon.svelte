@@ -1,4 +1,9 @@
 <script lang="ts">
+    /**
+     * A component that displays an icon with @iconify/svelte,
+     * with additional logic to preload icons to increase site responsiveness
+    */
+
     import Icon, {
         iconExists,
         loadIcon,
@@ -7,22 +12,28 @@
     } from "@iconify/svelte";
     import { onMount, type Snippet } from "svelte";
 
+    /**
+     * @param icon the string indicating the icon
+     * @param preload a list of icons to preload (download ahead-of-time)
+     * @param fallback the Snippet rendered while the icon is loading
+     * @param others an object of all other props passed to the component
+    */
     interface Props {
         icon: string;
-        loaded?: boolean;
         preload?: string[];
         fallback?: Snippet;
-        [key: string]: any;
+        [others: string]: any;
     }
 
     let {
         icon,
-        loaded = false,
         preload = [],
         fallback,
         ...others
     }: Props = $props();
 
+    // Load the icon using @iconify/svelte
+    let loaded = $state<boolean>(false);
     let loadIconTask = $state<Promise<Required<IconifyIcon>> | null>(null);
 
     onMount(() => {

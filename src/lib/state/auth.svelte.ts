@@ -7,8 +7,12 @@ import {
     updateProfile,
     type User,
 } from "firebase/auth";
-import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 
+/**
+ * Creates an auth object with a stateful 'value' property
+ * and helper methods to manage the state
+ */
 function createAuthState() {
     let userState = $state<User | null>(null);
 
@@ -31,9 +35,12 @@ function createAuthState() {
                 password,
             );
 
+            // Set display name in Firebase Auth
             await updateProfile(res.user, {
                 displayName: firstName + " " + lastName,
             });
+
+            // Set corresponding document in Firebase Cloud Firestore
             await setDoc(doc(firestore, "users", res.user.uid), {
                 displayName: firstName + " " + lastName,
                 email: email,

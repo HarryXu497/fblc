@@ -1,9 +1,16 @@
 <script lang="ts">
-    /** The gallery iamge carousel */
+    /**
+     * A component that displays an image carousel
+    */
+   
     import { register } from "swiper/element/bundle";
-
+    // Register WebComponents
     register();
 
+    /**
+     * @param imageURLs a list of image URLs displayed by the carousel
+     * @param initialSlide the index of the first slide displayed by the carouel
+    */
     interface Props {
         imageURLs: string[];
         initialSlide?: number;

@@ -4,6 +4,11 @@ import auth from "$lib/state/auth.svelte";
 import { collection, deleteDoc, doc, getDoc, getDocs } from "firebase/firestore";
 import crops from "$lib/state/crops.svelte";
 
+/**
+ * Gets a garden from its ID
+ * @param listingId the ID of the garden
+ * @returns a corresponding Garden object or null if the user is not authenticated
+ */
 async function getGarden(gardenId: string): Promise<Garden | null> {
     const userId = auth.value?.uid;
 
@@ -24,17 +29,19 @@ async function getGarden(gardenId: string): Promise<Garden | null> {
     const scale = gardenDoc.get("scale") as number;
     const name = gardenDoc.get("name") as string;
 
+    const tilesCollectionRef = collection(docRef, "tiles");
+    const tileDocs = await getDocs(tilesCollectionRef);
+
+    // Convert Firestore tile data to a 2D tile array 
     const tiles: Tile[][] = Array.from({ length: height }, () =>
         Array.from({ length: width }, () => ({ crop: null })),
     );
 
-    const tilesCollectionRef = collection(docRef, "tiles");
-
-    const tileDocs = await getDocs(tilesCollectionRef);
-
     for (const tileDoc of tileDocs.docs) {
         const [x, y] = tileDoc.id.split(",").map((n) => Number(n));
 
+        // Delete doc if the location is invalid
+        // This is due to edited location dimensions
         if (y >= tiles.length || x >= tiles[y].length) {
             await deleteDoc(tileDoc.ref);
         } else {
@@ -42,7 +49,6 @@ async function getGarden(gardenId: string): Promise<Garden | null> {
     
             tiles[y][x] = { crop: crops.fromName(crop) };
         }
-
     }
 
     return {
@@ -55,6 +61,10 @@ async function getGarden(gardenId: string): Promise<Garden | null> {
     };
 }
 
+/**
+ * Gets all gardens
+ * @returns a list of Garden objects or null if the user is not authenticated
+ */
 async function getGardens(): Promise<Garden[] | null> {
     const userId = auth.value?.uid;
 

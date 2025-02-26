@@ -1,8 +1,10 @@
 <script lang="ts">
+    /** 
+     * A component that displays the navigation bar at the top of the website 
+    */
+
     import { base } from "$app/paths";
     import auth from "$lib/state/auth.svelte";
-    import { firebaseAuth } from "$lib/firebase";
-    import FallbackIcon from "./FallbackIcon.svelte";
     import { goto } from "$app/navigation";
 </script>
 
@@ -63,7 +65,8 @@
             <button
                 class="rounded-xl text-black transition-transform hover:-translate-y-1"
                 onclick={async () => {
-                    await firebaseAuth.signOut();
+                    // sign out the user and send them to the home page
+                    await auth.logOut();
                     await goto("/");
                 }}
             >

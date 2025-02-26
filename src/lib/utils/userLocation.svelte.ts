@@ -1,3 +1,8 @@
+
+/**
+ * Gets the location of the user using the browser geolocation API
+ * @returns the geolocation position or null if an error occurs
+ */
 async function getUserLocation() {
     if (navigator && navigator.geolocation) {
         return new Promise<GeolocationPosition | null>((resolve, reject) => {

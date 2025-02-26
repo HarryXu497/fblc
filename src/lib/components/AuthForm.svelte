@@ -1,24 +1,35 @@
 <script lang="ts">
+    /**
+     * A component that displays a form used for authentication: signing up and logging in
+     */
+
     import { goto } from "$app/navigation";
     import { base } from "$app/paths";
     import auth from "$lib/state/auth.svelte";
-    import type { UserCredential } from "firebase/auth";
 
     type FormType = "log-in" | "sign-up";
 
+    /**
+     * @param formType the type of the form ("log-in" or "sign-up")
+     */
     interface Props {
         formType: FormType;
     }
 
     let { formType }: Props = $props();
 
+    // The form input values
     let firstName: string = $state("");
     let lastName: string = $state("");
     let email: string = $state("");
     let password: string = $state("");
     let error: string = $state("");
 
-    async function onLogIn(e: SubmitEvent) {
+    /**
+     * Logs a user into their account
+     * @param e the form submit event
+     */
+    async function onLogIn() {
         if (!email || !password) {
             error = "Invalid email or password";
             return;
@@ -26,6 +37,8 @@
 
         try {
             await auth.logIn(email, password);
+            
+            // Redirect to "/gardebs"
             goto("/gardens");
         } catch (e) {
             const code = (e as any).code;
@@ -51,16 +64,18 @@
         }
     }
 
-    async function onSignUp() {
+    /**
+     * Signs a user up
+     * @param e the form submit event
+     */
+    async function onSignUp(e: SubmitEvent) {
         if (!email.trim() || !password.trim()) {
             error = "Invalid input(s)";
             return;
         }
 
-        let credentials: UserCredential;
-
         try {
-            credentials = await auth.signUp(
+            await auth.signUp(
                 email,
                 password,
                 firstName,

@@ -1,4 +1,9 @@
 <script module lang="ts">
+    /**
+     * @param query the text query of a search
+     * @param crop the crop type of a search
+     * @param distance the maximum distance between the user and a crop listing location
+    */
     interface SearchValues {
         query: string | null;
         crop: Crop | null;
@@ -13,16 +18,24 @@
     import crops from "$lib/state/crops.svelte";
     import FallbackIcon from "./FallbackIcon.svelte";
 
+    /**
+     * @param onSearch the callback function executed when the user submits their serach query
+    */
     interface Props {
         onSearch: (values: SearchValues) => void;
     }
 
     let { onSearch }: Props = $props();
 
+    // Search input values
     let query = $state<string | null>(null);
     let crop = $state<Crop | null>(null);
     let distance = $state<number | null>(null);
 
+    /**
+     * Event listener for the 'submit' event of the search bar
+     * @param e the submit event
+     */
     function onSubmit(e: SubmitEvent) {
         e.preventDefault();
 

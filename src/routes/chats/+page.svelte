@@ -12,6 +12,7 @@
     import { getPublicUser } from "$lib/utils/publicUser.svelte";
     import Metadata from "$lib/components/Metadata.svelte";
     import Window from "$lib/components/Window.svelte";
+    import type { IChat } from "$lib/models/Chat.model";
 
     let chats = $state<IChat[] | null>(null);
 

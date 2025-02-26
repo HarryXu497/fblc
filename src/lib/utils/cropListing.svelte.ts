@@ -3,6 +3,11 @@ import auth from "$lib/state/auth.svelte";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import type { CropListing } from "$lib/models/CropListing.model";
 
+/**
+ * Gets a crop listing from its ID
+ * @param listingId the ID of the crop listing
+ * @returns a corresponding CropListing object or null if the user is not authenticated
+ */
 async function getCropListing(listingId: string): Promise<CropListing | null> {
     const userId = auth.value?.uid;
 
@@ -33,6 +38,10 @@ async function getCropListing(listingId: string): Promise<CropListing | null> {
     };
 }
 
+/**
+ * Gets all crop listings
+ * @returns a list of CropListing objects or null if the user is not authenticated
+ */
 async function getCropListings(): Promise<CropListing[] | null> {
     const userId = auth.value?.uid;
 

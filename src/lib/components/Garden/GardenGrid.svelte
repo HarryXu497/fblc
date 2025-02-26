@@ -1,7 +1,17 @@
 <script lang="ts">
+    /** 
+     * A component that displays a garden with an interactive grid 
+    */
+
     import type { Crop } from "$lib/models/Crop.model";
     import type { Garden } from "$lib/models/Garden.model";
 
+    /**
+     * @param garden the garden displayed by the component
+     * @param px the side length of an individual garden tile
+     * @param brush the currently selected crop to plant
+     * @param onTileUpdate the callback function executed when a garden tile is updated
+    */
     interface Props {
         garden: Garden;
         px: number; // px size of a tile
@@ -9,26 +19,17 @@
         onTileUpdate: (x: number, y: number, crop: Crop | null) => void;
     }
 
-    let { garden, brush, px, onTileUpdate }: Props = $props();
+    let { garden, brush, px, onTileUpdate, }: Props = $props();
 
+    // Dimensions of the garden in pixels
     let width = $state<number | null>(null);
     let height = $state<number | null>(null);
 
-    const PADDING = 96;
     const GRID_GAP = 4;
 
-    let mousedown = $state<boolean>(false);
-
-    function onMouseMove(e: MouseEvent) {
-        if (mousedown && e.target) {
-            const x = Number((e.target as HTMLElement).dataset.x);
-            const y = Number((e.target as HTMLElement).dataset.y);
-
-            if (brush !== undefined) {
-                onTileUpdate(x, y, brush);
-            }
-        }
-    }
+    /**
+     * Calculates the width of the garden, including grip gaps 
+     */
     function calculateWidth() {
         if (!width) {
             return 0;
@@ -38,6 +39,9 @@
         return garden.width * px + widthGaps * GRID_GAP;
     }
 
+    /** 
+     * Calculates the height of the garde, including grid gaps
+    */
     function calculateHeight() {
         if (!height) {
             return 0;
@@ -45,6 +49,23 @@
 
         const heightGaps = garden.height === 0 ? 0 : garden.height - 1;
         return garden.height * px + heightGaps * GRID_GAP;
+    }
+
+    // Keeps track of when the mouse is down
+    let mousedown = $state<boolean>(false);
+
+    /**
+     * Event listener function for the 'mousemove' event
+    */
+    function onMouseMove(e: MouseEvent) {
+        if (mousedown && e.target) {
+            const x = Number((e.target as HTMLElement).dataset.x);
+            const y = Number((e.target as HTMLElement).dataset.y);
+
+            if (brush !== undefined) {
+                onTileUpdate(x, y, brush);
+            }
+        }
     }
 </script>
 

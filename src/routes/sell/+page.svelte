@@ -1,9 +1,8 @@
 <script lang="ts">
     import { goto } from "$app/navigation";
     import Metadata from "$lib/components/Metadata.svelte";
-    import SellForm from "$lib/components/SellForm.svelte";
+    import SellForm, { type SellValues } from "$lib/components/SellForm.svelte";
     import { firestore, storage } from "$lib/firebase";
-    import type { Crop } from "$lib/models/Crop.model";
     import type { CropListing } from "$lib/models/CropListing.model";
     import auth from "$lib/state/auth.svelte";
     import getUserLocation from "$lib/utils/userLocation.svelte";
@@ -12,16 +11,7 @@
     import { geohashForLocation } from "geofire-common";
     import { v4 as uuidv4 } from "uuid";
 
-    let error = $state<string | null>(null);
-    let crop = $state<Crop | null>(null);
-    let description = $state<string>("");
-    let price = $state<number | null>(null);
-    let quantity = $state<number | null>(null);
-    let images = $state<FileList | null>(null);
-
-    async function onSubmit(e: SubmitEvent) {
-        e.preventDefault();
-
+    async function onSubmit({ crop, description, price, quantity, images }: SellValues) {
         const location = await getUserLocation();
 
         if (
@@ -31,9 +21,9 @@
             !price ||
             !quantity ||
             !auth.value ||
-            !images
+            !images?.length
         ) {
-            return;
+            throw Error("Invalid inputs")
         }
 
         const lat = location.coords.latitude;
@@ -83,10 +73,5 @@
 
 <SellForm
     {onSubmit}
-    bind:error={error}
-    bind:crop={crop}
-    bind:description={description}
-    bind:price={price}
-    bind:quantity={quantity}
-    bind:images={images}
+    requireImages={false}
 />

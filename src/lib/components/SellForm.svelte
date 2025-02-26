@@ -1,16 +1,39 @@
+<script module lang="ts">
+    /**
+     * @param crop the crop type specified in the form
+     * @param description the crop listing description specified in the form
+     * @param price the price of the listing specified in the form
+     * @param quantity the quantiy provide in the listing specified in the form
+     * @param images the images uploaded through the form
+     */
+    interface SellValues {
+        crop: Crop | null;
+        description: string;
+        price: number | null;
+        quantity: number | null;
+        images: FileList | null;
+    }
+
+    export type { SellValues };
+</script>
+
 <script lang="ts">
+    /**
+     * A component that displays a form for selling or editing a crop listing 
+    */
+
     import type { Crop } from "$lib/models/Crop.model";
     import crops from "$lib/state/crops.svelte";
     import type { Snippet } from "svelte";
 
+    /**
+     * @param onSubmit a callback function executed when the form is submitted
+     * @param requireImages if images are a required input
+     * @param header the snippet rendered in the header of the form
+     * @param buttonContent the snippet rendered in the submit button
+    */
     interface Props {
-        onSubmit: (e: SubmitEvent) => void;
-        crop: Crop | null;
-        description: string | null;
-        price: number | null;
-        quantity: number | null;
-        images: FileList | null;
-        error: string | null;
+        onSubmit: (values: SellValues) => Promise<void>;
         requireImages?: boolean;
         header?: Snippet;
         buttonContent?: Snippet;
@@ -18,16 +41,44 @@
 
     let {
         onSubmit,
-        crop = $bindable(),
-        description = $bindable(),
-        price = $bindable(),
-        quantity = $bindable(),
-        images = $bindable(),
-        error = $bindable(),
         requireImages = true,
         header,
         buttonContent,
     }: Props = $props();
+
+    // Form inputs
+    let error = $state<string | null>(null);
+    let crop = $state<Crop | null>(null);
+    let description = $state<string>("");
+    let price = $state<number | null>(null);
+    let quantity = $state<number | null>(null);
+    let images = $state<FileList | null>(null);
+
+    /**
+     * Executes the 'onSubmit' callback with UI error handling
+     * @param e the submit event
+     */
+    async function onsubmit(e: SubmitEvent) {
+        e.preventDefault();
+
+        try {
+            await onSubmit({
+                crop,
+                description,
+                price,
+                quantity,
+                images
+            })
+        } catch (e) {
+            if (e instanceof Error) {
+                error = e.message;
+            }
+
+            if (e instanceof GeolocationPositionError) {
+                error = "cannot locate user"
+            }
+        }
+    }
 </script>
 
 <main class="size flex w-screen flex-col items-center justify-center">
@@ -39,7 +90,7 @@
                 sell your <span class="text-accent">crops</span>
             {/if}
         </h1>
-        <form class="auth-form w-full items-center" onsubmit={onSubmit}>
+        <form class="auth-form w-full items-center" {onsubmit}>
             <div class="form-control">
                 <label for="crop">crop</label>
                 <select required name="crop" id="crop" bind:value={crop}>
@@ -115,7 +166,7 @@
                 </div>
             {/if}
             {#if error}
-                <p class="text-[#b64040]">{error}</p>
+                <p class="text-[#b64040]">{error.toLocaleLowerCase()}</p>
             {/if}
             <button
                 class="mt-2 w-full rounded-lg bg-accent py-2 text-white transition-transform hover:-translate-y-1 hover:cursor-pointer"

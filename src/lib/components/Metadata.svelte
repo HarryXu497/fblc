@@ -1,7 +1,17 @@
 <script lang="ts">
+    /**
+     * A component that sets metadata about the web page for better search engine performance
+     */
+
     import { dev } from "$app/environment";
     import type { Snippet } from "svelte";
 
+    /**
+     * @param title the title of the web page
+     * @param description the description of the web page
+     * @param url the url of the web page
+     * @param children a snippet containing further web page metadata
+     */
     interface Props {
         title: string;
         description?: string;

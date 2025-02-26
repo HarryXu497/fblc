@@ -1,4 +1,7 @@
 <script lang="ts">
+    /** 
+     * A component that displays a garden sidebar, with a crop palette and a crop summary section
+    */
     import crops from "$lib/state/crops.svelte";
     import type { Crop } from "$lib/models/Crop.model";
     import Window from "../Window.svelte";
@@ -6,15 +9,22 @@
     import pluralize from "pluralize";
     import FallbackIcon from "$lib/components/FallbackIcon.svelte";
 
+    /**
+     * @param brush the currently selected crop to plany
+     * @param garden the garden providing the data for the crop summary section
+    */
     interface Props {
         brush: Crop | null;
         garden: Garden;
     }
 
-    let { brush = $bindable(), garden }: Props = $props();
+    let { brush = $bindable(), garden, }: Props = $props();
 
+    // Counts the amount of each crop in the garden and multiplies the counts
+    // by the 'density' of each crop (how many of each crop can fit in 1 square meter).
     let summary = $derived.by(() => {
         const counts = new Map<string, number>();
+
         for (const col of garden.tiles) {
             for (const tile of col) {
                 if (tile.crop !== null) {

@@ -2,6 +2,10 @@ import { firestore } from "$lib/firebase";
 import type { Crop } from "$lib/models/Crop.model";
 import { collection, getDocs } from "firebase/firestore";
 
+/**
+ * Gets all crops stored in Firestore
+ * @returns a list of 'Crop' objects
+ */
 async function getCrops(): Promise<Crop[]> {
     const cropCollectionRef = collection(firestore, "crops");
 
@@ -15,8 +19,14 @@ async function getCrops(): Promise<Crop[]> {
     }));
 }
 
+/**
+ * Creates an object with a stateful 'value' property
+ * and helper methods to retrieve a crop by its color or name
+ */
 function createCropState() {
     let cropState = $state<Crop[] | null>(null);
+
+    // Compute a map of names to colors
     let cropColors = $derived.by(() => {
         if (cropState === null) {
             return;
@@ -28,6 +38,8 @@ function createCropState() {
 
         return new Map(pairs);
     });
+
+    // Computes a map of names to 'Crop' objects
     let cropMap = $derived.by(() => {
         if (cropState === null) {
             return;

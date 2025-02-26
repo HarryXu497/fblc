@@ -1,13 +1,21 @@
 <script lang="ts">
+    /** 
+     * A chat message component
+    */
     import type { IMessage } from "$lib/models/Message.model";
 
+    /**
+     * @param message the message displayed by the component
+     * @param userID the ID of the current user
+     * @param collapseName if the user's name should be shown or not 
+    */
     interface Props {
         message: IMessage;
         userId: string;
         collapseName?: boolean;
     }
 
-    let { message, userId, collapseName = false }: Props = $props();
+    let { message, userId, collapseName = false, }: Props = $props();
 </script>
 
 <div

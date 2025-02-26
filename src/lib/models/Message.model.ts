@@ -1,5 +1,11 @@
 import { serverTimestamp } from "firebase/firestore";
 
+/**
+ * @param senderId the id of the message sender
+ * @param senderName the name of the message sender
+ * @param sentAt the datetime of the message
+ * @param content the content of the message
+ */
 interface IMessage {
     senderId: string;
     senderName: string;
@@ -7,11 +13,14 @@ interface IMessage {
     content: string;
 }
 
-interface FirebaseMessage {
-    senderId: string;
-    senderName: string;
+/**
+ * @param senderId the id of the message sender
+ * @param senderName the name of the message sender
+ * @param sentAt the datetime of the message, as a Firebae  FieldValue sentinal value
+ * @param content the content of the message
+ */
+interface FirebaseMessage extends Omit<IMessage, "sentAt"> {
     sentAt: ReturnType<typeof serverTimestamp>;
-    content: string;
 }
 
 export type { IMessage, FirebaseMessage };

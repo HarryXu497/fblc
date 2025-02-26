@@ -30,6 +30,8 @@
     let listing = $state<CropListing | null>(null);
     let location = $state<GeocodeResult | null>(null);
 
+    $inspect(data);
+
     $effect(() => {
         if (!listing) {
             return;

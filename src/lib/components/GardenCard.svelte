@@ -1,9 +1,16 @@
 <script lang="ts">
+    /**
+     * A component that displays a card with information about a garden
+    */
+
     import { base } from "$app/paths";
     import type { Garden } from "$lib/models/Garden.model";
     import GardenGridPreview from "$lib/components/Garden/GardenGridPreview.svelte";
     import Window from "./Window.svelte";
 
+    /**
+     * @param garden the garden displayed by the component
+    */
     interface Props {
         garden: Garden;
     }
