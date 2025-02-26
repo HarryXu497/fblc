@@ -1,4 +1,8 @@
 <script lang="ts">
+    /**
+     * A page that allows a user to edit the dimensions of an existing garden
+    */
+
     import { goto } from "$app/navigation";
     import FallbackIcon from "$lib/components/FallbackIcon.svelte";
     import Metadata from "$lib/components/Metadata.svelte";
@@ -6,20 +10,41 @@
     import auth from "$lib/state/auth.svelte";
     import { doc, updateDoc } from "firebase/firestore";
     import type { PageProps } from "../$types";
+    import { getGarden } from "$lib/utils/garden.svelte";
+    import type { Garden } from "$lib/models/Garden.model";
 
+    /**
+     * Contains the garden ID from the URL
+     */
     let { data }: PageProps = $props();
 
+    let garden = $state<Garden | null>(null);
+
+    // Prefills the name of the garden
+    $effect(() => {
+        getGarden(data.gardenId)
+            .then(g => garden = g)
+            .catch(e => goto("/gardens"));
+    })
+
+    $effect(() => {
+        if (dragComplete && drawPoint1 && drawPoint2 && garden) {
+            gardenName = garden.name;
+        }
+    })
+
+    // Stateful variables to keep track of the drag
     let mousedown = $state<boolean>(false);
 
+    type Point = { x: number; y: number };
     let dragComplete = $state<boolean>(true);
     let startPoint = $state<Point | null>(null);
     let endPoint = $state<Point | null>(null);
 
-    type Point = { x: number; y: number };
-
-    let gardenName = $state<string>("");
-    let invalidName = $state<boolean>(false);
-
+    /**
+     * Used to calculate the dimensions of the dragged garden
+     * @param e the mouse event
+     */
     function onMouseDown(e: MouseEvent) {
         if (dragComplete) {
             startPoint = null;
@@ -36,6 +61,10 @@
         e.preventDefault();
     }
 
+    /**
+     * Used to calculate the dimensions of the dragged garden
+     * @param e the mouse event
+     */
     function onMouseUp(e: MouseEvent) {
         mousedown = false;
 
@@ -46,6 +75,10 @@
         dragComplete = true;
     }
 
+    /**
+     * Used to calculate the dimensions of the dragged garden
+     * @param e the mouse event
+     */
     function onMouseMove(e: MouseEvent) {
         if (mousedown) {
             dragComplete = false;
@@ -59,6 +92,7 @@
 
     const TILE_SIZE = 100;
 
+    // The top left corner of the dragged garden
     const drawPoint1 = $derived.by<Point | null>(() => {
         if (!startPoint || !endPoint) {
             return null;
@@ -70,6 +104,7 @@
         };
     });
 
+    // The bottom right corner of the dragged garden
     const drawPoint2 = $derived.by<Point | null>(() => {
         if (!startPoint || !endPoint) {
             return null;
@@ -81,6 +116,7 @@
         };
     });
 
+    // The number of tiles composing the height of the dragged garden
     const height = $derived.by(() => {
         if (!drawPoint1 || !drawPoint2) {
             return null;
@@ -89,6 +125,7 @@
         return Math.floor((drawPoint2.y - drawPoint1.y) / TILE_SIZE);
     });
 
+    // The number of tiles composing the width of the dragged garden
     const width = $derived.by(() => {
         if (!drawPoint1 || !drawPoint2) {
             return null;
@@ -97,6 +134,7 @@
         return Math.floor((drawPoint2.x - drawPoint1.x) / TILE_SIZE);
     });
 
+    // Disallows gardens with a width or height of zero
     $effect(() => {
         if (width === null || height === null) {
             return;
@@ -109,6 +147,12 @@
         }
     });
 
+    let gardenName = $state<string>("");
+    let invalidName = $state<boolean>(false);
+        
+    /**
+     * Callback function to persist the dragged garden to Firestore.
+     */
     async function onClick() {
         const userId = auth.value?.uid;
 
@@ -133,6 +177,7 @@
             return;
         }
 
+        // Persist garden to Firestore
         await updateDoc(docRef, {
             width,
             height,
@@ -142,12 +187,6 @@
 
         await goto(`/gardens/${data.gardenId}`);
     }
-
-    $effect(() => {
-        dragComplete;
-
-        gardenName = "";
-    });
 </script>
 
 <Metadata title="add garden | farmer's market" />

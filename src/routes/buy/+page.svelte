@@ -1,4 +1,8 @@
 <script lang="ts">
+    /**
+     * A page that renders a grid of available crop listings
+    */
+
     import { base } from "$app/paths";
     import CropCard from "$lib/components/CropListing/CropCard.svelte";
     import FallbackIcon from "$lib/components/FallbackIcon.svelte";
@@ -23,6 +27,8 @@
     import { distanceBetween, geohashQueryBounds } from "geofire-common";
 
     let cropListings = $state<CropListing[] | null>(null);
+
+    // Computes addresses of each listing
     let cropLocations = $derived.by<Promise<GeocodeResult>[] | null>(() => {
         const locations: Promise<GeocodeResult>[] = [];
 
@@ -41,6 +47,7 @@
         return locations;
     });
 
+    // Gets all listings
     $effect(() => {
         if (!auth || !auth.value) {
             return;
@@ -69,6 +76,10 @@
             .then((l) => (cropListings = l));
     });
 
+    /**
+     * Callback function called when a query is submitted through the search bar 
+     * @param values the values of the query
+     */
     async function onSearch(values: SearchValues) {
         const centerPos = await getUserLocation();
 
@@ -81,6 +92,7 @@
             ] as [number, number];
             const radiusInM = values.distance * 1000;
 
+            // Calculates geohash bounds for the specified radius from the center  
             const bounds = geohashQueryBounds(center, radiusInM);
             const promises = [];
             for (const b of bounds) {
@@ -102,7 +114,7 @@
                     const lat = doc.get("lat");
                     const lng = doc.get("lng");
 
-                    // Filter out false positivies
+                    // Filter out false positives because geohashing can be imprecise
                     const distanceInKm = distanceBetween([lat, lng], center);
                     const distanceInM = distanceInKm * 1000;
                     if (distanceInM <= radiusInM) {
@@ -130,6 +142,7 @@
             return;
         }
 
+        // Filter by crop
         listings = listings.filter((listing) => {
             if (values.crop === null) {
                 return true;
@@ -138,6 +151,7 @@
             return listing.name === values.crop.name;
         });
 
+        // Filter by text query
         listings = listings.filter((listing) => {
             if (values.query === null) {
                 return true;

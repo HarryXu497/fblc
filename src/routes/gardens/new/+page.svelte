@@ -6,17 +6,18 @@
     import auth from "$lib/state/auth.svelte";
     import { addDoc, collection } from "firebase/firestore";
 
+    // Stateful variables to keep track of the drag
     let mousedown = $state<boolean>(false);
 
+    type Point = { x: number; y: number };
     let dragComplete = $state<boolean>(true);
     let startPoint = $state<Point | null>(null);
     let endPoint = $state<Point | null>(null);
 
-    type Point = { x: number; y: number };
-
-    let gardenName = $state<string>("");
-    let invalidName = $state<boolean>(false);
-
+    /**
+     * Used to calculate the dimensions of the dragged garden
+     * @param e the mouse event
+     */
     function onMouseDown(e: MouseEvent) {
         if (dragComplete) {
             startPoint = null;
@@ -33,6 +34,10 @@
         e.preventDefault();
     }
 
+    /**
+     * Used to calculate the dimensions of the dragged garden
+     * @param e the mouse event
+     */
     function onMouseUp(e: MouseEvent) {
         mousedown = false;
 
@@ -43,6 +48,10 @@
         dragComplete = true;
     }
 
+    /**
+     * Used to calculate the dimensions of the dragged garden
+     * @param e the mouse event
+     */
     function onMouseMove(e: MouseEvent) {
         if (mousedown) {
             dragComplete = false;
@@ -56,6 +65,7 @@
 
     const TILE_SIZE = 100;
 
+    // The top left corner of the dragged garden
     const drawPoint1 = $derived.by<Point | null>(() => {
         if (!startPoint || !endPoint) {
             return null;
@@ -67,6 +77,7 @@
         };
     });
 
+    // The bottom right corner of the dragged garden
     const drawPoint2 = $derived.by<Point | null>(() => {
         if (!startPoint || !endPoint) {
             return null;
@@ -78,6 +89,7 @@
         };
     });
 
+    // The number of tiles composing the height of the dragged garden
     const height = $derived.by(() => {
         if (!drawPoint1 || !drawPoint2) {
             return null;
@@ -86,6 +98,7 @@
         return Math.floor((drawPoint2.y - drawPoint1.y) / TILE_SIZE);
     });
 
+    // The number of tiles composing the width of the dragged garden
     const width = $derived.by(() => {
         if (!drawPoint1 || !drawPoint2) {
             return null;
@@ -94,6 +107,7 @@
         return Math.floor((drawPoint2.x - drawPoint1.x) / TILE_SIZE);
     });
 
+    // Disallows gardens with a width or height of zero
     $effect(() => {
         if (width === null || height === null) {
             return;
@@ -106,6 +120,12 @@
         }
     });
 
+    let gardenName = $state<string>("");
+    let invalidName = $state<boolean>(false);
+
+    /**
+     * Callback function to persist the dragged garden to Firestore.
+     */
     async function onClick() {
         const userId = auth.value?.uid;
 
@@ -139,6 +159,7 @@
         await goto(`/gardens/${res.id}`);
     }
 
+    // Resets the name if a drag is finished
     $effect(() => {
         dragComplete;
 

@@ -65,8 +65,6 @@
             throw Error("User cannot be located");
         }
 
-        console.log(images)
-
         if (
             !location ||
             !crop ||

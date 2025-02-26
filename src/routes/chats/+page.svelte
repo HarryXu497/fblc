@@ -1,4 +1,8 @@
 <script lang="ts">
+    /**
+     * A page that displays all chats a user is involved in, ordered by the most recent
+    */
+
     import {
         collection,
         onSnapshot,
@@ -32,6 +36,7 @@
             orderBy("lastMessage", "desc"),
         );
 
+        // Attaches a snapshot listener to all chats involving a user
         onSnapshot(q, async (snap) => {
             const chatDocs = await Promise.all(
                 snap.docs.map(async (chat) => {

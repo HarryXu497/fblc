@@ -1,4 +1,8 @@
 <script lang="ts">
+    /**
+     * A page that allows a user to upload a crop listing
+    */
+
     import { goto } from "$app/navigation";
     import Metadata from "$lib/components/Metadata.svelte";
     import SellForm, { type SellValues } from "$lib/components/SellForm.svelte";
@@ -11,6 +15,10 @@
     import { geohashForLocation } from "geofire-common";
     import { v4 as uuidv4 } from "uuid";
 
+    /**
+     * Callback function executed when the form is submitted
+     * @param param0 values from the form inputs
+     */
     async function onSubmit({ crop, description, price, quantity, images }: SellValues) {
         const location = await getUserLocation();
 

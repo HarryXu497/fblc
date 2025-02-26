@@ -28,12 +28,16 @@
     import { goto } from "$app/navigation";
     import Metadata from "$lib/components/Metadata.svelte";
 
+    /**
+     * Contains the listing ID from the URL
+     */
     let { data }: PageProps = $props();
 
     let user = $state<PublicUser | null>(null);
     let listing = $state<CropListing | null>(null);
     let location = $state<GeocodeResult | null>(null);
 
+    // Fetches the location of the listing with reverse geocoding
     $effect(() => {
         if (!listing) {
             return;
@@ -44,6 +48,7 @@
             .then((l) => (location = l));
     });
 
+    // Gets the public user information of the listing owner
     $effect(() => {
         if (!listing) {
             return;
@@ -52,18 +57,16 @@
         getPublicUser(listing.uid).then((u) => (user = u));
     });
 
+    // Gets the crop listing with the associated listing ID
     $effect(() => {
         getCropListing(data.listingId)
             .then((l) => (listing = l))
             .catch(e => goto("/buy"));
     });
 
-    const intl = new Intl.NumberFormat("en-CA", {
-        style: "currency",
-        currency: "CAD",
-    });
-
-    // TODO: use description
+    /**
+     * creates a chat within Firestore and redirects the user to the chat URL
+     */
     async function createChat() {
         if (!auth || !auth.value || !listing) {
             return;
@@ -89,6 +92,7 @@
         const queryResults = await getDocs(q);
 
         if (queryResults.empty) {
+            // Creates new chat documnet
             const res = await addDoc(chatRef, {
                 sender: auth.value.uid,
                 receiver: listing.uid,
@@ -97,12 +101,16 @@
 
             await goto(`/chats/${res.id}`);
         } else {
+            // Goes to existing chat document
             const res = queryResults.docs[0];
 
             await goto(`/chats/${res.id}`);
         }
     }
 
+    /**
+     * Deletes the listing
+     */
     async function onDeleteListing() {
         if (!listing || !auth.value) {
             return;
@@ -115,6 +123,11 @@
         await goto("/buy");
     }
 
+    // Currency formatter
+    const intl = new Intl.NumberFormat("en-CA", {
+        style: "currency",
+        currency: "CAD",
+    });
 </script>
 
 <Metadata

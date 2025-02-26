@@ -10,16 +10,26 @@
     import { goto } from "$app/navigation";
     import Metadata from "$lib/components/Metadata.svelte";
 
+    /**
+     * Contains the garden ID from the URL
+     */
     let { data }: PageProps = $props();
 
     let garden = $state<Garden | null>(null);
 
+    // Gets the garden
     $effect(() => {
         getGarden(data.gardenId)
             .then((g) => (garden = g))
             .catch((e) => goto("/gardens"));
     });
 
+    /**
+     * Updates the garden object and synchronizes the change to Firestore
+     * @param x the x coordinate of the updated tile
+     * @param y the y coordinate of the updated tile
+     * @param crop the updated crop of the tile 
+     */
     async function onTileUpdate(x: number, y: number, crop: Crop | null) {
         const userId = auth.value?.uid;
 
@@ -33,6 +43,7 @@
 
         garden.tiles[y][x] = { crop };
 
+        // Persists the data to the database
         const tilesCollectionRef = collection(
             firestore,
             "gardens",
@@ -47,10 +58,14 @@
         if (crop !== null) {
             await setDoc(tileDocRef, { ...crop });
         } else {
+            // Removes the tile document if the tile has no crop
             await deleteDoc(tileDocRef);
         }
     }
 
+    /**
+     * Deletes the garden
+     */
     async function onDeleteGarden() {
         if (!garden || !auth.value) {
             return;
@@ -59,7 +74,6 @@
         const gardenDocRef = doc(firestore, "gardens", auth.value.uid, "gardens", garden.id);
 
         await deleteDoc(gardenDocRef);
-
         await goto("/gardens")
     }
 </script>

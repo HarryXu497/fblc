@@ -1,4 +1,8 @@
 <script lang="ts">
+    /**
+     * A page that displays all gardens owned by a user
+    */
+
     import { goto } from "$app/navigation";
     import { base } from "$app/paths";
     import FallbackIcon from "$lib/components/FallbackIcon.svelte";
@@ -9,14 +13,12 @@
 
     let gardens = $state<Garden[] | null>(null);
 
+    // Gets all gardens
     $effect(() => {
         getGardens()
             .then((g) => gardens = g)
             .catch(e => goto("/log-in"));
     });
-
-    // TODO: garden edit prefill name
-    // TODO: new garden
 </script>
 
 <Metadata title="your gardens | farmer's market" />

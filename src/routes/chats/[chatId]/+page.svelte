@@ -1,4 +1,8 @@
 <script lang="ts">
+    /**
+     * A page that shows an individual chat between two users
+    */
+
     import {
         addDoc,
         collection,
@@ -21,6 +25,9 @@
     import Metadata from "$lib/components/Metadata.svelte";
     import { goto } from "$app/navigation";
 
+    /**
+     * Contains the chat ID from the URL
+     */
     let { data }: PageProps = $props();
 
     let messages = $state<IMessage[] | null>(null);
@@ -37,6 +44,8 @@
 
         const q = query(messagesRef, orderBy("sentAt", "asc"));
 
+        // Attaches a snapshot listener to the chat's messages,
+        // ordered by the time each message was sent at
         onSnapshot(
             q,
             (messagesDocs) => {
@@ -58,6 +67,7 @@
                     .filter((message) => message !== null);
             },
             async (error) => {
+                // Redirect if an error occurs
                 if (auth.value) {
                     await goto("/chats");
                 } else {
@@ -67,6 +77,7 @@
         );
     });
 
+    // Gets the public user information of the other chat participant
     $effect(() => {
         const chatDocRef = doc(firestore, "chats", data.chatId);
 
@@ -89,6 +100,9 @@
             .then((u) => (other = u));
     });
 
+    /**
+     * Uploades a new message if it is valid
+     */
     async function onSubmit() {
         if (!auth.value) {
             return;
@@ -106,6 +120,8 @@
         );
         const chatRef = doc(firestore, "chats", data.chatId);
 
+        // Adds a new message and updates the chat document with the date
+        // so chats can be ordered by recency
         await Promise.all([
             addDoc(messagesRef, {
                 senderId: auth.value.uid,
