@@ -3,7 +3,7 @@
      * @param query the text query of a search
      * @param crop the crop type of a search
      * @param distance the maximum distance between the user and a crop listing location
-    */
+     */
     interface SearchValues {
         query: string | null;
         crop: Crop | null;
@@ -20,7 +20,7 @@
 
     /**
      * @param onSearch the callback function executed when the user submits their serach query
-    */
+     */
     interface Props {
         onSearch: (values: SearchValues) => void;
     }

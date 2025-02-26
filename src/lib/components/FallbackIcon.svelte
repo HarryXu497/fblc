@@ -2,7 +2,7 @@
     /**
      * A component that displays an icon with @iconify/svelte,
      * with additional logic to preload icons to increase site responsiveness
-    */
+     */
 
     import Icon, {
         iconExists,
@@ -17,7 +17,7 @@
      * @param preload a list of icons to preload (download ahead-of-time)
      * @param fallback the Snippet rendered while the icon is loading
      * @param others an object of all other props passed to the component
-    */
+     */
     interface Props {
         icon: string;
         preload?: string[];
@@ -25,12 +25,7 @@
         [others: string]: any;
     }
 
-    let {
-        icon,
-        preload = [],
-        fallback,
-        ...others
-    }: Props = $props();
+    let { icon, preload = [], fallback, ...others }: Props = $props();
 
     // Load the icon using @iconify/svelte
     let loaded = $state<boolean>(false);

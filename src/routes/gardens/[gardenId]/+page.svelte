@@ -28,7 +28,7 @@
      * Updates the garden object and synchronizes the change to Firestore
      * @param x the x coordinate of the updated tile
      * @param y the y coordinate of the updated tile
-     * @param crop the updated crop of the tile 
+     * @param crop the updated crop of the tile
      */
     async function onTileUpdate(x: number, y: number, crop: Crop | null) {
         const userId = auth.value?.uid;
@@ -71,10 +71,16 @@
             return;
         }
 
-        const gardenDocRef = doc(firestore, "gardens", auth.value.uid, "gardens", garden.id);
+        const gardenDocRef = doc(
+            firestore,
+            "gardens",
+            auth.value.uid,
+            "gardens",
+            garden.id,
+        );
 
         await deleteDoc(gardenDocRef);
-        await goto("/gardens")
+        await goto("/gardens");
     }
 </script>
 
@@ -85,7 +91,7 @@
 />
 
 {#if garden}
-    <GardenDisplay {garden} {onTileUpdate} {onDeleteGarden}/>
+    <GardenDisplay {garden} {onTileUpdate} {onDeleteGarden} />
 {:else}
     <main
         class="flex h-[calc(100%_-_6rem)] w-full flex-row items-center justify-center"

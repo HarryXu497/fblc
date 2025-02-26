@@ -1,7 +1,7 @@
 <script lang="ts">
     /**
      * A page that displays all chats a user is involved in, ordered by the most recent
-    */
+     */
 
     import {
         collection,

@@ -1,7 +1,7 @@
 <script lang="ts">
     /**
      * The home page
-    */
+     */
 
     import FallbackIcon from "$lib/components/FallbackIcon.svelte";
     import GardenGridPreview from "$lib/components/Garden/GardenGridPreview.svelte";
@@ -90,7 +90,7 @@
             ],
         ],
     };
-    
+
     const garden2: Garden = {
         id: "MStF9SbHCsFR2557mE3j",
         name: "hello world",

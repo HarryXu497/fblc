@@ -1,7 +1,7 @@
 <script lang="ts">
     /**
      * A page that displays information about a specific listing
-    */
+     */
 
     import Carousel from "$lib/components/Carousel.svelte";
     import type { CropListing } from "$lib/models/CropListing.model";
@@ -61,7 +61,7 @@
     $effect(() => {
         getCropListing(data.listingId)
             .then((l) => (listing = l))
-            .catch(e => goto("/buy"));
+            .catch((e) => goto("/buy"));
     });
 
     /**
@@ -167,15 +167,15 @@
                             chat
                         </button>
                     {:else}
-                        <div class="flex flex-row gap-2 items-center">
+                        <div class="flex flex-row items-center gap-2">
                             <a
-                                class="text-white rounded-sm bg-blue-700 text-xl px-3 py-1 hover:cursor-pointer hover:bg-blue-800"
+                                class="rounded-sm bg-blue-700 px-3 py-1 text-xl text-white hover:cursor-pointer hover:bg-blue-800"
                                 href="/buy/{listing.id}/edit"
                             >
                                 edit
                             </a>
                             <button
-                                class="text-white rounded-sm bg-red-700 text-xl px-3 py-1 hover:cursor-pointer hover:bg-red-800"
+                                class="rounded-sm bg-red-700 px-3 py-1 text-xl text-white hover:cursor-pointer hover:bg-red-800"
                                 onclick={onDeleteListing}
                             >
                                 delete
@@ -187,7 +187,7 @@
         </div>
         <Carousel imageURLs={listing.imageURLs} />
         <div class="mt-2">
-            <h2 class="text-accent text-3xl">more information</h2>
+            <h2 class="text-3xl text-accent">more information</h2>
             <p class="text text-lg">
                 {listing.description}
             </p>

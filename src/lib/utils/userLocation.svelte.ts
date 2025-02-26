@@ -1,4 +1,3 @@
-
 /**
  * Gets the location of the user using the browser geolocation API
  * @returns the geolocation position or null if an error occurs

@@ -1,7 +1,7 @@
 <script lang="ts">
     /**
      * A page that allows a user to upload a crop listing
-    */
+     */
 
     import { goto } from "$app/navigation";
     import Metadata from "$lib/components/Metadata.svelte";
@@ -19,7 +19,13 @@
      * Callback function executed when the form is submitted
      * @param sellValues values from the form inputs
      */
-    async function onSubmit({ crop, description, price, quantity, images }: SellValues) {
+    async function onSubmit({
+        crop,
+        description,
+        price,
+        quantity,
+        images,
+    }: SellValues) {
         const location = await getUserLocation();
 
         if (
@@ -46,7 +52,7 @@
             imageFiles.push(image);
         }
 
-        const imageIDs = imageFiles.map(image => uuidv4());
+        const imageIDs = imageFiles.map((image) => uuidv4());
 
         // Upload the files
         const downloadURLs = await Promise.all(
@@ -55,7 +61,10 @@
                     return null;
                 }
 
-                const fileRef = ref(storage, `${auth.value.uid}/${imageIDs[i]}`);
+                const fileRef = ref(
+                    storage,
+                    `${auth.value.uid}/${imageIDs[i]}`,
+                );
                 const uploadTask = await uploadBytes(fileRef, img);
                 return getDownloadURL(uploadTask.ref);
             }),
@@ -82,7 +91,4 @@
 
 <Metadata title="sell crops | farmer's market" />
 
-<SellForm
-    {onSubmit}
-    requireImages={false}
-/>
+<SellForm {onSubmit} requireImages={false} />

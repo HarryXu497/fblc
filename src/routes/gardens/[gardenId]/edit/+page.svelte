@@ -1,7 +1,7 @@
 <script lang="ts">
     /**
      * A page that allows a user to edit the dimensions of an existing garden
-    */
+     */
 
     import { goto } from "$app/navigation";
     import FallbackIcon from "$lib/components/FallbackIcon.svelte";
@@ -23,15 +23,15 @@
     // Prefills the name of the garden
     $effect(() => {
         getGarden(data.gardenId)
-            .then(g => garden = g)
-            .catch(e => goto("/gardens"));
-    })
+            .then((g) => (garden = g))
+            .catch((e) => goto("/gardens"));
+    });
 
     $effect(() => {
         if (dragComplete && drawPoint1 && drawPoint2 && garden) {
             gardenName = garden.name;
         }
-    })
+    });
 
     // Stateful variables to keep track of the drag
     let mousedown = $state<boolean>(false);
@@ -149,7 +149,7 @@
 
     let gardenName = $state<string>("");
     let invalidName = $state<boolean>(false);
-        
+
     /**
      * Callback function to persist the dragged garden to Firestore.
      */

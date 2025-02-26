@@ -19,7 +19,7 @@ interface GardenPreview {
 /**
  * @param width the width of the garden
  * @param height the height of the garden
- * @param scale the real-life size each tile corresponds to, in meters 
+ * @param scale the real-life size each tile corresponds to, in meters
  * @param tiles a 2D array of the crops in the garden
  */
 interface Garden extends GardenPreview {

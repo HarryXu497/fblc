@@ -1,14 +1,14 @@
 <script lang="ts">
     /**
      * A component that renders content in a window container styled as a garden bed
-    */
+     */
     import type { Snippet } from "svelte";
 
     /**
      * @param top the snippet rendered in the top bar of the window
      * @param bottom the snippet rendered in the bottom bar of the window
      * @param children the main content snippet rendered within the window
-    */
+     */
     interface Props {
         top?: Snippet;
         bottom?: Snippet;

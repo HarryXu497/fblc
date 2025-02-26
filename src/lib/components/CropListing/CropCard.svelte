@@ -1,7 +1,7 @@
 <script lang="ts">
-    /** 
+    /**
      * A card component that displays information about a crop listing
-    */
+     */
 
     import type { CropListing } from "$lib/models/CropListing.model";
     import Window from "$lib/components/Window.svelte";
@@ -12,13 +12,13 @@
     /**
      * @param listing the crop listing displayed by the component
      * @param location a promise resolving to the location of the crop listing
-    */
+     */
     interface Props {
         listing: CropListing;
         location?: Promise<GeocodeResult>;
     }
 
-    let { listing, location, }: Props = $props();
+    let { listing, location }: Props = $props();
 </script>
 
 <a href="{base}/buy/{listing.id}">

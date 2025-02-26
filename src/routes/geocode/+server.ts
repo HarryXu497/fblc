@@ -4,7 +4,7 @@ import type { GeocodeResult } from "@googlemaps/google-maps-services-js";
 import reverseGeocode from "$lib/utils/reverseGeocode";
 
 /**
- * Handles a GET request to /geocode. Uses the Google Maps API to 
+ * Handles a GET request to /geocode. Uses the Google Maps API to
  * locate an address from its latitude and longitude
  * @param request the request data
  * @returns a response of the address
@@ -16,7 +16,7 @@ export const GET: RequestHandler = async ({ url }) => {
     let address: GeocodeResult;
 
     try {
-        address = await reverseGeocode(lat, lng)
+        address = await reverseGeocode(lat, lng);
     } catch (e) {
         if (e instanceof Error) {
             error(400, e.message);

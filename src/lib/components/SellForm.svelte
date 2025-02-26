@@ -19,8 +19,8 @@
 
 <script lang="ts">
     /**
-     * A component that displays a form for selling or editing a crop listing 
-    */
+     * A component that displays a form for selling or editing a crop listing
+     */
 
     import type { Crop } from "$lib/models/Crop.model";
     import crops from "$lib/state/crops.svelte";
@@ -31,7 +31,7 @@
      * @param requireImages if images are a required input
      * @param header the snippet rendered in the header of the form
      * @param buttonContent the snippet rendered in the submit button
-    */
+     */
     interface Props {
         onSubmit: (values: SellValues) => Promise<void>;
         initialValues?: SellValues;
@@ -57,12 +57,12 @@
     let images = $state<FileList | null>(null);
 
     $effect(() => {
-        crop ||= (initialValues?.crop || null);
+        crop ||= initialValues?.crop || null;
         description ||= initialValues?.description || "";
-        price ||= (initialValues?.price || null);
-        quantity ||= (initialValues?.quantity || null);
-        images ||= (initialValues?.images || null);
-    })
+        price ||= initialValues?.price || null;
+        quantity ||= initialValues?.quantity || null;
+        images ||= initialValues?.images || null;
+    });
 
     // TODO: submitted loading spinner
 
@@ -79,15 +79,15 @@
                 description,
                 price,
                 quantity,
-                images
-            })
+                images,
+            });
         } catch (e) {
             if (e instanceof Error) {
                 error = e.message;
             }
 
             if (e instanceof GeolocationPositionError) {
-                error = "cannot locate user"
+                error = "cannot locate user";
             }
         }
     }
@@ -184,11 +184,11 @@
                 class="mt-2 w-full rounded-lg bg-accent py-2 text-white transition-transform hover:-translate-y-1 hover:cursor-pointer"
                 type="submit"
             >
-            {#if buttonContent}
-                {@render buttonContent?.()}
-            {:else}
-                submit
-            {/if}
+                {#if buttonContent}
+                    {@render buttonContent?.()}
+                {:else}
+                    submit
+                {/if}
             </button>
         </form>
     </div>

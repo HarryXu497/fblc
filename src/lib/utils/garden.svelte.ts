@@ -1,7 +1,13 @@
 import { firestore } from "$lib/firebase";
 import type { Garden, Tile } from "$lib/models/Garden.model";
 import auth from "$lib/state/auth.svelte";
-import { collection, deleteDoc, doc, getDoc, getDocs } from "firebase/firestore";
+import {
+    collection,
+    deleteDoc,
+    doc,
+    getDoc,
+    getDocs,
+} from "firebase/firestore";
 import crops from "$lib/state/crops.svelte";
 
 /**
@@ -32,7 +38,7 @@ async function getGarden(gardenId: string): Promise<Garden | null> {
     const tilesCollectionRef = collection(docRef, "tiles");
     const tileDocs = await getDocs(tilesCollectionRef);
 
-    // Convert Firestore tile data to a 2D tile array 
+    // Convert Firestore tile data to a 2D tile array
     const tiles: Tile[][] = Array.from({ length: height }, () =>
         Array.from({ length: width }, () => ({ crop: null })),
     );
@@ -46,7 +52,7 @@ async function getGarden(gardenId: string): Promise<Garden | null> {
             await deleteDoc(tileDoc.ref);
         } else {
             const crop = tileDoc.get("name") as string;
-    
+
             tiles[y][x] = { crop: crops.fromName(crop) };
         }
     }

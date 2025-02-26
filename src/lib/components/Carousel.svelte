@@ -1,8 +1,8 @@
 <script lang="ts">
     /**
      * A component that displays an image carousel
-    */
-   
+     */
+
     import { register } from "swiper/element/bundle";
     // Register WebComponents
     register();
@@ -10,7 +10,7 @@
     /**
      * @param imageURLs a list of image URLs displayed by the carousel
      * @param initialSlide the index of the first slide displayed by the carouel
-    */
+     */
     interface Props {
         imageURLs: string[];
         initialSlide?: number;
@@ -21,9 +21,11 @@
     // TODO: switch to tailwind
 </script>
 
-<div class="gallery flex flex-row justify-center align-center rounded-sm shadow-xl">
+<div
+    class="gallery align-center flex flex-row justify-center rounded-sm shadow-xl"
+>
     <swiper-container
-        class="flex flex-row relative w-full bg-white rounded-sm border-8 border-black"
+        class="relative flex w-full flex-row rounded-sm border-8 border-black bg-white"
         slides-per-view={1}
         space-between={4}
         speed={300}

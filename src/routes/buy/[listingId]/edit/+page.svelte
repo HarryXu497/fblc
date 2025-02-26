@@ -1,7 +1,7 @@
 <script lang="ts">
     /**
      * A page that allows users to edit their own listings
-    */
+     */
 
     import { goto } from "$app/navigation";
     import Metadata from "$lib/components/Metadata.svelte";
@@ -11,7 +11,12 @@
     import crops from "$lib/state/crops.svelte";
     import getUserLocation from "$lib/utils/userLocation.svelte";
     import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
-    import { deleteObject, getDownloadURL, ref, uploadBytes } from "firebase/storage";
+    import {
+        deleteObject,
+        getDownloadURL,
+        ref,
+        uploadBytes,
+    } from "firebase/storage";
     import { geohashForLocation } from "geofire-common";
     import { v4 as uuidv4 } from "uuid";
     import type { PageProps } from "../$types";
@@ -24,15 +29,17 @@
     let { data }: PageProps = $props();
 
     let listing = $state<CropListing | null>(null);
-    let initialValues = $state<SellValues | null>(null)
+    let initialValues = $state<SellValues | null>(null);
 
     $effect(() => {
         getCropListing(data.listingId)
-            .then(l => {
+            .then((l) => {
                 // Prefill form values if they exist
                 if (auth.value && l !== null) {
                     if (l.uid !== auth.value.uid) {
-                        throw Error(`Crop listing with id '${l.id}'' does not belong to the user.`);
+                        throw Error(
+                            `Crop listing with id '${l.id}'' does not belong to the user.`,
+                        );
                     }
 
                     initialValues = {
@@ -41,22 +48,27 @@
                         price: l.price,
                         quantity: l.quantity,
                         images: null,
-                    }
+                    };
 
                     // TODO: better image editing if time permits
 
-                    listing = l
+                    listing = l;
                 }
-
             })
-            .catch(e => goto("/buy"))
-    })
+            .catch((e) => goto("/buy"));
+    });
 
     /**
      * Callback function executed when the form is submitted
      * @param sellValues values from the form inputs
      */
-    async function onSubmit({ crop, description, price, quantity, images }: SellValues) {
+    async function onSubmit({
+        crop,
+        description,
+        price,
+        quantity,
+        images,
+    }: SellValues) {
         let location: GeolocationPosition | null;
 
         try {
@@ -74,14 +86,13 @@
             !auth.value ||
             !images
         ) {
-            throw Error("Invalid inputs")
+            throw Error("Invalid inputs");
         }
 
         // Calculate geohash based on current location
         const lat = location.coords.latitude;
         const lng = location.coords.longitude;
         const hash = geohashForLocation([lat, lng]);
-
 
         const seedDocRef = doc(firestore, "seeds", data.listingId);
 
@@ -105,7 +116,7 @@
                 imageFiles.push(image);
             }
 
-            const imageIDs = imageFiles.map(image => uuidv4());
+            const imageIDs = imageFiles.map((image) => uuidv4());
 
             // Upload each image file and get a download URL from each
             const downloadURLs = await Promise.all(
@@ -114,7 +125,10 @@
                         return null;
                     }
 
-                    const fileRef = ref(storage, `${auth.value.uid}/${imageIDs[i]}`);
+                    const fileRef = ref(
+                        storage,
+                        `${auth.value.uid}/${imageIDs[i]}`,
+                    );
                     const uploadTask = await uploadBytes(fileRef, img);
                     return getDownloadURL(uploadTask.ref);
                 }),
@@ -123,14 +137,16 @@
             const listingDoc = await getDoc(seedDocRef);
             const oldImageIDs = listingDoc.get("imageIDs") as string[];
 
-            await Promise.all(oldImageIDs.map(async id => {
-                if (!auth.value) {
-                    return null;
-                }
+            await Promise.all(
+                oldImageIDs.map(async (id) => {
+                    if (!auth.value) {
+                        return null;
+                    }
 
-                const oldImageRef = ref(storage, `${auth.value.uid}/${id}`);
-                await deleteObject(oldImageRef);
-            }))
+                    const oldImageRef = ref(storage, `${auth.value.uid}/${id}`);
+                    await deleteObject(oldImageRef);
+                }),
+            );
 
             // Add new images
             await setDoc(seedDocRef, {

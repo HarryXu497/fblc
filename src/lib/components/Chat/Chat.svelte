@@ -1,7 +1,7 @@
 <script lang="ts">
     /**
      * A chat component for real-time one-on-one communication
-    */
+     */
 
     import type { IMessage } from "$lib/models/Message.model";
     import Window from "$lib/components/Window.svelte";
@@ -15,7 +15,7 @@
      * @param text the text content of the chat text input
      * @param onSubmit the callback function executed upon the submission of text input
      * @param chatHeader the snippet rendered in the top bar of the chat window
-    */
+     */
     interface Props {
         messages: IMessage[];
         userId: string;
@@ -36,8 +36,8 @@
     let lastMessage = $state<HTMLLIElement | null>(null);
 
     /**
-     * scrolls to the most recent chat message 
-    */
+     * scrolls to the most recent chat message
+     */
     const scrollToBottom = () => {
         if (!lastMessage) {
             return;

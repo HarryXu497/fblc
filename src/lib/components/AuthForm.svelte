@@ -37,7 +37,7 @@
 
         try {
             await auth.logIn(email, password);
-            
+
             // Redirect to "/gardebs"
             goto("/gardens");
         } catch (e) {
@@ -75,12 +75,7 @@
         }
 
         try {
-            await auth.signUp(
-                email,
-                password,
-                firstName,
-                lastName,
-            );
+            await auth.signUp(email, password, firstName, lastName);
             await goto("/gardens");
         } catch (e) {
             const code = (e as any).code;

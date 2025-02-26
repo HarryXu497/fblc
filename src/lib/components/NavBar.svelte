@@ -1,7 +1,7 @@
 <script lang="ts">
-    /** 
-     * A component that displays the navigation bar at the top of the website 
-    */
+    /**
+     * A component that displays the navigation bar at the top of the website
+     */
 
     import { base } from "$app/paths";
     import auth from "$lib/state/auth.svelte";
@@ -13,8 +13,15 @@
 >
     <!-- Logo -->
     <h1 class="text-2xl text-black">
-        <a class="flex flex-row h-full w-full items-center font-bold" href="{base}/">
-            <img src="/icons/carrot.svg" alt="" class="inline-block mr-1 aspect-square w-10">
+        <a
+            class="flex h-full w-full flex-row items-center font-bold"
+            href="{base}/"
+        >
+            <img
+                src="/icons/carrot.svg"
+                alt=""
+                class="mr-1 inline-block aspect-square w-10"
+            />
             farmers<span class="text-accent">market</span>
         </a>
     </h1>

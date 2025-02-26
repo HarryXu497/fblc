@@ -1,20 +1,20 @@
 <script lang="ts">
-    /** 
+    /**
      * A component that previews a garden, without the interactivity or dimensions of 'GardenDisplay'
-    */
+     */
 
     import type { Garden } from "$lib/models/Garden.model";
 
     /**
      * @param garden the garden displayed by the component
      * @param pxTransform a callback function that transform the calculated tile size
-    */
+     */
     interface Props {
         garden: Garden;
         pxTransform?: (px: number) => number;
     }
 
-    let { garden, pxTransform, }: Props = $props();
+    let { garden, pxTransform }: Props = $props();
 
     // Dimensions of the available space
     let width = $state<number | null>(null);

@@ -1,7 +1,7 @@
 <script lang="ts">
     /**
      * A component that displays a card with information about a garden
-    */
+     */
 
     import { base } from "$app/paths";
     import type { Garden } from "$lib/models/Garden.model";
@@ -10,7 +10,7 @@
 
     /**
      * @param garden the garden displayed by the component
-    */
+     */
     interface Props {
         garden: Garden;
     }
@@ -29,7 +29,7 @@
         <div
             class="flex aspect-square w-full flex-row items-center justify-center"
         >
-            <GardenGridPreview {garden}/>
+            <GardenGridPreview {garden} />
         </div>
     </Window>
 </a>

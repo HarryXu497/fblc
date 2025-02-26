@@ -7,7 +7,7 @@ const client = new Client({});
  * Performs a reverse geocoding operation (converting location coordinate to an address) using Google Maps
  * @param lat the latitide of the location
  * @param lng the longitude of the location
- * @returns location results or null if there are no addresses found 
+ * @returns location results or null if there are no addresses found
  */
 async function reverseGeocode(lat: number, lng: number) {
     if (Number.isNaN(lat) || Number.isNaN(lng)) {

@@ -1,7 +1,7 @@
 <script lang="ts">
-    /** 
+    /**
      * A component that displays a garden sidebar, with a crop palette and a crop summary section
-    */
+     */
     import crops from "$lib/state/crops.svelte";
     import type { Crop } from "$lib/models/Crop.model";
     import Window from "../Window.svelte";
@@ -12,13 +12,13 @@
     /**
      * @param brush the currently selected crop to plany
      * @param garden the garden providing the data for the crop summary section
-    */
+     */
     interface Props {
         brush: Crop | null;
         garden: Garden;
     }
 
-    let { brush = $bindable(), garden, }: Props = $props();
+    let { brush = $bindable(), garden }: Props = $props();
 
     // Counts the amount of each crop in the garden and multiplies the counts
     // by the 'density' of each crop (how many of each crop can fit in 1 square meter).
@@ -70,7 +70,7 @@
     <div class="h-[50%] grow">
         <Window>
             {#snippet top()}
-                <p class="text-white text-xl">crop palette</p>
+                <p class="text-xl text-white">crop palette</p>
             {/snippet}
             <div class=" ml-2.5 h-full grow rounded-sm px-4 pt-1">
                 {#if crops.value}
@@ -85,7 +85,7 @@
     <div class="h-[50%] grow">
         <Window>
             {#snippet top()}
-                <p class="text-white text-xl">what you need</p>
+                <p class="text-xl text-white">what you need</p>
             {/snippet}
             <div class="mr-10 ml-2.5 h-full grow rounded-sm px-4 pt-1">
                 {#if summary.size !== 0}

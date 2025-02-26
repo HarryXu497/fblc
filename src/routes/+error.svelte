@@ -1,8 +1,8 @@
 <script lang="ts">
     /**
      * A component that is displayed when an error ocurrs
-    */
-   
+     */
+
     import { page } from "$app/state";
 </script>
 

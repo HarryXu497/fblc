@@ -27,7 +27,7 @@
         "/chats",
     ];
 
-    const STARTS_WITH_ROUTES = ["/gardens", "/buy", "/chats",];
+    const STARTS_WITH_ROUTES = ["/gardens", "/buy", "/chats"];
 
     // Redirects users if they are not logged in
     $effect(() => {
@@ -36,18 +36,18 @@
         if (!auth.value && loaded) {
             if (
                 browser &&
-                (
-                    AUTHENTICATED_ROUTES.some((route) => pathname === route) ||
-                    STARTS_WITH_ROUTES.some((route) => pathname.startsWith(route))
-                )
+                (AUTHENTICATED_ROUTES.some((route) => pathname === route) ||
+                    STARTS_WITH_ROUTES.some((route) =>
+                        pathname.startsWith(route),
+                    ))
             ) {
                 goto("/log-in");
             }
         }
-    })
+    });
 
     // Attaches a listener to the firebase auth state change and
-    // synchronizes the 'auth' state to it 
+    // synchronizes the 'auth' state to it
     $effect(() => {
         const unsubscribe = firebaseAuth.onAuthStateChanged(async (user) => {
             auth.value = user;

@@ -1,7 +1,7 @@
 <script lang="ts">
     /**
      * A page that renders a grid of available crop listings
-    */
+     */
 
     import { base } from "$app/paths";
     import CropCard from "$lib/components/CropListing/CropCard.svelte";
@@ -77,7 +77,7 @@
     });
 
     /**
-     * Callback function called when a query is submitted through the search bar 
+     * Callback function called when a query is submitted through the search bar
      * @param values the values of the query
      */
     async function onSearch(values: SearchValues) {
@@ -92,7 +92,7 @@
             ] as [number, number];
             const radiusInM = values.distance * 1000;
 
-            // Calculates geohash bounds for the specified radius from the center  
+            // Calculates geohash bounds for the specified radius from the center
             const bounds = geohashQueryBounds(center, radiusInM);
             const promises = [];
             for (const b of bounds) {
@@ -159,7 +159,7 @@
 
             return listing.name
                 .toLocaleLowerCase()
-                .startsWith(values.query.toLocaleLowerCase()); 
+                .startsWith(values.query.toLocaleLowerCase());
         });
 
         cropListings = listings;

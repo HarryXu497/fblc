@@ -1,7 +1,7 @@
 <script lang="ts">
-    /** 
-     * A component that displays a garden with an interactive grid 
-    */
+    /**
+     * A component that displays a garden with an interactive grid
+     */
 
     import type { Crop } from "$lib/models/Crop.model";
     import type { Garden } from "$lib/models/Garden.model";
@@ -11,7 +11,7 @@
      * @param px the side length of an individual garden tile
      * @param brush the currently selected crop to plant
      * @param onTileUpdate the callback function executed when a garden tile is updated
-    */
+     */
     interface Props {
         garden: Garden;
         px: number; // px size of a tile
@@ -19,7 +19,7 @@
         onTileUpdate: (x: number, y: number, crop: Crop | null) => void;
     }
 
-    let { garden, brush, px, onTileUpdate, }: Props = $props();
+    let { garden, brush, px, onTileUpdate }: Props = $props();
 
     // Dimensions of the garden in pixels
     let width = $state<number | null>(null);
@@ -28,7 +28,7 @@
     const GRID_GAP = 4;
 
     /**
-     * Calculates the width of the garden, including grip gaps 
+     * Calculates the width of the garden, including grip gaps
      */
     function calculateWidth() {
         if (!width) {
@@ -39,9 +39,9 @@
         return garden.width * px + widthGaps * GRID_GAP;
     }
 
-    /** 
+    /**
      * Calculates the height of the garde, including grid gaps
-    */
+     */
     function calculateHeight() {
         if (!height) {
             return 0;
@@ -56,7 +56,7 @@
 
     /**
      * Event listener function for the 'mousemove' event
-    */
+     */
     function onMouseMove(e: MouseEvent) {
         if (mousedown && e.target) {
             const x = Number((e.target as HTMLElement).dataset.x);

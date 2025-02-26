@@ -1,7 +1,7 @@
 <script lang="ts">
     /**
      * A page that displays all gardens owned by a user
-    */
+     */
 
     import { goto } from "$app/navigation";
     import { base } from "$app/paths";
@@ -16,8 +16,8 @@
     // Gets all gardens
     $effect(() => {
         getGardens()
-            .then((g) => gardens = g)
-            .catch(e => goto("/log-in"));
+            .then((g) => (gardens = g))
+            .catch((e) => goto("/log-in"));
     });
 </script>
 

@@ -1,7 +1,7 @@
 <script lang="ts">
     /**
      * A page that shows an individual chat between two users
-    */
+     */
 
     import {
         addDoc,

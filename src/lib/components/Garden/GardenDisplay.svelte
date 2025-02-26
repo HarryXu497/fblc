@@ -1,32 +1,32 @@
 <script lang="ts">
-    /** 
+    /**
      * A component that displays a garden with a side palette and summary
-    */
+     */
 
     import GardenGrid from "$lib/components/Garden/GardenGrid.svelte";
     import type { Crop } from "$lib/models/Crop.model";
     import type { Garden } from "$lib/models/Garden.model";
     import Window from "../Window.svelte";
     import GardenSidebar from "$lib/components/Garden/GardenSidebar.svelte";
-    
+
     /**
      * @param garden the garden displayed by the component
      * @param onTileUpdate the callback function executed when a garden tile is updated
      * @param onDeleteGarden the callback function executed when a garden is deleted
-    */
+     */
     interface Props {
         garden: Garden;
         onTileUpdate: (x: number, y: number, crop: Crop | null) => void;
         onDeleteGarden: () => void;
     }
 
-    let { garden, onTileUpdate, onDeleteGarden, }: Props = $props();
+    let { garden, onTileUpdate, onDeleteGarden }: Props = $props();
 
-    // Dimensions of the window rendering the garden 
+    // Dimensions of the window rendering the garden
     let width = $state<number | null>(null);
     let height = $state<number | null>(null);
 
-    // Calculate the side length of an individual garden tile 
+    // Calculate the side length of an individual garden tile
     const PADDING = 128;
     const GRID_GAP = 4;
 
@@ -59,17 +59,19 @@
     >
         <Window>
             {#snippet top()}
-                <div class="flex flex-row w-full justify-between items-center">
-                    <p class="text-white text-xl">{garden.name.toLocaleLowerCase()}</p>
-                    <div class="flex flex-row gap-1 items-center">
+                <div class="flex w-full flex-row items-center justify-between">
+                    <p class="text-xl text-white">
+                        {garden.name.toLocaleLowerCase()}
+                    </p>
+                    <div class="flex flex-row items-center gap-1">
                         <a
-                            class="text-white rounded-sm bg-blue-700 text-xl px-3 hover:cursor-pointer hover:bg-blue-800"
+                            class="rounded-sm bg-blue-700 px-3 text-xl text-white hover:cursor-pointer hover:bg-blue-800"
                             href="/gardens/{garden.id}/edit"
                         >
                             edit
                         </a>
                         <button
-                            class="text-white rounded-sm bg-red-700 text-xl px-3 hover:cursor-pointer hover:bg-red-800"
+                            class="rounded-sm bg-red-700 px-3 text-xl text-white hover:cursor-pointer hover:bg-red-800"
                             onclick={onDeleteGarden}
                         >
                             delete
