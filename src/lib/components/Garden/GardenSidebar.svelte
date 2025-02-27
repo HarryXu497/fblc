@@ -64,6 +64,23 @@
         return counts;
     });
 
+    // Tracks if anything has been planted yep
+    let planted = $derived.by(() => {
+        for (const col of garden.tiles) {
+            for (const tile of col) {
+                if (tile.crop !== null) {
+                    return true
+                }
+            }
+        }
+
+        return false;
+    });
+
+    /**
+     * Computes the color based on the brush type
+     * @param brush the brush
+     */
     function computeColor(brush: Brush) {
         if (brush === null || brush === "unplanted") {
             return "var(--color-garden-dirt-darker)";
@@ -212,7 +229,11 @@
                     <p
                         class="flex h-full flex-row items-center justify-center pb-1 text-xl text-white"
                     >
-                        plan your garden!
+                        {#if planted}
+                            everything planted!
+                        {:else}
+                            plan your garden!
+                        {/if}
                     </p>
                 </div>
             {/if}
