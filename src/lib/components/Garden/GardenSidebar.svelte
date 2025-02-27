@@ -48,7 +48,7 @@
 
         for (const col of garden.tiles) {
             for (const tile of col) {
-                if (tile.crop !== null) {
+                if (tile.crop !== null && !tile.planted) {
                     if (!counts.has(tile.crop.name)) {
                         counts.set(tile.crop.name, 0);
                     }
@@ -182,38 +182,40 @@
             {#snippet top()}
                 <p class="text-xl text-white">what you need</p>
             {/snippet}
+            {#if summary.size !== 0}
             <div class="mr-10 ml-2.5 h-full grow rounded-sm px-4 pt-1">
-                {#if summary.size !== 0}
-                    <div class="mr-6 flex h-full flex-col justify-between">
-                        <div class="flex flex-col gap-0.5">
-                            {#each summary.entries().toArray() as [crop, count]}
-                                <p class="text-xl text-white">
-                                    <span class="text-accent">{count}</span>
-                                    {crop}
-                                    {pluralize("crop", count)}
-                                </p>
-                            {/each}
-                        </div>
-                        <a
-                            href="/buy"
-                            class="proceed flex flex-row gap-4 text-2xl font-bold text-accent"
-                        >
-                            <span>go buy</span>
-                            <FallbackIcon
-                                icon="ri:arrow-right-long-line"
-                                preload={["ri:arrow-right-long-line"]}
-                                class="mr-1 inline-block"
-                            />
-                        </a>
+                <div class="mr-6 flex h-full flex-col justify-between">
+                    <div class="flex flex-col gap-0.5">
+                        {#each summary.entries().toArray() as [crop, count]}
+                            <p class="text-xl text-white">
+                                <span class="text-accent">{count}</span>
+                                {crop}
+                                {pluralize("crop", count)}
+                            </p>
+                        {/each}
                     </div>
-                {:else}
+                    <a
+                        href="/buy"
+                        class="proceed flex flex-row gap-4 text-2xl font-bold text-accent"
+                    >
+                        <span>go buy</span>
+                        <FallbackIcon
+                            icon="ri:arrow-right-long-line"
+                            preload={["ri:arrow-right-long-line"]}
+                            class="mr-1 inline-block"
+                        />
+                    </a>
+                </div>
+            </div>
+            {:else}
+                <div class="h-full grow rounded-sm px-4 pt-1">
                     <p
-                        class="mr-6 flex h-full flex-row items-center justify-center pb-1 text-2xl text-white"
+                        class="flex h-full flex-row items-center justify-center pb-1 text-xl text-white"
                     >
                         plan your garden!
                     </p>
-                {/if}
-            </div>
+                </div>
+            {/if}
         </Window>
     </div>
 </section>
