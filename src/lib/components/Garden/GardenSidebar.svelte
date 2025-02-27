@@ -8,13 +8,14 @@
     import type { Garden } from "$lib/models/Garden.model";
     import pluralize from "pluralize";
     import FallbackIcon from "$lib/components/FallbackIcon.svelte";
+    import type { Brush } from "./GardenDisplay.svelte";
 
     /**
      * @param brush the currently selected crop to plany
      * @param garden the garden providing the data for the crop summary section
      */
     interface Props {
-        brush: Crop | null;
+        brush: Brush;
         garden: Garden;
     }
 
@@ -62,18 +63,26 @@
 
         return counts;
     });
+
+    function computeColor(brush: Brush) {
+        if (brush === null || brush === "unplanted") {
+            return "var(--color-garden-dirt-darker)";
+        } else if (brush === "planted") {
+            return "var(--color-dark-accent)";
+        } else {
+            return brush.color;
+        }
+    }
 </script>
 
-{#snippet brushButton(crop: Crop | null, i: number)}
+{#snippet brushButton(crop: Brush, i: number)}
     <div class="flex flex-row gap-2">
         <button
             onclick={() => (brush = crop)}
-            class="flex flex-row items-center gap-2 text-2xl hover:cursor-pointer"
+            class="flex flex-row items-center gap-2 text-xl hover:cursor-pointer"
         >
             <div
-                style:background-color={crop
-                    ? crop.color
-                    : "var(--color-garden-dirt)"}
+                style:background-color={computeColor(crop)}
                 style:border-color={brush === crop ? "var(--color-accent)" : ""}
                 class="aspect-square w-6 rounded-4xl border-4"
             ></div>
@@ -82,10 +91,16 @@
                 style:color={brush === crop ? "var(--color-accent)" : ""}
                 style:font-weight={brush === crop ? "bold" : ""}
             >
-                {crop ? crop.name : "reset"}
+                {#if crop === null}
+                    reset
+                {:else if typeof crop === "string"}
+                    mark as {crop}
+                {:else}
+                    {crop.name}
+                {/if}
             </p>
         </button>
-        {#if crop && hovered}
+        {#if crop && typeof crop !== "string" && hovered}
             <!-- svelte-ignore a11y_mouse_events_have_key_events -->
             <button
                 class="text-white hover:cursor-pointer"
@@ -144,7 +159,9 @@
                         {#each crops.value as crop, i}
                             {@render brushButton(crop, i)}
                         {/each}
-                        {@render brushButton(null, crops.value.length)}
+                        {@render brushButton("planted", crops.value.length)}
+                        {@render brushButton("unplanted", crops.value.length + 1)}
+                        {@render brushButton(null, crops.value.length + 2)}
                     {/if}
                 {:else}
                     <ul class="text-md ml-0 gap-1 px-0 text-white">
@@ -170,7 +187,7 @@
                     <div class="mr-6 flex h-full flex-col justify-between">
                         <div class="flex flex-col gap-0.5">
                             {#each summary.entries().toArray() as [crop, count]}
-                                <p class="text-2xl text-white">
+                                <p class="text-xl text-white">
                                     <span class="text-accent">{count}</span>
                                     {crop}
                                     {pluralize("crop", count)}

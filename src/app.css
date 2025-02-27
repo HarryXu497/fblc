@@ -4,6 +4,8 @@
 /* Tailwind color scheme */
 @theme {
     --color-accent: #48b21b;
+    --color-dark-accent: #48b21b66;
+    --color-darker-accent: #48b21b55;
     --color-light-accent: #a8d1a7;
     --color-lighter-accent: #cde5cd;
     --color-black: #000000;

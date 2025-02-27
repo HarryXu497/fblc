@@ -1,5 +1,5 @@
 <script lang="ts">
-    import GardenDisplay from "$lib/components/Garden/GardenDisplay.svelte";
+    import GardenDisplay, { type Brush } from "$lib/components/Garden/GardenDisplay.svelte";
     import type { PageProps } from "./$types";
     import type { Garden } from "$lib/models/Garden.model";
     import { getGarden } from "$lib/utils/garden.svelte";
@@ -28,9 +28,9 @@
      * Updates the garden object and synchronizes the change to Firestore
      * @param x the x coordinate of the updated tile
      * @param y the y coordinate of the updated tile
-     * @param crop the updated crop of the tile
+     * @param brush the type of the brush that edited the tile
      */
-    async function onTileUpdate(x: number, y: number, crop: Crop | null) {
+    async function onTileUpdate(x: number, y: number, brush: Brush) {
         const userId = auth.value?.uid;
 
         if (!garden || !userId) {
@@ -41,7 +41,21 @@
             return;
         }
 
-        garden.tiles[y][x] = { crop };
+        const current = garden.tiles[y][x];
+
+        if (brush === "planted") {
+            if (current.crop !== null) {
+                garden.tiles[y][x] = { ...current, planted: true };
+            }
+        } else if (brush === "unplanted") {
+            if (current.crop !== null) {
+                garden.tiles[y][x] = { ...current, planted: false };
+            }
+        } else if (brush === null) {
+            garden.tiles[y][x] = { crop: null, planted: false };
+        } else {
+            garden.tiles[y][x] = { ...current, crop: brush };
+        }
 
         // Persists the data to the database
         const tilesCollectionRef = collection(
@@ -55,8 +69,8 @@
 
         const tileDocRef = doc(tilesCollectionRef, `${x},${y}`);
 
-        if (crop !== null) {
-            await setDoc(tileDocRef, { ...crop });
+        if (brush !== null) {
+            await setDoc(tileDocRef, { ...garden.tiles[y][x].crop, planted: garden.tiles[y][x].planted });
         } else {
             // Removes the tile document if the tile has no crop
             await deleteDoc(tileDocRef);

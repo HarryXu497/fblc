@@ -5,6 +5,7 @@
 
     import type { Crop } from "$lib/models/Crop.model";
     import type { Garden } from "$lib/models/Garden.model";
+    import type { Brush } from "./GardenDisplay.svelte";
 
     /**
      * @param garden the garden displayed by the component
@@ -15,8 +16,8 @@
     interface Props {
         garden: Garden;
         px: number; // px size of a tile
-        brush: Crop | null;
-        onTileUpdate: (x: number, y: number, crop: Crop | null) => void;
+        brush: Brush;
+        onTileUpdate: (x: number, y: number, brush: Brush) => void;
     }
 
     let { garden, brush, px, onTileUpdate }: Props = $props();
@@ -62,9 +63,7 @@
             const x = Number((e.target as HTMLElement).dataset.x);
             const y = Number((e.target as HTMLElement).dataset.y);
 
-            if (brush !== undefined) {
-                onTileUpdate(x, y, brush);
-            }
+            onTileUpdate(x, y, brush);
         }
     }
 </script>
@@ -99,12 +98,16 @@
         </div>
         {#each { length: garden.height }, y}
             {#each { length: garden.width }, x}
-                <div
-                    class="
-                        tile
-                        relative flex h-full w-full flex-row items-center
-                        justify-center transition select-none hover:cursor-pointer
-                    "
+                <button
+                    class={{
+                        "tile relative flex h-full w-full flex-row items-center justify-center transition select-none hover:cursor-pointer": true,
+                        "planted": garden.tiles[y][x].planted,
+                    }}
+                    onclick={() => {
+                        if (!mousedown) {
+                            onTileUpdate(x, y, brush);
+                        }
+                    }}
                     data-x={x}
                     data-y={y}
                     style:width="{px}px"
@@ -134,7 +137,7 @@
                             data-y={y}
                         />
                     {/if}
-                </div>
+                    </button>
             {/each}
         {/each}
     </div>
@@ -148,6 +151,15 @@
     .tile:hover {
         background-color: var(--color-garden-dirt-hover);
     }
+
+    .tile.planted {
+        background-color: var(--color-dark-accent);
+    }
+
+    .tile.planted:hover {
+        background-color: var(--color-darker-accent);
+    }
+
 
     .icon-img {
         user-select: none;

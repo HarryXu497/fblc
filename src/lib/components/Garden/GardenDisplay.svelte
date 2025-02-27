@@ -1,3 +1,7 @@
+<script module lang="ts">
+    export type Brush = Crop | "planted" | "unplanted" | null;
+</script>
+
 <script lang="ts">
     /**
      * A component that displays a garden with a side palette and summary
@@ -16,7 +20,7 @@
      */
     interface Props {
         garden: Garden;
-        onTileUpdate: (x: number, y: number, crop: Crop | null) => void;
+        onTileUpdate: (x: number, y: number, brush: Brush) => void;
         onDeleteGarden: () => void;
     }
 
@@ -49,7 +53,7 @@
     });
 
     // Currently selected crop to plant
-    let brush = $state<Crop | null>(null);
+    let brush = $state<Brush>(null);
 </script>
 
 <main class="mx-12 flex h-full flex-row items-center justify-center gap-8">

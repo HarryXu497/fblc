@@ -5,6 +5,7 @@ import type { Crop } from "./Crop.model";
  */
 interface Tile {
     crop: Crop | null;
+    planted: boolean;
 }
 
 /**

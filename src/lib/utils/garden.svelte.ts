@@ -40,7 +40,7 @@ async function getGarden(gardenId: string): Promise<Garden | null> {
 
     // Convert Firestore tile data to a 2D tile array
     const tiles: Tile[][] = Array.from({ length: height }, () =>
-        Array.from({ length: width }, () => ({ crop: null })),
+        Array.from({ length: width }, () => ({ crop: null, planted: false })),
     );
 
     for (const tileDoc of tileDocs.docs) {
@@ -53,7 +53,10 @@ async function getGarden(gardenId: string): Promise<Garden | null> {
         } else {
             const crop = tileDoc.get("name") as string;
 
-            tiles[y][x] = { crop: crops.fromName(crop) };
+            tiles[y][x] = {
+                crop: crops.fromName(crop),
+                planted: tileDoc.get("planted") as boolean || false,
+            };
         }
     }
 
