@@ -27,6 +27,20 @@
     import { distanceBetween, geohashQueryBounds } from "geofire-common";
 
     let cropListings = $state<CropListing[] | null>(null);
+    let numDots = $state<number | null>(null);
+
+    $effect(() => {
+        if (numDots !== null) {
+            const interval = setInterval(() => {
+                if (numDots) {
+                    numDots = (numDots % 3) + 1;
+                }
+            }, 200);
+            
+            return () => clearInterval(interval);
+        }
+    })
+    
 
     // Computes addresses of each listing
     let cropLocations = $derived.by<Promise<GeocodeResult>[] | null>(() => {
@@ -81,9 +95,17 @@
      * @param values the values of the query
      */
     async function onSearch(values: SearchValues) {
+        // Search animation
+        numDots = 1;
+
         const centerPos = await getUserLocation();
 
         let listings: CropListing[] | null = [];
+
+        if (values.distance && values.distance <= 0) {
+            numDots = null;
+            throw Error("distance must be positive");
+        }
 
         if (centerPos && values.distance) {
             const center = [
@@ -163,6 +185,7 @@
         });
 
         cropListings = listings;
+        numDots = null;
     }
 </script>
 
@@ -181,6 +204,12 @@
                 class="flex h-[calc(100%_-_6rem)] w-full flex-row items-center justify-center"
             >
                 <p class="pb-48 text-4xl">no listings</p>
+            </section>
+        {:else if numDots !== null}
+            <section
+                class="flex h-[calc(100%_-_6rem)] w-full flex-row items-center justify-center"
+            >
+                <p class="pb-48 text-4xl">searching{'.'.repeat(numDots)}</p>
             </section>
         {:else}
             <section

@@ -4,6 +4,7 @@
      */
 
     import { goto } from "$app/navigation";
+    import { modulo } from "$lib/components/LocationInput.svelte";
     import Metadata from "$lib/components/Metadata.svelte";
     import SellForm, { type SellValues } from "$lib/components/SellForm.svelte";
     import { firestore, storage } from "$lib/firebase";
@@ -40,7 +41,7 @@
 
         // Calculate geohash of user location
         const lat = location.lat;
-        const lng = location.lng;
+        const lng =  modulo(location.lng + 180, 360) - 180;
         const hash = geohashForLocation([lat, lng]);
 
         // Generate a unique ID for each image

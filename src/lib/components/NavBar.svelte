@@ -61,7 +61,7 @@
                 class="rounded-xl bg-accent px-3 py-2 text-white drop-shadow-xl transition-transform hover:-translate-y-1"
                 href="{base}/buy"
             >
-                buy crops
+                marketplace
             </a>
             <a
                 class="rounded-xl bg-accent px-3 py-2 text-white drop-shadow-xl transition-transform hover:-translate-y-1"

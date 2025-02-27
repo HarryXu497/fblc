@@ -91,6 +91,7 @@
                 onsubmit={(e) => {
                     e.preventDefault();
                     onSubmit(e);
+                    text = ""
                 }}
             >
                 <input
@@ -100,7 +101,7 @@
                 />
                 <button
                     class="px-0 py-0.5 pr-2 text-4xl text-accent hover:cursor-pointer"
-                    type="reset"
+                    type="submit"
                     onmouseenter={() => (outlined = false)}
                     onmouseleave={() => (outlined = true)}
                 >

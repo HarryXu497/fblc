@@ -3,6 +3,10 @@
         lat: number,
         lng: number,
     };
+
+    const modulo = (dividend: number, divisor: number) => ((dividend % divisor) + divisor) % divisor;
+
+    export { modulo };
 </script>
 
 <script lang="ts">

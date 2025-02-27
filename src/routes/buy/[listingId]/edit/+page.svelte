@@ -22,6 +22,7 @@
     import type { PageProps } from "../$types";
     import { getCropListing } from "$lib/utils/cropListing.svelte";
     import SellForm, { type SellValues } from "$lib/components/SellForm.svelte";
+    import { modulo } from "$lib/components/LocationInput.svelte";
 
     /**
      * Contains the listing ID from the URL
@@ -85,7 +86,7 @@
 
         // Calculate geohash based on current location
         const lat = location.lat;
-        const lng = location.lng;
+        const lng = modulo(location.lng + 180, 360) - 180;
         const hash = geohashForLocation([lat, lng]);
 
         const seedDocRef = doc(firestore, "seeds", data.listingId);
