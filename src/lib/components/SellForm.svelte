@@ -80,6 +80,14 @@
     async function onsubmit(e: SubmitEvent) {
         e.preventDefault();
 
+        if (price !== null && price <= 0) {
+            error = "price must be positive";
+        }
+
+        if (quantity !== null && (quantity <= 0 || !Number.isInteger(quantity))) {
+            error = "quantity must be a positive integer"
+        }
+
         submitted = true;
 
         try {
