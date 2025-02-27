@@ -9,7 +9,6 @@
     import { firestore, storage } from "$lib/firebase";
     import type { CropListing } from "$lib/models/CropListing.model";
     import auth from "$lib/state/auth.svelte";
-    import getUserLocation from "$lib/utils/userLocation.svelte";
     import { addDoc, collection } from "firebase/firestore";
     import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
     import { geohashForLocation } from "geofire-common";
@@ -25,9 +24,8 @@
         price,
         quantity,
         images,
+        location,
     }: SellValues) {
-        const location = await getUserLocation();
-
         if (
             !location ||
             !crop ||
@@ -41,8 +39,8 @@
         }
 
         // Calculate geohash of user location
-        const lat = location.coords.latitude;
-        const lng = location.coords.longitude;
+        const lat = location.lat;
+        const lng = location.lng;
         const hash = geohashForLocation([lat, lng]);
 
         // Generate a unique ID for each image
@@ -85,8 +83,6 @@
         } as CropListing);
         await goto("/buy");
     }
-
-    // TODO: visual validation
 </script>
 
 <Metadata title="sell crops | farmer's market" />

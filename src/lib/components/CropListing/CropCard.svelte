@@ -19,6 +19,16 @@
     }
 
     let { listing, location }: Props = $props();
+
+    /**
+     * Computes name of the locality containing the address 
+     * @param res the reverse geocoding result
+    */
+    function computeLocality(res: GeocodeResult) {
+        const locality = res?.address_components.find(l => l.types.some(g => g === "locality")) || res?.address_components[0];
+
+        return locality?.short_name.toLocaleLowerCase();
+    }
 </script>
 
 <a href="{base}/buy/{listing.id}">
@@ -31,7 +41,7 @@
                         from ...
                     {:then value}
                         from <span class="text-accent"
-                            >{value.address_components[3].short_name.toLocaleLowerCase()}</span
+                            >{computeLocality(value)}</span
                         >
                     {/await}
                 {/if}

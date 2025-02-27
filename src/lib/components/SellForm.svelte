@@ -12,6 +12,7 @@
         price: number | null;
         quantity: number | null;
         images: FileList | null;
+        location: LatLngLocation | null;
     }
 
     export type { SellValues };
@@ -25,6 +26,7 @@
     import type { Crop } from "$lib/models/Crop.model";
     import crops from "$lib/state/crops.svelte";
     import type { Snippet } from "svelte";
+    import LocationInput, { type LatLngLocation } from "./LocationInput.svelte";
 
     /**
      * @param onSubmit a callback function executed when the form is submitted
@@ -55,6 +57,9 @@
     let price = $state<number | null>(null);
     let quantity = $state<number | null>(null);
     let images = $state<FileList | null>(null);
+    let location = $state<LatLngLocation | null>(null);
+
+    let submitted = $state<boolean>(false);
 
     $effect(() => {
         crop ||= initialValues?.crop || null;
@@ -62,9 +67,11 @@
         price ||= initialValues?.price || null;
         quantity ||= initialValues?.quantity || null;
         images ||= initialValues?.images || null;
+        location ||= initialValues?.location || null;
     });
 
     // TODO: submitted loading spinner
+    
 
     /**
      * Executes the 'onSubmit' callback with UI error handling
@@ -73,6 +80,8 @@
     async function onsubmit(e: SubmitEvent) {
         e.preventDefault();
 
+        submitted = true;
+
         try {
             await onSubmit({
                 crop,
@@ -80,8 +89,11 @@
                 price,
                 quantity,
                 images,
+                location,
             });
         } catch (e) {
+            submitted = false;
+
             if (e instanceof Error) {
                 error = e.message;
             }
@@ -93,7 +105,8 @@
     }
 </script>
 
-<main class="size flex w-screen flex-col items-center justify-center">
+{#if !submitted}
+<main class="flex flex-col items-center justify-center">
     <div class="w-fit">
         <h1 class="mb-4 text-center text-4xl">
             {#if header}
@@ -118,7 +131,7 @@
                 <label for="description">description</label>
                 <textarea
                     required
-                    class="h-48"
+                    class="h-32"
                     name="description"
                     id="description"
                     placeholder="description"
@@ -177,11 +190,16 @@
                     {/each}
                 </div>
             {/if}
+            <div class="form-control">
+                <!-- svelte-ignore a11y_label_has_associated_control -->
+                <label>location</label>
+                <LocationInput bind:location={location}/>
+            </div>
             {#if error}
-                <p class="text-[#b64040]">{error.toLocaleLowerCase()}</p>
+            <p class="text-[#b64040]">{error.toLocaleLowerCase()}</p>
             {/if}
             <button
-                class="mt-2 w-full rounded-lg bg-accent py-2 text-white transition-transform hover:-translate-y-1 hover:cursor-pointer"
+                class="mt-2 mb-12 w-full rounded-lg bg-accent py-2 text-white transition-transform hover:-translate-y-1 hover:cursor-pointer"
                 type="submit"
             >
                 {#if buttonContent}
@@ -193,6 +211,11 @@
         </form>
     </div>
 </main>
+{:else}
+    <main class="flex flex-col items-center justify-center h-[calc(100%_-_6rem)]">
+        <p class="text-3xl">submitting...</p>
+    </main>
+{/if}
 
 <style lang="postcss">
     @reference "tailwindcss";
@@ -200,7 +223,7 @@
     .auth-form {
         display: flex;
         flex-direction: column;
-        gap: 1rem;
+        gap: 0.5rem;
     }
 
     label:not(.image-selector) {
@@ -233,9 +256,5 @@
     .form-control,
     .name-control {
         width: min(60vw, 30rem);
-    }
-
-    .size {
-        height: calc(100vh - 5rem);
     }
 </style>

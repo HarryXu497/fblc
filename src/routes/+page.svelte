@@ -184,8 +184,6 @@
             ],
         ],
     };
-
-    // TODO: add crops-specific tips
 </script>
 
 <svelte:head>

@@ -48,9 +48,11 @@
                         price: l.price,
                         quantity: l.quantity,
                         images: null,
+                        location: {
+                            lat: l.lat,
+                            lng: l.lng,
+                        }
                     };
-
-                    // TODO: better image editing if time permits
 
                     listing = l;
                 }
@@ -68,36 +70,28 @@
         price,
         quantity,
         images,
+        location,
     }: SellValues) {
-        let location: GeolocationPosition | null;
-
-        try {
-            location = await getUserLocation();
-        } catch (e) {
-            throw Error("User cannot be located");
-        }
-
         if (
             !location ||
             !crop ||
             !description.trim() ||
             !price ||
             !quantity ||
-            !auth.value ||
-            !images
+            !auth.value
         ) {
             throw Error("Invalid inputs");
         }
 
         // Calculate geohash based on current location
-        const lat = location.coords.latitude;
-        const lng = location.coords.longitude;
+        const lat = location.lat;
+        const lng = location.lng;
         const hash = geohashForLocation([lat, lng]);
 
         const seedDocRef = doc(firestore, "seeds", data.listingId);
 
         // Do not edit the images if none are uploaded
-        if (images.length === 0) {
+        if (!images || images.length === 0) {
             await updateDoc(seedDocRef, {
                 geohash: hash,
                 lat: lat,
@@ -147,6 +141,7 @@
                     await deleteObject(oldImageRef);
                 }),
             );
+
 
             // Add new images
             await setDoc(seedDocRef, {

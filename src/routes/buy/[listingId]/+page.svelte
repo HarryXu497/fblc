@@ -128,6 +128,17 @@
         style: "currency",
         currency: "CAD",
     });
+
+    
+    /**
+     * Computes name of the locality containing the address 
+     * @param res the reverse geocoding result
+    */
+    function computeLocality(res: GeocodeResult) {
+        const locality = res?.address_components.find(l => l.types.some(g => g === "locality")) || res?.address_components[0];
+
+        return locality?.short_name.toLocaleLowerCase();
+    }
 </script>
 
 <Metadata
@@ -145,7 +156,13 @@
                 <h1 class="text-4xl font-bold">
                     {pluralize(listing.name, listing.quantity)} from
                     <span class="text-4xl font-bold text-accent"
-                        >{location?.address_components[3].short_name.toLocaleLowerCase()}</span
+                        >
+                        {#if location}
+                            {computeLocality(location)}
+                        {:else}
+                            ...
+                        {/if}
+                        </span
                     >
                 </h1>
                 <h2 class="text-4xl font-bold">
