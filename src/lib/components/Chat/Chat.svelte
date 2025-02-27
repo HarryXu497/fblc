@@ -91,7 +91,7 @@
                 onsubmit={(e) => {
                     e.preventDefault();
                     onSubmit(e);
-                    text = ""
+                    text = "";
                 }}
             >
                 <input

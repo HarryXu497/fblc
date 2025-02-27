@@ -41,7 +41,7 @@
 
         // Calculate geohash of user location
         const lat = location.lat;
-        const lng =  modulo(location.lng + 180, 360) - 180;
+        const lng = modulo(location.lng + 180, 360) - 180;
         const hash = geohashForLocation([lat, lng]);
 
         // Generate a unique ID for each image

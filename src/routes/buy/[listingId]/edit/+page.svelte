@@ -52,7 +52,7 @@
                         location: {
                             lat: l.lat,
                             lng: l.lng,
-                        }
+                        },
                     };
 
                     listing = l;
@@ -142,7 +142,6 @@
                     await deleteObject(oldImageRef);
                 }),
             );
-
 
             // Add new images
             await setDoc(seedDocRef, {

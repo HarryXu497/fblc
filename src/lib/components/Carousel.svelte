@@ -36,12 +36,20 @@
         navigation={true}
     >
         {#if imageURLs.length === 0}
-            <div class="relative overflow-hidden flex flex-row grow w-full h-full aspect-video bg-gray-50">
-                <h3 class="w-full h-full flex flex-row justify-center items-center">No Images Yet</h3>
+            <div
+                class="relative flex aspect-video h-full w-full grow flex-row overflow-hidden bg-gray-50"
+            >
+                <h3
+                    class="flex h-full w-full flex-row items-center justify-center"
+                >
+                    No Images Yet
+                </h3>
             </div>
         {/if}
         {#each imageURLs as src}
-            <swiper-slide class="relative overflow-hidden flex flex-row grow w-full h-full aspect-video bg-gray-50">
+            <swiper-slide
+                class="relative flex aspect-video h-full w-full grow flex-row overflow-hidden bg-gray-50"
+            >
                 <div class="swiper-zoom-container">
                     <img {src} alt="" />
                 </div>

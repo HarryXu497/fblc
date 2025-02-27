@@ -29,7 +29,7 @@
         if (selectedTipCrop === null) {
             closeButtonHovered = false;
         }
-    })
+    });
 
     // Keeps track of hovered buttons for icon change effect
     let hovered = $state<boolean[] | null>(null);
@@ -38,7 +38,7 @@
         if (crops.value && selectedTipCrop === null) {
             hovered = Array(crops.value.length).fill(false);
         }
-    })
+    });
 
     // Counts the amount of each crop in the garden and multiplies the counts
     // by the 'density' of each crop (how many of each crop can fit in 1 square meter).
@@ -78,7 +78,7 @@
                 class="aspect-square w-6 rounded-4xl border-4"
             ></div>
             <p
-                class="text-white flex flex-row gap-2 items-center"
+                class="flex flex-row items-center gap-2 text-white"
                 style:color={brush === crop ? "var(--color-accent)" : ""}
                 style:font-weight={brush === crop ? "bold" : ""}
             >
@@ -89,11 +89,15 @@
             <!-- svelte-ignore a11y_mouse_events_have_key_events -->
             <button
                 class="text-white hover:cursor-pointer"
-                onmouseover={() => hovered![i] = true}
-                onmouseleave={() => hovered![i] = false}
-                onclick={() => selectedTipCrop = crop}
+                onmouseover={() => (hovered![i] = true)}
+                onmouseleave={() => (hovered![i] = false)}
+                onclick={() => (selectedTipCrop = crop)}
             >
-                <FallbackIcon icon="ri:information-{hovered![i] ? 'fill' : 'line'}" preload={["ri:information-line", "ri:information-fill"]} class="text-2xl pt-1"/>
+                <FallbackIcon
+                    icon="ri:information-{hovered![i] ? 'fill' : 'line'}"
+                    preload={["ri:information-line", "ri:information-fill"]}
+                    class="pt-1 text-2xl"
+                />
             </button>
         {/if}
     </div>
@@ -103,26 +107,36 @@
     <div class="h-[50%] grow">
         <Window>
             {#snippet top()}
-            {#if selectedTipCrop === null}
-                <p class="text-xl text-white">
-                    crop palette
-                </p>
-            {:else}
-                <div class="flex flex-row justify-between items-center w-full">
-                    <p class="text-xl text-white">
-                        <span class="text-accent">{selectedTipCrop.name}</span> tips
-                    </p>
-                    <!-- svelte-ignore a11y_mouse_events_have_key_events -->
-                    <button
-                        class="text-xl text-white hover:cursor-pointer"
-                        onclick={() => selectedTipCrop = null}
-                        onmouseover={() => closeButtonHovered = true}
-                        onmouseleave={() => closeButtonHovered = false}
+                {#if selectedTipCrop === null}
+                    <p class="text-xl text-white">crop palette</p>
+                {:else}
+                    <div
+                        class="flex w-full flex-row items-center justify-between"
                     >
-                        <FallbackIcon icon="ri:close-circle-{closeButtonHovered ? 'fill' : 'line'}" preload={["ri:close-circle-line", "ri:close-circle-fill"]}/>
-                    </button>
-                </div>
-            {/if}
+                        <p class="text-xl text-white">
+                            <span class="text-accent"
+                                >{selectedTipCrop.name}</span
+                            > tips
+                        </p>
+                        <!-- svelte-ignore a11y_mouse_events_have_key_events -->
+                        <button
+                            class="text-xl text-white hover:cursor-pointer"
+                            onclick={() => (selectedTipCrop = null)}
+                            onmouseover={() => (closeButtonHovered = true)}
+                            onmouseleave={() => (closeButtonHovered = false)}
+                        >
+                            <FallbackIcon
+                                icon="ri:close-circle-{closeButtonHovered
+                                    ? 'fill'
+                                    : 'line'}"
+                                preload={[
+                                    "ri:close-circle-line",
+                                    "ri:close-circle-fill",
+                                ]}
+                            />
+                        </button>
+                    </div>
+                {/if}
             {/snippet}
             <div class="ml-2.5 h-full grow rounded-sm px-4 pt-1">
                 {#if selectedTipCrop === null}
@@ -133,7 +147,7 @@
                         {@render brushButton(null, crops.value.length)}
                     {/if}
                 {:else}
-                    <ul class="ml-0 px-0 text-md text-white gap-1">
+                    <ul class="text-md ml-0 gap-1 px-0 text-white">
                         {#each crops.getTips(selectedTipCrop.id)! as tip, i}
                             {#if i % 2 === 0}
                                 <li class="text-white">{tip}</li>

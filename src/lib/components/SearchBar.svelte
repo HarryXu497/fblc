@@ -59,7 +59,7 @@
     }
 </script>
 
-<div class="flex flex-col gap-2 items-center">
+<div class="flex flex-col items-center gap-2">
     <form
         class="relative flex h-full w-full flex-row items-center gap-3 rounded-md bg-light-accent px-4 py-3 shadow-md outline-accent outline-none focus-within:outline-2"
         onsubmit={onSubmit}

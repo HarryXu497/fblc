@@ -28,7 +28,7 @@ async function getCropTips(cropId: string): Promise<string[]> {
 
     const cropDocs = await getDocs(cropCollectionRef);
 
-    return cropDocs.docs.map(c => c.get("tip") as string);
+    return cropDocs.docs.map((c) => c.get("tip") as string);
 }
 
 /**
@@ -68,12 +68,14 @@ function createCropState() {
             cropState = crops;
             return cropState;
         })
-        .then(crops => {
-            return Promise.all(crops.map(c => getCropTips(c.id)));
+        .then((crops) => {
+            return Promise.all(crops.map((c) => getCropTips(c.id)));
         })
-        .then(tips => {
+        .then((tips) => {
             if (cropState !== null) {
-                cropTips = new Map(cropState.map((_, i) => [cropState![i].id, tips[i]]))
+                cropTips = new Map(
+                    cropState.map((_, i) => [cropState![i].id, tips[i]]),
+                );
             }
         });
 

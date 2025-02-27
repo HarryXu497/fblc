@@ -36,11 +36,10 @@
                     numDots = (numDots % 3) + 1;
                 }
             }, 200);
-            
+
             return () => clearInterval(interval);
         }
-    })
-    
+    });
 
     // Computes addresses of each listing
     let cropLocations = $derived.by<Promise<GeocodeResult>[] | null>(() => {
@@ -209,7 +208,7 @@
             <section
                 class="flex h-[calc(100%_-_6rem)] w-full flex-row items-center justify-center"
             >
-                <p class="pb-48 text-4xl">searching{'.'.repeat(numDots)}</p>
+                <p class="pb-48 text-4xl">searching{".".repeat(numDots)}</p>
             </section>
         {:else}
             <section
