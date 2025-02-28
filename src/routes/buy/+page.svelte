@@ -25,6 +25,7 @@
         startAt,
     } from "firebase/firestore";
     import { distanceBetween, geohashQueryBounds } from "geofire-common";
+    import pluralize from "pluralize";
 
     let cropListings = $state<CropListing[] | null>(null);
     let numDots = $state<number | null>(null);
@@ -178,9 +179,18 @@
                 return true;
             }
 
-            return listing.name
-                .toLocaleLowerCase()
-                .startsWith(values.query.toLocaleLowerCase());
+            return pluralize(listing.name, listing.quantity)
+                    .toLocaleLowerCase()
+                    .startsWith(values.query.toLocaleLowerCase()) || 
+                listing.quantity
+                    .toLocaleString()
+                    .startsWith(values.query.toLocaleLowerCase()) ||
+                listing.price
+                    .toLocaleString()
+                    .startsWith(values.query.toLocaleLowerCase()) ||
+                listing.description
+                    .toLocaleLowerCase()
+                    .startsWith(values.query.toLocaleLowerCase());
         });
 
         cropListings = listings;

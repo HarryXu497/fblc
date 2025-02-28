@@ -76,18 +76,20 @@
         <h1 class="text-5xl">your <span class="text-accent">chats</span></h1>
         <div class="grid grid-cols-2 gap-6">
             {#each chats as chat}
-                <a
-                    class="block w-full shadow transition hover:-translate-y-1 hover:cursor-pointer hover:shadow-xl"
-                    href="/chats/{chat.id}"
-                >
-                    <Window>
-                        <p class="mr-5 ml-3 px-4 py-2 font-bold text-white">
-                            your chat with <span class="text-accent"
-                                >{chat.displayName.toLocaleLowerCase()}</span
-                            >
-                        </p>
-                    </Window>
-                </a>
+                {#if chat && chat.displayName && chat.id && chat.other}
+                    <a
+                        class="block w-full shadow transition hover:-translate-y-1 hover:cursor-pointer hover:shadow-xl"
+                        href="/chats/{chat.id}"
+                    >
+                        <Window>
+                            <p class="mr-5 ml-3 px-4 py-2 font-bold text-white">
+                                your chat with <span class="text-accent"
+                                    >{chat.displayName?.toLocaleLowerCase()}</span
+                                >
+                            </p>
+                        </Window>
+                    </a>
+                {/if}
             {/each}
         </div>
     </main>

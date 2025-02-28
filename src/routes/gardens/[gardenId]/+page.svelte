@@ -6,7 +6,6 @@
     import { collection, deleteDoc, doc, setDoc } from "firebase/firestore";
     import { firestore } from "$lib/firebase";
     import auth from "$lib/state/auth.svelte";
-    import type { Crop } from "$lib/models/Crop.model";
     import { goto } from "$app/navigation";
     import Metadata from "$lib/components/Metadata.svelte";
 
