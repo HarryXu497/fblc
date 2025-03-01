@@ -73,7 +73,7 @@
         images ||= initialValues?.images || null;
         location ||= initialValues?.location || null;
     });
-    
+
     /**
      * Executes the 'onSubmit' callback with UI error handling
      * @param e the submit event
@@ -132,7 +132,12 @@
                 <div class="name-control flex w-full justify-between gap-[5%]">
                     <div class="form-control w-1/2">
                         <label for="type">type</label>
-                        <select required name="type" id="type" bind:value={crop}>
+                        <select
+                            required
+                            name="type"
+                            id="type"
+                            bind:value={crop}
+                        >
                             <option value={null}>none</option>
                             {#if crops.value !== null}
                                 {#each crops.value as crop}
@@ -143,7 +148,12 @@
                     </div>
                     <div class="form-control w-1/2">
                         <label for="type">type</label>
-                        <select required name="type" id="type" bind:value={type}>
+                        <select
+                            required
+                            name="type"
+                            id="type"
+                            bind:value={type}
+                        >
                             <option value={null}>none</option>
                             <option value="seed">seed</option>
                             <option value="crop">crop</option>

@@ -55,7 +55,7 @@ async function getGarden(gardenId: string): Promise<Garden | null> {
 
             tiles[y][x] = {
                 crop: crops.fromName(crop),
-                planted: tileDoc.get("planted") as boolean || false,
+                planted: (tileDoc.get("planted") as boolean) || false,
             };
         }
     }

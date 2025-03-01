@@ -25,7 +25,7 @@
     let width = $state<number | null>(null);
     let height = $state<number | null>(null);
 
-    // Size of each gap between grid items 
+    // Size of each gap between grid items
     const GRID_GAP = 4;
 
     /**
@@ -105,7 +105,7 @@
                 <button
                     class={{
                         "tile relative flex h-full w-full flex-row items-center justify-center transition select-none hover:cursor-pointer": true,
-                        "planted": garden.tiles[y][x].planted,
+                        planted: garden.tiles[y][x].planted,
                     }}
                     onclick={() => {
                         if (!mousedown) {
@@ -141,7 +141,7 @@
                             data-y={y}
                         />
                     {/if}
-                    </button>
+                </button>
             {/each}
         {/each}
     </div>

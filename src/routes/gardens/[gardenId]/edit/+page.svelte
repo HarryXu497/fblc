@@ -224,7 +224,7 @@
             {#each { length: height! }}
                 {#each { length: width! }}
                     <div
-                        class="bg-garden-dirt flex h-full w-full flex-row items-center justify-center"
+                        class="flex h-full w-full flex-row items-center justify-center bg-garden-dirt"
                         style:width="{TILE_SIZE}px"
                         style:height="{TILE_SIZE}px"
                     ></div>

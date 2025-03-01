@@ -1,8 +1,8 @@
 <script lang="ts">
     /**
      * A page that allows users to drag and create their own gardens
-    */
-   
+     */
+
     import { goto } from "$app/navigation";
     import FallbackIcon from "$lib/components/FallbackIcon.svelte";
     import Metadata from "$lib/components/Metadata.svelte";

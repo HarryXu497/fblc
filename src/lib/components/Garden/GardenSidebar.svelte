@@ -69,7 +69,7 @@
         for (const col of garden.tiles) {
             for (const tile of col) {
                 if (tile.crop !== null) {
-                    return true
+                    return true;
                 }
             }
         }
@@ -180,7 +180,10 @@
                             {@render brushButton(crop, i)}
                         {/each}
                         {@render brushButton("planted", crops.value.length)}
-                        {@render brushButton("unplanted", crops.value.length + 1)}
+                        {@render brushButton(
+                            "unplanted",
+                            crops.value.length + 1,
+                        )}
                         {@render brushButton(null, crops.value.length + 2)}
                     {/if}
                 {:else}
@@ -203,30 +206,30 @@
                 <p class="text-xl text-white">what you need</p>
             {/snippet}
             {#if summary.size !== 0}
-            <div class="mr-10 ml-2.5 h-full grow rounded-sm px-4 pt-1">
-                <div class="mr-6 flex h-full flex-col justify-between">
-                    <div class="flex flex-col gap-0.5">
-                        {#each summary.entries().toArray() as [crop, count]}
-                            <p class="text-xl text-white">
-                                <span class="text-accent">{count}</span>
-                                {crop}
-                                {pluralize("crop", count)}
-                            </p>
-                        {/each}
+                <div class="mr-10 ml-2.5 h-full grow rounded-sm px-4 pt-1">
+                    <div class="mr-6 flex h-full flex-col justify-between">
+                        <div class="flex flex-col gap-0.5">
+                            {#each summary.entries().toArray() as [crop, count]}
+                                <p class="text-xl text-white">
+                                    <span class="text-accent">{count}</span>
+                                    {crop}
+                                    {pluralize("crop", count)}
+                                </p>
+                            {/each}
+                        </div>
+                        <a
+                            href="/buy"
+                            class="proceed flex flex-row gap-4 text-2xl font-bold text-accent"
+                        >
+                            <span>go buy</span>
+                            <FallbackIcon
+                                icon="ri:arrow-right-long-line"
+                                preload={["ri:arrow-right-long-line"]}
+                                class="mr-1 inline-block"
+                            />
+                        </a>
                     </div>
-                    <a
-                        href="/buy"
-                        class="proceed flex flex-row gap-4 text-2xl font-bold text-accent"
-                    >
-                        <span>go buy</span>
-                        <FallbackIcon
-                            icon="ri:arrow-right-long-line"
-                            preload={["ri:arrow-right-long-line"]}
-                            class="mr-1 inline-block"
-                        />
-                    </a>
                 </div>
-            </div>
             {:else}
                 <div class="h-full grow rounded-sm px-4 pt-1">
                     <p

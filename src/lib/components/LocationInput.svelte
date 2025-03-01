@@ -1,5 +1,5 @@
 <script module lang="ts">
-    // Type alias for a latitude-longitude location 
+    // Type alias for a latitude-longitude location
     export type LatLngLocation = {
         lat: number;
         lng: number;
@@ -77,7 +77,4 @@
     });
 </script>
 
-<div
-    class="w-full h-[264px]"
-    use:initMap
-></div>
+<div class="h-[264px] w-full" use:initMap></div>

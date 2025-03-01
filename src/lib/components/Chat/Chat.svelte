@@ -60,8 +60,7 @@
 <!-- Snippet to reduce HTML template duplication -->
 {#snippet messageSnippet(message: IMessage, index: number)}
     {#if index >= 1}
-        {@const prev =
-            messages[index - 1].senderId === message.senderId}
+        {@const prev = messages[index - 1].senderId === message.senderId}
         <Message {message} {userId} collapseName={prev} />
     {:else}
         <Message {message} {userId} />

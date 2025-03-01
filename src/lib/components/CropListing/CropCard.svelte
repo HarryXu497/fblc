@@ -41,7 +41,10 @@
         {#snippet top()}
             <!-- listing name and location -->
             <p class="text-white">
-                {pluralize(`${listing.name.toLocaleLowerCase()} ${listing.type.toLocaleLowerCase()}`, listing.quantity)}
+                {pluralize(
+                    `${listing.name.toLocaleLowerCase()} ${listing.type.toLocaleLowerCase()}`,
+                    listing.quantity,
+                )}
                 {#if location}
                     <!-- Awaits the asynchronous value and displays placeholder text -->
                     {#await location}

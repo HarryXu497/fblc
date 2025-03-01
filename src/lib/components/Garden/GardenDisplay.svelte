@@ -1,5 +1,5 @@
 <script module lang="ts">
-    // Different types that can held by a brush 
+    // Different types that can held by a brush
     export type Brush = Crop | "planted" | "unplanted" | null;
 </script>
 

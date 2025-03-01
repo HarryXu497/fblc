@@ -156,7 +156,10 @@
         <div class="flex flex-col gap-2">
             <div class="flex flex-row items-center justify-between">
                 <h1 class="text-4xl font-bold">
-                    {pluralize(`${listing.name.toLocaleLowerCase()} ${listing.type.toLocaleLowerCase()}`, listing.quantity)} from
+                    {pluralize(
+                        `${listing.name.toLocaleLowerCase()} ${listing.type.toLocaleLowerCase()}`,
+                        listing.quantity,
+                    )} from
                     <span class="text-4xl font-bold text-accent">
                         {#if location}
                             {computeLocality(location)}

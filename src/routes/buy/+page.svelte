@@ -63,8 +63,7 @@
 
     // Gets all listings
     $effect(() => {
-        getCropListings()
-            .then((l) => cropListings = l)
+        getCropListings().then((l) => (cropListings = l));
     });
 
     /**
@@ -74,9 +73,9 @@
     async function onSearch(values: SearchValues) {
         // Search animation
         numDots = 1;
-        
+
         let listings: CropListing[] | null = [];
-        
+
         if (values.distance && values.distance <= 0) {
             numDots = null;
             throw Error("distance must be positive");
@@ -116,7 +115,8 @@
                     const lng = doc.get("lng");
 
                     // Filter out false positives because geohashing can generate false positivies
-                    const distanceInM = distanceBetween([lat, lng], center) * 1000;
+                    const distanceInM =
+                        distanceBetween([lat, lng], center) * 1000;
 
                     if (distanceInM <= radiusInM) {
                         listings.push({
@@ -152,16 +152,16 @@
 
             return listing.name === values.crop.name;
         });
-        
+
         // Filter by type
         listings = listings.filter((listing) => {
             if (values.type === null) {
                 return true;
             }
-            
+
             return listing.type === values.type;
         });
-        
+
         // Filter by text query
         listings = listings.filter((listing) => {
             if (values.query === null) {
@@ -169,9 +169,10 @@
             }
 
             // Search name, quantity, price, and description
-            return pluralize(listing.name, listing.quantity)
+            return (
+                pluralize(listing.name, listing.quantity)
                     .toLocaleLowerCase()
-                    .startsWith(values.query.toLocaleLowerCase()) || 
+                    .startsWith(values.query.toLocaleLowerCase()) ||
                 listing.quantity
                     .toLocaleString()
                     .startsWith(values.query.toLocaleLowerCase()) ||
@@ -180,7 +181,8 @@
                     .startsWith(values.query.toLocaleLowerCase()) ||
                 listing.description
                     .toLocaleLowerCase()
-                    .startsWith(values.query.toLocaleLowerCase());
+                    .startsWith(values.query.toLocaleLowerCase())
+            );
         });
 
         cropListings = listings;

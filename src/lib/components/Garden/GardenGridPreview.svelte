@@ -79,7 +79,7 @@
                 <div
                     class={{
                         "tile relative flex h-full w-full flex-row items-center justify-center bg-garden-dirt transition hover:cursor-pointer": true,
-                        "planted": garden.tiles[y][x].planted,
+                        planted: garden.tiles[y][x].planted,
                     }}
                     data-x={x}
                     data-y={y}

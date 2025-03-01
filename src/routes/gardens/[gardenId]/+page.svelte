@@ -1,9 +1,11 @@
 <script lang="ts">
     /**
      * A page that displays a garden, crop palette, and a crop summary
-    */
+     */
 
-    import GardenDisplay, { type Brush } from "$lib/components/Garden/GardenDisplay.svelte";
+    import GardenDisplay, {
+        type Brush,
+    } from "$lib/components/Garden/GardenDisplay.svelte";
     import type { PageProps } from "./$types";
     import type { Garden } from "$lib/models/Garden.model";
     import { getGarden } from "$lib/utils/garden.svelte";
@@ -73,7 +75,10 @@
         const tileDocRef = doc(tilesCollectionRef, `${x},${y}`);
 
         if (brush !== null) {
-            await setDoc(tileDocRef, { ...garden.tiles[y][x].crop, planted: garden.tiles[y][x].planted });
+            await setDoc(tileDocRef, {
+                ...garden.tiles[y][x].crop,
+                planted: garden.tiles[y][x].planted,
+            });
         } else {
             // Removes the tile document if the tile has no crop
             await deleteDoc(tileDocRef);
