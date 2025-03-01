@@ -136,6 +136,7 @@
                             required
                             name="type"
                             id="type"
+                            class:placeholder-color={crop === null}
                             bind:value={crop}
                         >
                             <option value={null}>none</option>
@@ -152,6 +153,7 @@
                             required
                             name="type"
                             id="type"
+                            class:placeholder-color={type === null}
                             bind:value={type}
                         >
                             <option value={null}>none</option>
@@ -202,7 +204,7 @@
                 <div class="form-control">
                     <label for="images">images</label>
                     <label
-                        class="image-selector block w-full text-center text-gray-500"
+                        class="image-selector placeholder-color block w-full text-center text-gray-500"
                         for="images">select your images</label
                     >
                     <input
@@ -277,7 +279,7 @@
         }
     }
 
-    .image-selector {
+    .placeholder-color {
         @apply text-gray-500;
     }
 

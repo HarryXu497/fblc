@@ -44,6 +44,7 @@ async function getGarden(gardenId: string): Promise<Garden | null> {
     );
 
     for (const tileDoc of tileDocs.docs) {
+        // Get the coordinate from the document id, which is formatted as x-coordinate,y-coordinate
         const [x, y] = tileDoc.id.split(",").map((n) => Number(n));
 
         // Delete doc if the location is invalid

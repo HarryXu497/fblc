@@ -27,5 +27,6 @@
     {#if !collapseName}
         <h3 class="mt-2 font-bold text-accent">{message.senderName}</h3>
     {/if}
+    
     <p>{message.content}</p>
 </div>

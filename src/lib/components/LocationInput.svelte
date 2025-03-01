@@ -23,6 +23,8 @@
 
     import L from "leaflet";
     import "leaflet/dist/leaflet.css";
+    import icon from "leaflet/dist/images/marker-icon.png";
+    import iconShadow from "leaflet/dist/images/marker-shadow.png";
 
     /**
      * @param location the currently selected location or null if it has not been selected
@@ -44,6 +46,14 @@
         });
     });
 
+    // Marker icon image 
+    const markerIcon = L.icon({
+        iconUrl: icon,
+        shadowUrl: iconShadow,
+        iconSize: [25, 41],
+        iconAnchor: [12.5, 0],
+    });
+
     // Set up map using a Svelte Directive on the component div
     function initMap(node: HTMLDivElement) {
         map = L.map(node).setView([43.64188, -79.37668], 16);
@@ -61,7 +71,7 @@
     // Add a marker on the selected location
     $effect(() => {
         if (map && location) {
-            const marker = L.marker([location.lat, location.lng]);
+            const marker = L.marker([location.lat, location.lng], { icon: markerIcon });
 
             marker
                 .addTo(map)

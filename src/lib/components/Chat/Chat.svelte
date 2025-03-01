@@ -39,7 +39,7 @@
     let lastMessage = $state<HTMLLIElement | null>(null);
 
     /**
-     * scrolls to the most recent chat message
+     * Scrolls to the most recent chat message
      */
     const scrollToBottom = () => {
         if (!lastMessage) {

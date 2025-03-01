@@ -21,11 +21,14 @@
     let { listing, location }: Props = $props();
 
     /**
-     * Computes name of the locality containing the address,
+     * Computes the short name of the locality containing the address,
      * or the first component of the address if no locality exists at the location
      * @param res the reverse geocoding result
      */
     function computeLocality(res: GeocodeResult) {
+        // Iterates through the address components until it finds
+        // the component with a type of 'locality'
+        // If it can't find a locality, it returns the first component of the address
         const locality =
             res?.address_components.find((l) =>
                 l.types.some((g) => g === "locality"),
