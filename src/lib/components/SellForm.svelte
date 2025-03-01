@@ -141,8 +141,8 @@
                         >
                             <option value={null}>none</option>
                             {#if crops.value !== null}
-                                {#each crops.value as crop}
-                                    <option value={crop}>{crop.name}</option>
+                                {#each crops.value as c}
+                                    <option value={c}>{c.name}</option>
                                 {/each}
                             {/if}
                         </select>
