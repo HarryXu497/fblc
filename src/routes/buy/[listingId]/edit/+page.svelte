@@ -9,7 +9,6 @@
     import type { CropListing } from "$lib/models/CropListing.model";
     import auth from "$lib/state/auth.svelte";
     import crops from "$lib/state/crops.svelte";
-    import getUserLocation from "$lib/utils/userLocation.svelte";
     import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
     import {
         deleteObject,

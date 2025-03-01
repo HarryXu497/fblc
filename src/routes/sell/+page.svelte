@@ -22,6 +22,7 @@
     async function onSubmit({
         crop,
         description,
+        type,
         price,
         quantity,
         images,
@@ -29,6 +30,7 @@
     }: SellValues) {
         if (
             !location ||
+            !type ||
             !crop ||
             !description.trim() ||
             !price ||
