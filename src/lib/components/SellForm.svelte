@@ -131,11 +131,11 @@
             <form class="auth-form w-full items-center" {onsubmit}>
                 <div class="name-control flex w-full justify-between gap-[5%]">
                     <div class="form-control w-1/2">
-                        <label for="type">type</label>
+                        <label for="crop">crop</label>
                         <select
                             required
-                            name="type"
-                            id="type"
+                            name="crop"
+                            id="crop"
                             class:placeholder-color={crop === null}
                             bind:value={crop}
                         >
