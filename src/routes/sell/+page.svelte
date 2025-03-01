@@ -81,6 +81,7 @@
             price: price,
             quantity: quantity,
             uid: auth.value.uid,
+            type: type,
             imageIDs: imageIDs,
             imageURLs: downloadURLs.filter((a) => a !== null),
         } as CropListing);
