@@ -38,14 +38,13 @@
         try {
             await auth.logIn(email, password);
 
-            // Redirect to "/gardebs"
+            // Redirect to "/gardens"
             goto("/gardens");
         } catch (e) {
             const code = (e as any).code;
 
             if (code === "auth/email-already-in-use") {
-                await auth.logIn(email, password);
-                await goto("/");
+                error = "Email already exists";
                 return;
             }
 
@@ -183,9 +182,11 @@
         gap: 1rem;
     }
 
+    /* Using @apply instead of listing Tailwind classes directly in the HTML */
     label {
         @apply mb-[2px] block w-full font-bold text-black;
     }
+
     .form-control > input {
         @apply w-full rounded-md p-2 placeholder-black outline-none;
         background-color: var(--color-light-accent);

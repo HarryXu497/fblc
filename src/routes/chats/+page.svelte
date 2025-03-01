@@ -75,6 +75,7 @@
     >
         <h1 class="text-5xl">your <span class="text-accent">chats</span></h1>
         <div class="grid grid-cols-2 gap-6">
+            <!-- Show window box for each chat -->
             {#each chats as chat}
                 {#if chat && chat.displayName && chat.id && chat.other}
                     <a
@@ -94,6 +95,7 @@
         </div>
     </main>
 {:else}
+    <!-- Content displayed while loading the chats -->
     <main
         class="flex h-[calc(100%_-_6rem)] w-full flex-row items-center justify-center"
     >

@@ -1,4 +1,8 @@
 <script lang="ts">
+    /**
+     * A page that displays a garden, crop palette, and a crop summary
+    */
+
     import GardenDisplay, { type Brush } from "$lib/components/Garden/GardenDisplay.svelte";
     import type { PageProps } from "./$types";
     import type { Garden } from "$lib/models/Garden.model";
@@ -16,7 +20,7 @@
 
     let garden = $state<Garden | null>(null);
 
-    // Gets the garden
+    // Fetches the garden from the database
     $effect(() => {
         getGarden(data.gardenId)
             .then((g) => (garden = g))
@@ -106,6 +110,7 @@
 {#if garden}
     <GardenDisplay {garden} {onTileUpdate} {onDeleteGarden} />
 {:else}
+    <!-- Content displayed while loading the garden -->
     <main
         class="flex h-[calc(100%_-_6rem)] w-full flex-row items-center justify-center"
     >

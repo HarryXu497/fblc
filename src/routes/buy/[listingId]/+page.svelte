@@ -156,7 +156,7 @@
         <div class="flex flex-col gap-2">
             <div class="flex flex-row items-center justify-between">
                 <h1 class="text-4xl font-bold">
-                    {pluralize(listing.name, listing.quantity)} from
+                    {pluralize(`${listing.name.toLocaleLowerCase()} ${listing.type.toLocaleLowerCase()}`, listing.quantity)} from
                     <span class="text-4xl font-bold text-accent">
                         {#if location}
                             {computeLocality(location)}
@@ -211,9 +211,10 @@
         </div>
     </main>
 {:else}
+    <!-- Content displayed while loading the listing -->
     <main
         class="flex h-[calc(100%_-_6rem)] w-full flex-row items-center justify-center"
     >
-        <p>Loading listing...</p>
+        <p class="text-4xl">loading listing...</p>
     </main>
 {/if}

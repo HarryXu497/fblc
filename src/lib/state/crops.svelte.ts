@@ -63,6 +63,7 @@ function createCropState() {
         return new Map(pairs);
     });
 
+    // Asyncrhonously fetches crops and sets the state with the value
     getCrops()
         .then((crops) => {
             cropState = crops;
@@ -72,6 +73,7 @@ function createCropState() {
             return Promise.all(crops.map((c) => getCropTips(c.id)));
         })
         .then((tips) => {
+            // Compute a map of crop IDs to tips
             if (cropState !== null) {
                 cropTips = new Map(
                     cropState.map((_, i) => [cropState![i].id, tips[i]]),

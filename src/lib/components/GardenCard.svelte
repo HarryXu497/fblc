@@ -23,6 +23,7 @@
     class="overflow-hidden rounded shadow-lg transition hover:-translate-y-1 hover:cursor-pointer hover:shadow-xl"
 >
     <Window>
+        <!-- This snippet's content goes in the top bar of the window -->
         {#snippet top()}
             <p class="text-white">{garden.name.toLocaleLowerCase()}</p>
         {/snippet}

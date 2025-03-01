@@ -1,6 +1,6 @@
 <script lang="ts">
     /**
-     * A component that sets metadata about the web page for better search engine performance
+     * A component that sets metadata tags in the web page for better search engine performance
      */
 
     import { dev } from "$app/environment";

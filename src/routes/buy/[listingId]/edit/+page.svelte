@@ -48,6 +48,7 @@
                         description: l.description,
                         price: l.price,
                         quantity: l.quantity,
+                        type: l.type,
                         images: null,
                         location: {
                             lat: l.lat,
@@ -67,6 +68,7 @@
      */
     async function onSubmit({
         crop,
+        type,
         description,
         price,
         quantity,
@@ -76,6 +78,7 @@
         if (
             !location ||
             !crop ||
+            !type ||
             !description.trim() ||
             !price ||
             !quantity ||
@@ -100,6 +103,7 @@
                 name: crop.name,
                 description: description,
                 price: price,
+                type: type,
                 quantity: quantity,
                 uid: auth.value.uid,
             });
@@ -149,6 +153,7 @@
                 lat: lat,
                 lng: lng,
                 name: crop.name,
+                type: type,
                 description: description,
                 price: price,
                 quantity: quantity,

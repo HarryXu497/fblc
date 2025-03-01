@@ -12,7 +12,7 @@ async function getPublicUser(userId: string): Promise<PublicUser | null> {
 
     const userDoc = await getDoc(docRef);
 
-    if (!userDoc.exists) {
+    if (!userDoc.exists()) {
         return null;
     }
 

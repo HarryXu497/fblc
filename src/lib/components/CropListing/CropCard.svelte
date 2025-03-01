@@ -21,7 +21,8 @@
     let { listing, location }: Props = $props();
 
     /**
-     * Computes name of the locality containing the address
+     * Computes name of the locality containing the address,
+     * or the first component of the address if no locality exists at the location
      * @param res the reverse geocoding result
      */
     function computeLocality(res: GeocodeResult) {
@@ -36,10 +37,13 @@
 
 <a href="{base}/buy/{listing.id}">
     <Window>
+        <!-- This snippet's content goes in the top bar of the window -->
         {#snippet top()}
+            <!-- listing name and location -->
             <p class="text-white">
-                {pluralize(listing.name.toLocaleLowerCase(), listing.quantity)}
+                {pluralize(`${listing.name.toLocaleLowerCase()} ${listing.type.toLocaleLowerCase()}`, listing.quantity)}
                 {#if location}
+                    <!-- Awaits the asynchronous value and displays placeholder text -->
                     {#await location}
                         from ...
                     {:then value}
@@ -50,6 +54,7 @@
                 {/if}
             </p>
         {/snippet}
+        <!-- Show first image of listing -->
         <div
             class="relative mr-4 ml-2.5 flex aspect-square flex-row items-center justify-center bg-white"
         >
@@ -59,7 +64,9 @@
                 class="absolute inset-0 h-full w-full object-cover"
             />
         </div>
+        <!-- This snippet's content goes in the bottom bar of the window -->
         {#snippet bottom()}
+            <!-- listing price and quantity -->
             <p class="text-white">
                 {listing.quantity} for ${listing.price}
             </p>

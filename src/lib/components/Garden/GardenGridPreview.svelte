@@ -60,6 +60,7 @@
     });
 </script>
 
+<!-- Bind width and height to the dimensions of the section element -->
 <section
     class="mr-3 ml-2.5 flex h-full w-full flex-row items-center justify-center"
     bind:clientWidth={width}
@@ -72,16 +73,14 @@
         style:width="{gridWidth}px"
         style:height="{gridHeight}px"
     >
+        <!-- Garden grid tiles -->
         {#each { length: garden.height }, y}
             {#each { length: garden.width }, x}
                 <div
-                    class="
-                        tile
-                        relative flex h-full w-full flex-row items-center
-                        justify-center bg-garden-dirt
-                        transition
-                        hover:cursor-pointer
-                    "
+                    class={{
+                        "tile relative flex h-full w-full flex-row items-center justify-center bg-garden-dirt transition hover:cursor-pointer": true,
+                        "planted": garden.tiles[y][x].planted,
+                    }}
                     data-x={x}
                     data-y={y}
                     style:width="{px}px"
@@ -101,3 +100,9 @@
         {/each}
     </div>
 </section>
+
+<style>
+    .tile.planted {
+        background-color: var(--color-dark-accent);
+    }
+</style>

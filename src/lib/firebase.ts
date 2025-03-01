@@ -30,7 +30,9 @@ if (!getApps().length) {
 
 // Auth
 const firebaseAuth = getAuth(firebaseApp);
+// Cloud Firestore
 const firestore = getFirestore(firebaseApp!);
+// File storage
 const storage = getStorage(firebaseApp!);
 
 export { firebaseApp, firebaseAuth, firestore, storage };

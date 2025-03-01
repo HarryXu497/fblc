@@ -31,6 +31,7 @@
     let loaded = $state<boolean>(false);
     let loadIconTask = $state<Promise<Required<IconifyIcon>> | null>(null);
 
+    // Preload specified icons
     onMount(() => {
         loaded = iconExists(icon);
 
@@ -42,6 +43,7 @@
     });
 </script>
 
+<!-- Render fallback if the promise is pending or rejected -->
 {#await loadIconTask}
     {@render fallback?.()}
 {:then}

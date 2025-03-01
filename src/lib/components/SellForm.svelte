@@ -1,6 +1,7 @@
 <script module lang="ts">
     /**
      * @param crop the crop type specified in the form
+     * @param type the type of listing specified in the form - crop or seed
      * @param description the crop listing description specified in the form
      * @param price the price of the listing specified in the form
      * @param quantity the quantiy provide in the listing specified in the form
@@ -8,6 +9,7 @@
      */
     interface SellValues {
         crop: Crop | null;
+        type: "seed" | "crop" | null;
         description: string;
         price: number | null;
         quantity: number | null;
@@ -53,6 +55,7 @@
     // Form inputs
     let error = $state<string | null>(null);
     let crop = $state<Crop | null>(null);
+    let type = $state<"seed" | "crop" | null>(null);
     let description = $state<string>("");
     let price = $state<number | null>(null);
     let quantity = $state<number | null>(null);
@@ -63,15 +66,14 @@
 
     $effect(() => {
         crop ||= initialValues?.crop || null;
+        type ||= initialValues?.type || null;
         description ||= initialValues?.description || "";
         price ||= initialValues?.price || null;
         quantity ||= initialValues?.quantity || null;
         images ||= initialValues?.images || null;
         location ||= initialValues?.location || null;
     });
-
-    // TODO: submitted loading spinner
-
+    
     /**
      * Executes the 'onSubmit' callback with UI error handling
      * @param e the submit event
@@ -95,6 +97,7 @@
         try {
             await onSubmit({
                 crop,
+                type,
                 description,
                 price,
                 quantity,
@@ -126,16 +129,26 @@
                 {/if}
             </h1>
             <form class="auth-form w-full items-center" {onsubmit}>
-                <div class="form-control">
-                    <label for="crop">crop</label>
-                    <select required name="crop" id="crop" bind:value={crop}>
-                        <option value={null}>none</option>
-                        {#if crops.value !== null}
-                            {#each crops.value as crop}
-                                <option value={crop}>{crop.name}</option>
-                            {/each}
-                        {/if}
-                    </select>
+                <div class="name-control flex w-full justify-between gap-[5%]">
+                    <div class="form-control w-1/2">
+                        <label for="type">type</label>
+                        <select required name="type" id="type" bind:value={crop}>
+                            <option value={null}>none</option>
+                            {#if crops.value !== null}
+                                {#each crops.value as crop}
+                                    <option value={crop}>{crop.name}</option>
+                                {/each}
+                            {/if}
+                        </select>
+                    </div>
+                    <div class="form-control w-1/2">
+                        <label for="type">type</label>
+                        <select required name="type" id="type" bind:value={type}>
+                            <option value={null}>none</option>
+                            <option value="seed">seed</option>
+                            <option value="crop">crop</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="form-control">
                     <label for="description">description</label>
@@ -148,20 +161,7 @@
                         bind:value={description}
                     ></textarea>
                 </div>
-                <div class="name-control flex w-full justify-between gap-[10%]">
-                    <div class="form-control w-1/2">
-                        <label for="price" class="font-bold">price</label>
-                        <input
-                            bind:value={price}
-                            required
-                            min="0"
-                            step="0.01"
-                            type="number"
-                            name="price"
-                            id="price"
-                            placeholder="price"
-                        />
-                    </div>
+                <div class="name-control flex w-full justify-between gap-[5%]">
                     <div class="form-control w-1/2">
                         <label for="quantity">quantity</label>
                         <input
@@ -173,6 +173,19 @@
                             name="quantity"
                             id="quantity"
                             placeholder="quantity"
+                        />
+                    </div>
+                    <div class="form-control w-1/2">
+                        <label for="price" class="font-bold">price</label>
+                        <input
+                            bind:value={price}
+                            required
+                            min="0"
+                            step="0.01"
+                            type="number"
+                            name="price"
+                            id="price"
+                            placeholder="price"
                         />
                     </div>
                 </div>
@@ -225,7 +238,7 @@
     <main
         class="flex h-[calc(100%_-_6rem)] flex-col items-center justify-center"
     >
-        <p class="text-3xl">submitting...</p>
+        <p class="text-4xl">submitting...</p>
     </main>
 {/if}
 

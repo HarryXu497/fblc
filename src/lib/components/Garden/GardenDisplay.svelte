@@ -1,4 +1,5 @@
 <script module lang="ts">
+    // Different types that can held by a brush 
     export type Brush = Crop | "planted" | "unplanted" | null;
 </script>
 
@@ -62,11 +63,14 @@
         bind:clientHeight={height}
     >
         <Window>
+            <!-- This snippet's content goes in the top bar of the window -->
             {#snippet top()}
                 <div class="flex w-full flex-row items-center justify-between">
+                    <!-- Garden name -->
                     <p class="text-xl text-white">
                         {garden.name.toLocaleLowerCase()}
                     </p>
+                    <!-- Edit and delete buttons -->
                     <div class="flex flex-row items-center gap-1">
                         <a
                             class="rounded-sm bg-blue-700 px-3 text-xl text-white hover:cursor-pointer hover:bg-blue-800"

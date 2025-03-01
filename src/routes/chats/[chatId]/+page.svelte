@@ -42,6 +42,7 @@
             "messages",
         );
 
+        // Get all chat messages ordered by sentAt
         const q = query(messagesRef, orderBy("sentAt", "asc"));
 
         // Attaches a snapshot listener to the chat's messages,
@@ -134,6 +135,7 @@
             }),
         ]);
 
+        // Reset input text content
         text = "";
     }
 </script>
@@ -147,6 +149,7 @@
 <main class="mx-auto h-[calc(100%_-_5rem_-_2rem)] w-[clamp(20rem,_60%,_72rem)]">
     {#if messages && auth.value}
         <Chat {messages} {onSubmit} userId={auth.value.uid} bind:text>
+            <!-- This snippet goes in the top of the chat -->
             {#snippet chatHeader()}
                 <p class="text-white">
                     your chat with <span class="text-accent"
@@ -157,5 +160,12 @@
                 </p>
             {/snippet}
         </Chat>
+    {:else}
+        <!-- Content displayed while loading the chat -->
+        <main
+            class="flex h-[calc(100%_-_6rem)] w-full flex-row items-center justify-center"
+        >
+            <p class="text-4xl">loading chat...</p>
+        </main>
     {/if}
 </main>

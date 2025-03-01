@@ -64,7 +64,7 @@
         return counts;
     });
 
-    // Tracks if anything has been planted yep
+    // Tracks if anything has been planted yet
     let planted = $derived.by(() => {
         for (const col of garden.tiles) {
             for (const tile of col) {
@@ -79,7 +79,8 @@
 
     /**
      * Computes the color based on the brush type
-     * @param brush the brush
+     * @param brush the current brush value
+     * @returns a CSS color value or variable
      */
     function computeColor(brush: Brush) {
         if (brush === null || brush === "unplanted") {
@@ -92,6 +93,7 @@
     }
 </script>
 
+<!-- Snippet to display a single brush button in the palette -->
 {#snippet brushButton(crop: Brush, i: number)}
     <div class="flex flex-row gap-2">
         <button
@@ -117,7 +119,8 @@
                 {/if}
             </p>
         </button>
-        {#if crop && typeof crop !== "string" && hovered}
+        {#if crop && typeof crop !== "string" && hovered !== null}
+            <!-- Show an info icon for growing tips -->
             <!-- svelte-ignore a11y_mouse_events_have_key_events -->
             <button
                 class="text-white hover:cursor-pointer"

@@ -38,6 +38,7 @@
     {/if}
     <div class="text-md flex justify-between gap-4">
         {#if auth.value === null}
+            <!-- Authentication links  -->
             <a
                 class="rounded-xl bg-accent px-3 py-2 text-white drop-shadow-xl transition-transform hover:-translate-y-1 hover:cursor-pointer"
                 href="{base}/sign-up"
@@ -51,11 +52,12 @@
                 log in
             </a>
         {:else}
+            <!-- User links -->
             <a
                 class="rounded-xl bg-accent px-3 py-2 text-white drop-shadow-xl transition-transform hover:-translate-y-1"
                 href="{base}/gardens"
             >
-                view gardens
+                your gardens
             </a>
             <a
                 class="rounded-xl bg-accent px-3 py-2 text-white drop-shadow-xl transition-transform hover:-translate-y-1"
@@ -67,7 +69,7 @@
                 class="rounded-xl bg-accent px-3 py-2 text-white drop-shadow-xl transition-transform hover:-translate-y-1"
                 href="{base}/chats"
             >
-                view chats
+                your chats
             </a>
             <button
                 class="rounded-xl text-black transition-transform hover:-translate-y-1"

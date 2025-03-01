@@ -22,6 +22,7 @@
 <div
     class="gallery align-center flex flex-row justify-center rounded-sm shadow-xl"
 >
+    <!-- Swiper custom Web Component -->
     <swiper-container
         class="relative flex w-full flex-row rounded-sm border-8 border-b-gray-800 bg-white"
         slides-per-view={1}
@@ -31,7 +32,7 @@
         loop={true}
         grab-cursor={true}
         autoplay={{
-            delay: 3000,
+            delay: 5000,
         }}
         navigation={true}
     >
@@ -60,6 +61,7 @@
 </div>
 
 <style>
+    /* Set Swiper CSS variables */
     .gallery {
         --swiper-navigation-sides-offset: 1.5rem;
         --swiper-navigation-color: white;

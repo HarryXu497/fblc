@@ -20,13 +20,14 @@
 
     let garden = $state<Garden | null>(null);
 
-    // Prefills the name of the garden
+    // Fetches the garden from the database
     $effect(() => {
         getGarden(data.gardenId)
             .then((g) => (garden = g))
             .catch((e) => goto("/gardens"));
     });
 
+    // Prefills garden name
     $effect(() => {
         if (dragComplete && drawPoint1 && drawPoint2 && garden) {
             gardenName = garden.name;
@@ -223,10 +224,7 @@
             {#each { length: height! }}
                 {#each { length: width! }}
                     <div
-                        class="
-                tile
-                flex h-full w-full flex-row items-center justify-center
-            "
+                        class="bg-garden-dirt flex h-full w-full flex-row items-center justify-center"
                         style:width="{TILE_SIZE}px"
                         style:height="{TILE_SIZE}px"
                     ></div>
@@ -255,10 +253,6 @@
 </main>
 
 <style>
-    .tile {
-        background-color: var(--color-garden-dirt);
-    }
-
     .centered {
         position: static;
         margin-bottom: 0.25rem;

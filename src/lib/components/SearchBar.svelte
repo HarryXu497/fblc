@@ -7,6 +7,7 @@
     interface SearchValues {
         query: string | null;
         crop: Crop | null;
+        type: "seed" | "crop" | null;
         distance: number | null;
     }
 
@@ -31,6 +32,7 @@
     let query = $state<string | null>(null);
     let crop = $state<Crop | null>(null);
     let distance = $state<number | null>(null);
+    let type = $state<"seed" | "crop" | null>(null);
 
     let error = $state<string | null>(null);
 
@@ -45,6 +47,7 @@
             query: query?.trim() || null,
             crop: crop,
             distance: distance,
+            type: type,
         };
 
         try {
@@ -64,6 +67,7 @@
         class="relative flex h-full w-full flex-row items-center gap-3 rounded-md bg-light-accent px-4 py-3 shadow-md outline-accent outline-none focus-within:outline-2"
         onsubmit={onSubmit}
     >
+        <!-- Search icon/button -->
         <button type="submit" class="hover:cursor-pointer">
             <FallbackIcon
                 class="text-2xl"
@@ -72,6 +76,7 @@
             />
         </button>
         <div class="flex grow flex-row gap-2">
+            <!-- Text query input -->
             <input
                 type="text"
                 id="search"
@@ -80,6 +85,7 @@
                 bind:value={query}
             />
             <div class="w-[2px] rounded-4xl bg-accent"></div>
+            <!-- Distance query input -->
             <input
                 type="number"
                 placeholder="distance"
@@ -87,6 +93,7 @@
                 bind:value={distance}
             />
             <div class="w-[2px] rounded-4xl bg-accent"></div>
+            <!-- Crop query input -->
             <select
                 bind:value={crop}
                 style:color={crop === null ? "var(--color-gray-500)" : ""}
@@ -99,8 +106,20 @@
                     {/each}
                 {/if}
             </select>
+            <div class="w-[2px] rounded-4xl bg-accent"></div>
+            <!-- Listing type query input -->
+            <select
+                bind:value={type}
+                style:color={type === null ? "var(--color-gray-500)" : ""}
+                class="shrink grow"
+            >
+                <option value={null}>type</option>
+                <option value="seed">seed</option>
+                <option value="crop">crop</option>
+            </select>
         </div>
     </form>
+    <!-- Error message -->
     {#if error}
         <p class="text-red-500">{error}</p>
     {/if}

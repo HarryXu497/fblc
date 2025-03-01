@@ -18,10 +18,12 @@
     let { message, userId, collapseName = false }: Props = $props();
 </script>
 
+<!-- Assign a different value for a style based on state -->
 <div
     class="flex flex-col"
     style:align-items={message.senderId === userId ? "self-end" : "self-start"}
 >
+    <!-- User name if collapseName is false -->
     {#if !collapseName}
         <h3 class="mt-2 font-bold text-accent">{message.senderName}</h3>
     {/if}

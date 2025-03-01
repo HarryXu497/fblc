@@ -21,6 +21,7 @@ interface CropListing {
     price: number;
     quantity: number;
     uid: string;
+    type: "seed" | "crop";
     imageIDs: string[];
     imageURLs: string[];
 }

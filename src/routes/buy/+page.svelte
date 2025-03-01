@@ -63,31 +63,8 @@
 
     // Gets all listings
     $effect(() => {
-        if (!auth || !auth.value) {
-            return;
-        }
-
-        const cropListingsRef = collection(firestore, "seeds");
-
-        getDocs(cropListingsRef)
-            .then((listingDocs) => {
-                return listingDocs.docs.map(
-                    (d) =>
-                        ({
-                            id: d.id,
-                            geohash: d.get("geohash") as string,
-                            lat: d.get("lat") as number,
-                            lng: d.get("lng") as number,
-                            name: d.get("name") as string,
-                            description: d.get("description") as string,
-                            price: d.get("price") as number,
-                            quantity: d.get("quantity") as number,
-                            uid: auth.value!.uid as string,
-                            imageURLs: d.get("imageURLs") as string[],
-                        }) as CropListing,
-                );
-            })
-            .then((l) => (cropListings = l));
+        getCropListings()
+            .then((l) => cropListings = l)
     });
 
     /**
@@ -97,15 +74,16 @@
     async function onSearch(values: SearchValues) {
         // Search animation
         numDots = 1;
-
-        const centerPos = await getUserLocation();
-
+        
         let listings: CropListing[] | null = [];
-
+        
         if (values.distance && values.distance <= 0) {
             numDots = null;
             throw Error("distance must be positive");
         }
+
+        // Get user location and perform distance query
+        const centerPos = await getUserLocation();
 
         if (centerPos && values.distance) {
             const center = [
@@ -117,12 +95,13 @@
             // Calculates geohash bounds for the specified radius from the center
             const bounds = geohashQueryBounds(center, radiusInM);
             const promises = [];
-            for (const b of bounds) {
+
+            for (const bound of bounds) {
                 const q = query(
                     collection(firestore, "seeds"),
                     orderBy("geohash"),
-                    startAt(b[0]),
-                    endAt(b[1]),
+                    startAt(bound[0]),
+                    endAt(bound[1]),
                 );
 
                 promises.push(getDocs(q));
@@ -136,9 +115,9 @@
                     const lat = doc.get("lat");
                     const lng = doc.get("lng");
 
-                    // Filter out false positives because geohashing can be imprecise
-                    const distanceInKm = distanceBetween([lat, lng], center);
-                    const distanceInM = distanceInKm * 1000;
+                    // Filter out false positives because geohashing can generate false positivies
+                    const distanceInM = distanceBetween([lat, lng], center) * 1000;
+
                     if (distanceInM <= radiusInM) {
                         listings.push({
                             id: doc.id,
@@ -150,6 +129,7 @@
                             price: doc.get("price") as number,
                             quantity: doc.get("quantity") as number,
                             uid: auth.value!.uid as string,
+                            type: doc.get("type") as "seed" | "crop",
                             imageIDs: doc.get("imageIDs") as string[],
                             imageURLs: doc.get("imageURLs") as string[],
                         });
@@ -172,13 +152,23 @@
 
             return listing.name === values.crop.name;
         });
-
+        
+        // Filter by type
+        listings = listings.filter((listing) => {
+            if (values.type === null) {
+                return true;
+            }
+            
+            return listing.type === values.type;
+        });
+        
         // Filter by text query
         listings = listings.filter((listing) => {
             if (values.query === null) {
                 return true;
             }
 
+            // Search name, quantity, price, and description
             return pluralize(listing.name, listing.quantity)
                     .toLocaleLowerCase()
                     .startsWith(values.query.toLocaleLowerCase()) || 
@@ -215,6 +205,7 @@
                 <p class="pb-48 text-4xl">no listings</p>
             </section>
         {:else if numDots !== null}
+            <!-- Searching animation -->
             <section
                 class="flex h-[calc(100%_-_6rem)] w-full flex-row items-center justify-center"
             >
@@ -222,7 +213,7 @@
             </section>
         {:else}
             <section
-                class="mb-8 grid w-[clamp(20rem,_80%,_96rem)] grid-cols-3 gap-8 px-8"
+                class="mb-8 grid w-[clamp(20rem,_80%,_96rem)] grid-cols-3 gap-8"
             >
                 {#each cropListings as listing, i}
                     {#if cropLocations !== null}
@@ -235,6 +226,7 @@
         {/if}
     </main>
 {:else}
+    <!-- Content displayed while loading the listings -->
     <main
         class="flex h-[calc(100%_-_6rem)] w-full flex-row items-center justify-center"
     >

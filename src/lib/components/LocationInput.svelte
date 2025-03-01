@@ -1,11 +1,12 @@
 <script module lang="ts">
+    // Type alias for a latitude-longitude location 
     export type LatLngLocation = {
         lat: number;
         lng: number;
     };
 
     /**
-     * modulo function that always returns a non-negative integer
+     * Helper modulo function that always returns a non-negative integer
      */
     const modulo = (dividend: number, divisor: number) =>
         ((dividend % divisor) + divisor) % divisor;
@@ -43,15 +44,17 @@
         });
     });
 
-    // Set up map using a Svelte Diretive on the component div
+    // Set up map using a Svelte Directive on the component div
     function initMap(node: HTMLDivElement) {
         map = L.map(node).setView([43.64188, -79.37668], 16);
 
+        // Set tile layer
         L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
             attribution:
                 '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         }).addTo(map);
 
+        // Attach click listener to set the marker to the clicked location
         map.on("click", (event) => (location = event.latlng));
     }
 
@@ -74,11 +77,7 @@
     });
 </script>
 
-<div use:initMap></div>
-
-<style>
-    div {
-        width: 100%;
-        height: 250px;
-    }
-</style>
+<div
+    class="w-full h-[264px]"
+    use:initMap
+></div>

@@ -3,7 +3,6 @@
      * A component that displays a garden with an interactive grid
      */
 
-    import type { Crop } from "$lib/models/Crop.model";
     import type { Garden } from "$lib/models/Garden.model";
     import type { Brush } from "./GardenDisplay.svelte";
 
@@ -26,6 +25,7 @@
     let width = $state<number | null>(null);
     let height = $state<number | null>(null);
 
+    // Size of each gap between grid items 
     const GRID_GAP = 4;
 
     /**
@@ -80,6 +80,7 @@
         bind:clientWidth={width}
         bind:clientHeight={height}
     >
+        <!-- Horizontal measurement bar-->
         <div
             class="absolute -top-8 flex h-2 flex-row items-center justify-center rounded bg-accent"
             style:width="{calculateWidth()}px"
@@ -88,6 +89,7 @@
                 {garden.scale * garden.width}m
             </p>
         </div>
+        <!-- Vertical measurement bar -->
         <div
             class="absolute -left-12 flex w-2 flex-col items-center justify-center rounded bg-accent"
             style:height="{calculateHeight()}px"
@@ -96,8 +98,10 @@
                 {garden.scale * garden.height}m
             </p>
         </div>
+        <!-- Garden grid tiles -->
         {#each { length: garden.height }, y}
             {#each { length: garden.width }, x}
+                <!-- class={{ ... }} applies a class if its value is truthy -->
                 <button
                     class={{
                         "tile relative flex h-full w-full flex-row items-center justify-center transition select-none hover:cursor-pointer": true,
@@ -160,7 +164,7 @@
         background-color: var(--color-darker-accent);
     }
 
-
+    /* Disable text/image highlighting on the crop icons */
     .icon-img {
         user-select: none;
         -drag: none;

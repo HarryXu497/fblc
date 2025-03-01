@@ -45,6 +45,7 @@
         </main>
     {/if}
 {:else}
+    <!-- Content displayed while loading the gardens -->
     <main
         class="flex h-[calc(100%_-_6rem)] w-full flex-row items-center justify-center"
     >

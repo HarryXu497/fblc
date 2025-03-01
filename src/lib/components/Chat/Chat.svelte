@@ -32,7 +32,10 @@
         chatHeader,
     }: Props = $props();
 
+    // State for a hover effect for the text submit button
     let outlined = $state<boolean>(true);
+
+    // Stores the most recent message so it can be scrolled to progammatically
     let lastMessage = $state<HTMLLIElement | null>(null);
 
     /**
@@ -54,6 +57,17 @@
     });
 </script>
 
+<!-- Snippet to reduce HTML template duplication -->
+{#snippet messageSnippet(message: IMessage, index: number)}
+    {#if index >= 1}
+        {@const prev =
+            messages[index - 1].senderId === message.senderId}
+        <Message {message} {userId} collapseName={prev} />
+    {:else}
+        <Message {message} {userId} />
+    {/if}
+{/snippet}
+
 <section class="flex h-full flex-col gap-4">
     <Window top={chatHeader}>
         <ul
@@ -61,24 +75,13 @@
         >
             {#each messages as message, i}
                 {#if i === messages.length - 1}
+                    <!-- Binds the lastMessage state to the last li element -->
                     <li bind:this={lastMessage}>
-                        {#if i >= 1}
-                            {@const prev =
-                                messages[i - 1].senderId === message.senderId}
-                            <Message {message} {userId} collapseName={prev} />
-                        {:else}
-                            <Message {message} {userId} />
-                        {/if}
+                        {@render messageSnippet(message, i)}
                     </li>
                 {:else}
                     <li>
-                        {#if i >= 1}
-                            {@const prev =
-                                messages[i - 1].senderId === message.senderId}
-                            <Message {message} {userId} collapseName={prev} />
-                        {:else}
-                            <Message {message} {userId} />
-                        {/if}
+                        {@render messageSnippet(message, i)}
                     </li>
                 {/if}
             {/each}
@@ -89,6 +92,7 @@
             <form
                 class="mr-4.5 ml-3 flex flex-row gap-2 p-1 text-xl"
                 onsubmit={(e) => {
+                    // Call submit callback and reset text field
                     e.preventDefault();
                     onSubmit(e);
                     text = "";

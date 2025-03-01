@@ -193,12 +193,12 @@
 <main>
     <section class="fixed-height grid h-screen grid-cols-12 grid-rows-12">
         <h1
-            class="col-start-2 col-end-6 row-start-3 row-end-4 text-[72px] font-bold"
+            class="col-start-2 col-end-6 row-start-3 row-end-4 text-[48px] lg:text-[60px] font-bold xl:text-[72px]"
         >
             farmers<span class="text-accent">market</span>
         </h1>
         <div
-            class="col-start-2 col-end-6 row-start-5 row-end-7 flex flex-col gap-6 text-[24px] leading-8"
+            class="col-start-2 col-end-8 md:col-end-6 row-start-4 mt-4 lg:mt-8 xl:mt-0 xl:row-start-5 row-end-7 flex flex-col gap-6 text-[20px] xl:text-[24px] leading-8"
         >
             <p>only 50% of canadians make an effort to buy local</p>
             <a
@@ -216,7 +216,7 @@
         <div class="col-start-7 col-end-12 row-start-3 row-end-10 pl-16">
             <Window>
                 <div
-                    class="flex h-full w-full flex-row items-center justify-center"
+                    class="flex h-full w-full flex-row items-center justify-center overflow-hidden"
                 >
                     <GardenGridPreview
                         garden={garden1}

@@ -1,4 +1,8 @@
 <script lang="ts">
+    /**
+     * A page that allows users to drag and create their own gardens
+    */
+   
     import { goto } from "$app/navigation";
     import FallbackIcon from "$lib/components/FallbackIcon.svelte";
     import Metadata from "$lib/components/Metadata.svelte";
@@ -176,6 +180,7 @@
     onmouseup={onMouseUp}
     onmousemove={onMouseMove}
 >
+    <!-- New garden name input -->
     {#if dragComplete && drawPoint1 && drawPoint2}
         <input
             class="p-2 text-center text-4xl/6 font-bold focus:outline-accent"
@@ -189,6 +194,7 @@
             bind:value={gardenName}
         />
     {/if}
+    <!-- Garden preview grid -->
     {#if drawPoint1 && drawPoint2}
         <div
             class="absolute container grid w-fit gap-1 overflow-hidden rounded-xl transition"
@@ -214,6 +220,7 @@
     {:else}
         <h1>Drag to create your garden!</h1>
     {/if}
+    <!-- Proceed button -->
     {#if dragComplete && drawPoint1 && drawPoint2}
         <button
             class="proceed text-2xl text-accent hover:cursor-pointer"
